@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>战略情报门户</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2333;
+      --border: #30363d;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --accent5: #ffa657;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --text-dim: #484f58;
+      --tag-bg: #21262d;
+      --radius: 8px;
+      --radius-lg: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── 顶部导航 ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px; height: 56px;
+      background: rgba(13,17,23,.85);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+    .topbar-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; }
+    .topbar-brand .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
+    .topbar-nav { display: flex; gap: 4px; }
+    .topbar-nav a {
+      padding: 6px 14px; border-radius: 6px; font-size: 14px; color: var(--text-muted);
+      text-decoration: none; transition: all .15s;
+    }
+    .topbar-nav a:hover, .topbar-nav a.active { background: var(--surface2); color: var(--text); }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    .badge {
+      font-size: 11px; padding: 2px 8px; border-radius: 12px;
+      background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid rgba(88,166,255,.3);
+    }
+    .time-chip {
+      font-size: 12px; color: var(--text-muted);
+      padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px;
+    }
+
+    /* ── 主布局 ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr 320px;
+      grid-template-rows: auto;
+      gap: 0;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* ── 左侧边栏 ── */
+    .sidebar {
+      border-right: 1px solid var(--border);
+      padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 24px;
+    }
+    .sidebar-section-title {
+      font-size: 11px; font-weight: 600; letter-spacing: .08em;
+      color: var(--text-dim); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px;
+    }
+    .sidebar-group { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 10px; border-radius: 6px; cursor: pointer;
+      font-size: 13.5px; color: var(--text-muted); transition: all .15s; text-decoration: none;
+    }
+    .sidebar-item:hover { background: var(--surface2); color: var(--text); }
+    .sidebar-item.active { background: rgba(88,166,255,.1); color: var(--accent); }
+    .sidebar-icon { font-size: 15px; width: 20px; text-align: center; }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* ── 三大模块标签 ── */
+    .module-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px;
+    }
+    .tag-future { background: rgba(88,166,255,.15); color: var(--accent); border: 1px solid rgba(88,166,255,.25); }
+    .tag-opp    { background: rgba(63,185,80,.15);  color: var(--accent2); border: 1px solid rgba(63,185,80,.25); }
+    .tag-ext    { background: rgba(247,129,102,.15); color: var(--accent3); border: 1px solid rgba(247,129,102,.25); }
+
+    /* ── 中央内容区 ── */
+    .main { padding: 20px 24px; display: flex; flex-direction: column; gap: 24px; overflow-y: auto; }
+
+    /* ── Section header ── */
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;
+    }
+    .section-title {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 16px; font-weight: 600;
+    }
+    .section-more { font-size: 12px; color: var(--text-muted); cursor: pointer; }
+    .section-more:hover { color: var(--accent); }
+
+    /* ── 卡片通用 ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px;
+      transition: border-color .15s;
+    }
+    .card:hover { border-color: var(--text-dim); }
+
+    /* ── 资讯卡片网格 ── */
+    .news-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    }
+    .news-card { cursor: pointer; }
+    .news-card-img {
+      width: 100%; height: 120px; object-fit: cover;
+      border-radius: 6px; background: var(--surface2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; margin-bottom: 10px;
+    }
+    .news-card-meta {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .news-card-title { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--text); }
+    .news-card-source { font-size: 11px; color: var(--text-muted); margin-top: 6px; }
+    .news-ai-insight {
+      font-size: 11px; color: var(--accent4); line-height: 1.5; margin-top: 6px;
+      padding: 5px 8px; border-radius: 4px;
+      background: rgba(210,168,255,.07); border-left: 2px solid rgba(210,168,255,.4);
+    }
+
+    /* ── 资讯列表（头条） ── */
+    .news-headline { display: flex; flex-direction: column; gap: 0; }
+    .news-row {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 12px 0; border-bottom: 1px solid var(--border); cursor: pointer;
+    }
+    .news-row:last-child { border-bottom: none; }
+    .news-row-num {
+      width: 22px; height: 22px; border-radius: 4px;
+      background: var(--surface2); color: var(--text-muted);
+      font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .news-row-num.hot { background: rgba(247,129,102,.2); color: var(--accent3); }
+    .news-row-body { flex: 1; }
+    .news-row-title { font-size: 13.5px; color: var(--text); line-height: 1.5; margin-bottom: 4px; }
+    .news-row-insight {
+      font-size: 11px; color: var(--accent4); line-height: 1.5; margin-bottom: 5px;
+      padding: 4px 8px; border-radius: 4px;
+      background: rgba(210,168,255,.07); border-left: 2px solid rgba(210,168,255,.4);
+    }
+    .news-row-foot { display: flex; align-items: center; gap: 8px; }
+    .tag-chip {
+      font-size: 10px; padding: 2px 6px; border-radius: 4px;
+      background: var(--tag-bg); color: var(--text-muted);
+    }
+
+    /* ── AI硬件趋势 ── */
+    .ai-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .ai-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 16px;
+      display: flex; flex-direction: column; gap: 8px;
+      cursor: pointer; transition: border-color .15s;
+    }
+    .ai-card:hover { border-color: var(--accent4); }
+    .ai-card-icon { font-size: 24px; }
+    .ai-card-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .ai-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; flex: 1; }
+    .ai-card-trend {
+      display: flex; align-items: center; gap: 6px; margin-top: 4px;
+    }
+    .trend-bar-wrap { flex: 1; height: 4px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
+    .trend-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent4), var(--accent)); }
+    .trend-val { font-size: 11px; color: var(--accent4); font-weight: 600; min-width: 32px; text-align: right; }
+
+    /* ── 财报解读 ── */
+    .report-list { display: flex; flex-direction: column; gap: 10px; }
+    .report-card {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 14px 16px; cursor: pointer;
+      transition: border-color .15s;
+    }
+    .report-card:hover { border-color: var(--accent5); }
+    .report-logo {
+      width: 40px; height: 40px; border-radius: 8px;
+      background: var(--surface2); display: flex; align-items: center;
+      justify-content: center; font-size: 18px; flex-shrink: 0;
+    }
+    .report-body { flex: 1; }
+    .report-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .report-summary { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .report-metrics { display: flex; gap: 12px; margin-top: 8px; }
+    .report-metric { font-size: 12px; }
+    .report-metric .label { color: var(--text-muted); }
+    .report-metric .val { font-weight: 600; }
+    .val-up { color: var(--accent2); }
+    .val-down { color: var(--accent3); }
+    .report-date { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+
+    /* ── 右侧边栏 ── */
+    .rightsidebar {
+      border-left: 1px solid var(--border);
+      padding: 20px 16px; display: flex; flex-direction: column; gap: 22px;
+    }
+    .rside-title {
+      font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent2);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(63,185,80,.4); }
+      50% { opacity:.7; box-shadow: 0 0 0 5px rgba(63,185,80,0); }
+    }
+
+    /* ── 机会象限 ── */
+    .opp-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .opp-table th {
+      padding: 6px 8px; text-align: left; font-size: 10px; font-weight: 600;
+      letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim);
+      border-bottom: 1px solid var(--border);
+    }
+    .opp-table td { padding: 8px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .opp-table tr:last-child td { border-bottom: none; }
+    .opp-dim { font-weight: 600; color: var(--text); }
+    .opp-val { color: var(--text-muted); line-height: 1.4; }
+
+    /* ── 竞对/国家卡片 ── */
+    .ext-list { display: flex; flex-direction: column; gap: 6px; }
+    .ext-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px; border-radius: 6px; background: var(--surface2);
+      font-size: 12px; cursor: pointer; transition: background .15s;
+    }
+    .ext-item:hover { background: var(--surface); border: 1px solid var(--border); }
+    .ext-icon { font-size: 16px; width: 22px; text-align: center; flex-shrink: 0; margin-top: 1px; }
+    .ext-body { flex: 1; }
+    .ext-name { font-weight: 600; color: var(--text); margin-bottom: 3px; }
+    .ext-news { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+    .ext-time { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+
+    /* ── 热门标签云 ── */
+    .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+    .cloud-tag {
+      padding: 4px 10px; border-radius: 20px; font-size: 11px;
+      background: var(--surface2); color: var(--text-muted);
+      border: 1px solid var(--border); cursor: pointer; transition: all .15s;
+    }
+    .cloud-tag:hover { background: rgba(88,166,255,.1); color: var(--accent); border-color: rgba(88,166,255,.3); }
+    .cloud-tag.hot { background: rgba(247,129,102,.1); color: var(--accent3); border-color: rgba(247,129,102,.3); }
+
+    /* ── 模块分区块 ── */
+    .module-block { display: flex; flex-direction: column; }
+    .module-block + .module-block { padding-top: 24px; border-top: 1px solid var(--border); }
+
+    /* ── 滚动条 ── */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+  </style>
+</head>
+<body>
+
+<!-- ══════ 顶部导航 ══════ -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <div class="dot"></div>
+    战略情报门户
+  </div>
+  <nav class="topbar-nav">
+    <a href="#" class="active">总览</a>
+    <a href="#">看未来</a>
+    <a href="#">看机会</a>
+    <a href="#">看外部</a>
+    <a href="#">AI硬件</a>
+    <a href="#">财报</a>
+  </nav>
+  <div class="topbar-right">
+    <span class="badge">实时更新</span>
+    <span class="time-chip" id="clock">2026-06-26 09:00</span>
+  </div>
+</header>
+
+<!-- ══════ 主三栏布局 ══════ -->
+<div class="layout">
+
+  <!-- ── 左侧导航侧边栏 ── -->
+  <aside class="sidebar">
+
+    <!-- 看未来 -->
+    <div>
+      <div class="sidebar-section-title">看未来</div>
+      <div class="sidebar-group">
+        <a href="#" class="sidebar-item active">
+          <span class="sidebar-icon">🚀</span>新的商业模式
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🏷️</span>新的品牌、品类
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🏭</span>新的行业
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">📈</span>新的趋势
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">👥</span>新的用户需求变化
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">📋</span>新的政策变化
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">⚡</span>新的技术
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- 看机会 -->
+    <div>
+      <div class="sidebar-section-title">看机会</div>
+      <div class="sidebar-group">
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🕐</span>时间视角
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">📍</span>地点视角
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🎯</span>品牌视角
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">📦</span>品类视角
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🏗️</span>行业视角
+        </a>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- 看外部 -->
+    <div>
+      <div class="sidebar-section-title">看外部</div>
+      <div class="sidebar-group">
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">⚔️</span>主要竞对
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🌐</span>主要行业
+        </a>
+        <a href="#" class="sidebar-item">
+          <span class="sidebar-icon">🗺️</span>主要国家
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── 中央内容区 ── -->
+  <main class="main">
+
+    <!-- ████ 模块1：看未来 · 资讯 ████ -->
+    <section class="module-block">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="module-tag tag-future">看未来</span>
+          今日资讯精选
+        </div>
+        <span class="section-more">查看全部 →</span>
+      </div>
+
+      <div class="news-grid">
+        <!-- 卡片1 -->
+        <div class="card news-card">
+          <div class="news-card-img">🤖</div>
+          <div class="news-card-meta">
+            <span class="module-tag tag-future">新技术</span>
+            <span class="tag-chip">AI</span>
+          </div>
+          <div class="news-card-title">OpenAI 发布 o3 模型，推理能力大幅跃升，多模态支持更完善</div>
+          <div class="news-ai-insight">💡 大模型推理成本持续下降，AI 应用落地门槛加速降低</div>
+          <div class="news-card-source">36Kr · 1小时前</div>
+        </div>
+        <!-- 卡片2 -->
+        <div class="card news-card">
+          <div class="news-card-img">📱</div>
+          <div class="news-card-meta">
+            <span class="module-tag tag-future">新技术</span>
+            <span class="tag-chip">消费电子</span>
+          </div>
+          <div class="news-card-title">苹果 WWDC 2026：AI 深度融入 iOS 20，端侧模型成标配</div>
+          <div class="news-ai-insight">💡 端侧 AI 普及将重塑 AI 硬件换机周期，相关品类值得关注</div>
+          <div class="news-card-source">极客公园 · 3小时前</div>
+        </div>
+        <!-- 卡片3 -->
+        <div class="card news-card">
+          <div class="news-card-img">🏛️</div>
+          <div class="news-card-meta">
+            <span class="module-tag tag-future">新政策</span>
+            <span class="tag-chip">监管</span>
+          </div>
+          <div class="news-card-title">工信部发布 AI 大模型备案新规，合规要求全面升级</div>
+          <div class="news-ai-insight">💡 合规成本上升利好头部平台，中小模型厂商面临整合压力</div>
+          <div class="news-card-source">财新网 · 5小时前</div>
+        </div>
+        <!-- 卡片4 -->
+        <div class="card news-card">
+          <div class="news-card-img">🛒</div>
+          <div class="news-card-meta">
+            <span class="module-tag tag-future">新商业模式</span>
+            <span class="tag-chip">电商</span>
+          </div>
+          <div class="news-card-title">即时零售渗透率突破 35%，品牌私域 + 平台公域混合运营成主流</div>
+          <div class="news-ai-insight">💡 即时履约能力将成差异化竞争核心，本地仓布局机会加速</div>
+          <div class="news-card-source">晚点LatePost · 8小时前</div>
+        </div>
+      </div>
+
+      <!-- 资讯列表 -->
+      <div class="card" style="margin-top:12px;">
+        <div class="news-headline">
+          <div class="news-row">
+            <div class="news-row-num hot">1</div>
+            <div class="news-row-body">
+              <div class="news-row-title">英伟达 H200 供货紧张，云厂商抢购潮推升 GPU 现货溢价超 40%</div>
+              <div class="news-row-insight">💡 算力供给瓶颈短期难解，国产替代窗口期价值凸显</div>
+              <div class="news-row-foot">
+                <span class="tag-chip">AI硬件</span>
+                <span class="tag-chip">供应链</span>
+                <span style="font-size:11px;color:var(--text-dim)">路透社 · 2小时前</span>
+              </div>
+            </div>
+          </div>
+          <div class="news-row">
+            <div class="news-row-num hot">2</div>
+            <div class="news-row-body">
+              <div class="news-row-title">字节跳动 Doubao Pro 128K 上线，国内大模型价格战再度升温</div>
+              <div class="news-row-insight">💡 价格战压缩 API 利润，应用层差异化成为下一个竞争焦点</div>
+              <div class="news-row-foot">
+                <span class="tag-chip">新技术</span>
+                <span class="tag-chip">大模型</span>
+                <span style="font-size:11px;color:var(--text-dim)">虎嗅 · 4小时前</span>
+              </div>
+            </div>
+          </div>
+          <div class="news-row">
+            <div class="news-row-num">3</div>
+            <div class="news-row-body">
+              <div class="news-row-title">东南亚电商 GMV 增速回落至 12%，用户增长见顶后平台转向质量运营</div>
+              <div class="news-row-insight">💡 流量红利消退，品牌自建私域与精细化运营成出海新重点</div>
+              <div class="news-row-foot">
+                <span class="tag-chip">跨境</span>
+                <span class="tag-chip">新市场</span>
+                <span style="font-size:11px;color:var(--text-dim)">Tech in Asia · 6小时前</span>
+              </div>
+            </div>
+          </div>
+          <div class="news-row">
+            <div class="news-row-num">4</div>
+            <div class="news-row-body">
+              <div class="news-row-title">Z世代消费调研：62% 愿意为「可持续」溢价付费，健康赛道加速扩容</div>
+              <div class="news-row-insight">💡 可持续与健康双轨驱动，新品牌溢价空间有望持续扩大</div>
+              <div class="news-row-foot">
+                <span class="tag-chip">用户需求</span>
+                <span class="tag-chip">趋势</span>
+                <span style="font-size:11px;color:var(--text-dim)">第一财经 · 今日</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ████ 模块1：AI硬件趋势 ████ -->
+    <section class="module-block">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="module-tag tag-future">新技术</span>
+          AI 硬件趋势追踪
+        </div>
+        <span class="section-more">完整榜单 →</span>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-card">
+          <div class="ai-card-icon">🖥️</div>
+          <div class="ai-card-name">GPU 服务器</div>
+          <div class="ai-card-desc">H100/H200 仍为主流，B200 产能爬坡中，国产 910C 加速放量</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:92%"></div></div>
+            <span class="trend-val">+92%</span>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-icon">🤖</div>
+          <div class="ai-card-name">AI PC / NPU</div>
+          <div class="ai-card-desc">骁龙 X Elite、Intel Core Ultra 渗透率提升，端侧推理成卖点</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:68%"></div></div>
+            <span class="trend-val">+68%</span>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-icon">🕶️</div>
+          <div class="ai-card-name">AI 眼镜</div>
+          <div class="ai-card-desc">Meta Ray-Ban 出货超 200 万，华为、小米跟进，多模态交互提速</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:81%"></div></div>
+            <span class="trend-val">+81%</span>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-icon">🤳</div>
+          <div class="ai-card-name">AI 手机</div>
+          <div class="ai-card-desc">Gemini Nano / Apple Intelligence 成 2026 年旗舰标配，带动换机周期</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:55%"></div></div>
+            <span class="trend-val">+55%</span>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-icon">🚗</div>
+          <div class="ai-card-name">智驾芯片</div>
+          <div class="ai-card-desc">英伟达 Orin/Thor 主导高阶智驾，华为昇腾国内份额快速上升</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:74%"></div></div>
+            <span class="trend-val">+74%</span>
+          </div>
+        </div>
+        <div class="ai-card">
+          <div class="ai-card-icon">🔋</div>
+          <div class="ai-card-name">AI 存储</div>
+          <div class="ai-card-desc">HBM3e 供不应求，三星/SK 海力士扩产，SSD 需求随推理节点激增</div>
+          <div class="ai-card-trend">
+            <div class="trend-bar-wrap"><div class="trend-bar" style="width:87%"></div></div>
+            <span class="trend-val">+87%</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ████ 模块3：财报解读 ████ -->
+    <section class="module-block">
+      <div class="section-header">
+        <div class="section-title">
+          <span class="module-tag tag-ext">看外部</span>
+          近期财报解读
+        </div>
+        <span class="section-more">历史财报 →</span>
+      </div>
+      <div class="report-list">
+        <div class="report-card">
+          <div class="report-logo">🟢</div>
+          <div class="report-body">
+            <div class="report-title">英伟达 FY2026 Q1 财报</div>
+            <div class="report-summary">数据中心收入 226 亿美元，同比+427%；Blackwell 架构出货超预期，AI 基础设施需求持续爆发</div>
+            <div class="report-metrics">
+              <div class="report-metric"><span class="label">营收 </span><span class="val val-up">$260亿 ↑78%</span></div>
+              <div class="report-metric"><span class="label">净利润 </span><span class="val val-up">$149亿 ↑46%</span></div>
+              <div class="report-metric"><span class="label">毛利率 </span><span class="val val-up">75.1%</span></div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="report-date">2026-05-28</div>
+          </div>
+        </div>
+        <div class="report-card">
+          <div class="report-logo">📦</div>
+          <div class="report-body">
+            <div class="report-title">亚马逊 Q1 2026 财报</div>
+            <div class="report-summary">AWS 营收 291 亿美元，AI 服务加速，Bedrock 企业订阅量翻倍；广告业务同比增 23%</div>
+            <div class="report-metrics">
+              <div class="report-metric"><span class="label">营收 </span><span class="val val-up">$1553亿 ↑9%</span></div>
+              <div class="report-metric"><span class="label">AWS增速 </span><span class="val val-up">+17%</span></div>
+              <div class="report-metric"><span class="label">净利润 </span><span class="val val-up">$185亿</span></div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="report-date">2026-05-02</div>
+          </div>
+        </div>
+        <div class="report-card">
+          <div class="report-logo">🛍️</div>
+          <div class="report-body">
+            <div class="report-title">阿里巴巴 FY2026 Q4 财报</div>
+            <div class="report-summary">云智能营收增 22%，淘天 GMV 恢复正增长；AI 采购带动 IaaS 回暖，菜鸟国际首次盈利</div>
+            <div class="report-metrics">
+              <div class="report-metric"><span class="label">营收 </span><span class="val val-up">¥2362亿 ↑7%</span></div>
+              <div class="report-metric"><span class="label">调整后净利 </span><span class="val val-down">¥223亿 ↓11%</span></div>
+              <div class="report-metric"><span class="label">云增速 </span><span class="val val-up">+22%</span></div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div class="report-date">2026-05-15</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── 右侧信息侧边栏 ── -->
+  <aside class="rightsidebar">
+
+    <!-- 看机会：实时机会雷达 -->
+    <div>
+      <div class="rside-title">
+        <div class="live-dot"></div>
+        <span class="module-tag tag-opp" style="margin-right:4px">看机会</span>
+        机会雷达
+      </div>
+      <table class="opp-table">
+        <thead>
+          <tr>
+            <th>视角</th>
+            <th>热点机会</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="opp-dim">⏱ 时间</div></td>
+            <td><div class="opp-val">618 尾款期，复购周期集中<br><span class="tag-chip">本周峰值</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="opp-dim">📍 地点</div></td>
+            <td><div class="opp-val">华东三四线城市 AI 硬件消费提速<br><span class="tag-chip">下沉市场</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="opp-dim">🎯 品牌</div></td>
+            <td><div class="opp-val">国产 AI 眼镜品牌声量周涨 +38%<br><span class="tag-chip">新兴品牌</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="opp-dim">📦 品类</div></td>
+            <td><div class="opp-val">AI 学习设备需求激增，竞争格局未定<br><span class="tag-chip">蓝海品类</span></div></td>
+          </tr>
+          <tr>
+            <td><div class="opp-dim">🏗 行业</div></td>
+            <td><div class="opp-val">医疗 AI 入院级设备采购开标<br><span class="tag-chip">政企采购</span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 看外部：竞对动态 -->
+    <div>
+      <div class="rside-title">
+        <span class="module-tag tag-ext" style="margin-right:4px">看外部</span>
+        竞对动态
+      </div>
+      <div class="ext-list">
+        <div class="ext-item">
+          <span class="ext-icon">🟠</span>
+          <div class="ext-body">
+            <div class="ext-name">淘宝天猫</div>
+            <div class="ext-news">上线「AI 导购」功能，支持自然语言选品，已覆盖 3C 家电品类</div>
+            <div class="ext-time">36Kr · 2小时前</div>
+          </div>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🟡</span>
+          <div class="ext-body">
+            <div class="ext-name">拼多多</div>
+            <div class="ext-news">百亿补贴扩至跨境商品，Temu 全球用户突破 3 亿，海外扩张提速</div>
+            <div class="ext-time">晚点 · 4小时前</div>
+          </div>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🔵</span>
+          <div class="ext-body">
+            <div class="ext-name">抖音电商</div>
+            <div class="ext-news">货架场景 GMV 占比突破 45%，推出「品牌旗舰店 2.0」强化搜索导购</div>
+            <div class="ext-time">虎嗅 · 6小时前</div>
+          </div>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🟢</span>
+          <div class="ext-body">
+            <div class="ext-name">快手小店</div>
+            <div class="ext-news">与品牌联合推出「老铁专属价」，下沉市场复购率同比提升 18%</div>
+            <div class="ext-time">钛媒体 · 今日</div>
+          </div>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🔴</span>
+          <div class="ext-body">
+            <div class="ext-name">小红书</div>
+            <div class="ext-news">开放品牌「买手店」入驻，打通种草到购买链路，电商闭环加速</div>
+            <div class="ext-time">界面新闻 · 今日</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 看外部：国家市场信号 -->
+    <div>
+      <div class="rside-title">
+        <span class="module-tag tag-ext" style="margin-right:4px">看外部</span>
+        主要市场信号
+      </div>
+      <div class="ext-list">
+        <div class="ext-item">
+          <span class="ext-icon">🇺🇸</span>
+          <span class="ext-name">美国</span>
+          <span class="ext-change" style="color:var(--accent4)">出口管制收紧</span>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🇯🇵</span>
+          <span class="ext-name">日本</span>
+          <span class="ext-change val-up">AI 硬件需求 ↑</span>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🇩🇪</span>
+          <span class="ext-name">德国</span>
+          <span class="ext-change" style="color:var(--text-muted)">制造业 AI 化加速</span>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🇮🇳</span>
+          <span class="ext-name">印度</span>
+          <span class="ext-change val-up">消费电子 GMV ↑34%</span>
+        </div>
+        <div class="ext-item">
+          <span class="ext-icon">🇸🇦</span>
+          <span class="ext-name">沙特</span>
+          <span class="ext-change val-up">AI 基础设施投资 ↑</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 热门标签 -->
+    <div>
+      <div class="rside-title">🔥 热门标签</div>
+      <div class="tag-cloud">
+        <span class="cloud-tag hot">AI眼镜</span>
+        <span class="cloud-tag hot">GPU短缺</span>
+        <span class="cloud-tag hot">618大促</span>
+        <span class="cloud-tag">智能汽车</span>
+        <span class="cloud-tag">端侧推理</span>
+        <span class="cloud-tag">跨境出海</span>
+        <span class="cloud-tag hot">大模型降价</span>
+        <span class="cloud-tag">即时零售</span>
+        <span class="cloud-tag">政策合规</span>
+        <span class="cloud-tag">HBM</span>
+        <span class="cloud-tag">AI PC</span>
+        <span class="cloud-tag hot">机器人</span>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+  // 实时时钟
+  function updateClock() {
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    document.getElementById('clock').textContent =
+      `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  }
+  updateClock();
+  setInterval(updateClock, 30000);
+
+  // 侧边栏点击高亮
+  document.querySelectorAll('.sidebar-item').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
