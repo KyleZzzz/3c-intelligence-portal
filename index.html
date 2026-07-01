@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>3C商分情报处 · 使用说明</title>
+  <title>3C商分情报处</title>
   <style>
     :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --surface2: #1c2333;
-      --border: #30363d;
+      --bg: #060a10;
+      --surface: #0d1117;
+      --surface2: #161b22;
+      --surface3: #1c2333;
+      --border: #21262d;
+      --border2: #30363d;
       --accent: #58a6ff;
       --accent2: #3fb950;
       --accent3: #f78166;
@@ -19,180 +21,207 @@
       --text-muted: #8b949e;
       --text-dim: #484f58;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--text);
-      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    /* ── 顶栏 ── */
+    /* ── TOPBAR ── */
     .topbar {
-      position: sticky; top: 0; z-index: 100;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: 58px;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px; height: 52px;
-      background: rgba(13,17,23,.92);
+      padding: 0 48px;
+      background: rgba(6,10,16,.85);
       border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(16px);
+      transition: border-color .3s;
     }
-    .topbar-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; }
-    .topbar-brand .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-    .topbar-right { font-size: 12px; color: var(--text-dim); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 16px; letter-spacing: .01em; }
+    .brand-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .brand-sub { font-size: 12px; font-weight: 400; color: var(--text-muted); margin-left: 4px; }
+    .topbar-nav { display: flex; gap: 2px; }
+    .topbar-nav a {
+      padding: 6px 14px; border-radius: 6px; font-size: 13px;
+      color: var(--text-muted); text-decoration: none; transition: all .15s;
+    }
+    .topbar-nav a:hover { background: var(--surface2); color: var(--text); }
 
-    /* ── 主体两栏 ── */
-    .layout { display: flex; min-height: calc(100vh - 52px); }
-
-    /* ── 左侧锚点导航 ── */
-    .toc-nav {
-      width: 200px; flex-shrink: 0;
-      padding: 32px 20px;
-      border-right: 1px solid var(--border);
-      position: sticky; top: 52px; height: calc(100vh - 52px);
-      overflow-y: auto;
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      position: relative;
+      overflow: hidden;
     }
-    .toc-label {
-      font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--text-dim); margin-bottom: 12px; padding: 0 8px;
+    .hero-grid {
+      position: absolute; inset: 0; pointer-events: none; opacity: .025;
+      background-image:
+        linear-gradient(var(--accent) 1px, transparent 1px),
+        linear-gradient(90deg, var(--accent) 1px, transparent 1px);
+      background-size: 80px 80px;
     }
-    .toc-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 24px; }
-    .toc-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px; border-radius: 6px;
-      font-size: 13px; color: var(--text-muted);
-      text-decoration: none; transition: all .15s; cursor: pointer;
+    .hero::before {
+      content: '';
+      position: absolute; top: -20%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(88,166,255,.07) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .toc-item:hover { background: var(--surface2); color: var(--text); }
-    .toc-item.active { background: rgba(88,166,255,.1); color: var(--accent); }
-    .toc-icon { font-size: 14px; width: 18px; text-align: center; }
-    .toc-sub {
-      display: flex; flex-direction: column; gap: 1px; margin-left: 12px;
+    .hero::after {
+      content: '';
+      position: absolute; bottom: 10%; left: 15%;
+      width: 500px; height: 500px;
+      background: radial-gradient(ellipse, rgba(210,168,255,.04) 0%, transparent 70%);
+      pointer-events: none;
     }
-    .toc-sub-item {
-      padding: 5px 10px; border-radius: 5px; font-size: 12px;
-      color: var(--text-dim); text-decoration: none; transition: all .15s;
-    }
-    .toc-sub-item:hover { color: var(--text-muted); background: var(--surface2); }
-
-    /* ── 内容区 ── */
-    .content { flex: 1; padding: 40px 56px 80px; max-width: 860px; }
-
-    /* ── Hero ── */
-    .hero { margin-bottom: 48px; }
     .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
-      color: var(--accent); padding: 3px 10px; border-radius: 20px;
-      border: 1px solid rgba(88,166,255,.3); background: rgba(88,166,255,.08);
-      margin-bottom: 16px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent); padding: 5px 14px; border-radius: 20px;
+      border: 1px solid rgba(88,166,255,.25); background: rgba(88,166,255,.06);
+      margin-bottom: 28px; position: relative; z-index: 1;
     }
-    .hero h1 { font-size: 30px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
-    .hero h1 em { color: var(--accent); font-style: normal; }
-    .hero-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 600px; }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(88,166,255,.4); }
+      50% { opacity:.7; box-shadow: 0 0 0 6px rgba(88,166,255,0); }
+    }
+    .hero-title {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800; line-height: 1.1; letter-spacing: -.02em;
+      margin-bottom: 28px; position: relative; z-index: 1;
+    }
+    .hero-title em { font-style: normal; color: var(--accent); }
+    .hero-vision {
+      font-size: clamp(14px, 1.4vw, 16px);
+      color: var(--text-muted); line-height: 2;
+      max-width: 620px; margin: 0 auto 48px;
+      position: relative; z-index: 1;
+    }
+    .hero-vision strong { color: var(--text); font-weight: 600; }
+    .hero-cta {
+      display: flex; align-items: center; gap: 12px;
+      position: relative; z-index: 1;
+    }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 26px; border-radius: 8px; font-size: 14px; font-weight: 600;
+      background: var(--accent); color: #060a10;
+      text-decoration: none; transition: all .2s;
+    }
+    .btn-primary:hover { background: #79b8ff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(88,166,255,.25); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 26px; border-radius: 8px; font-size: 14px; font-weight: 500;
+      background: transparent; color: var(--text-muted);
+      text-decoration: none; transition: all .2s;
+      border: 1px solid var(--border2);
+    }
+    .btn-ghost:hover { background: var(--surface2); color: var(--text); border-color: var(--text-dim); }
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      color: var(--text-dim); font-size: 11px; letter-spacing: .06em;
+      animation: bob 2.5s ease-in-out infinite; z-index: 1;
+    }
+    @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
 
-    /* ── 模块区块 ── */
-    .module { margin-bottom: 56px; scroll-margin-top: 72px; }
-    .module-header {
-      display: flex; align-items: center; gap: 14px;
-      padding-bottom: 16px; margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
+    /* ── MODULES SECTION ── */
+    .section { padding: 100px 24px; }
+    .section-inner { max-width: 1080px; margin: 0 auto; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 16px;
+    }
+    .section-label::before { content: ''; width: 24px; height: 1px; background: var(--border2); }
+    .section-head { margin-bottom: 56px; }
+    .section-title { font-size: clamp(26px, 3vw, 38px); font-weight: 700; line-height: 1.2; margin-bottom: 14px; }
+    .section-desc { font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 520px; }
+
+    /* ── MODULE CARD ── */
+    .modules-wrap { display: flex; flex-direction: column; gap: 16px; }
+    .module-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .module-card.open { border-color: var(--border2); }
+
+    .module-trigger {
+      display: flex; align-items: center; gap: 22px;
+      padding: 28px 32px; cursor: pointer; user-select: none;
     }
     .module-icon {
-      width: 44px; height: 44px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px; flex-shrink: 0;
+      width: 52px; height: 52px; border-radius: 12px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
     }
     .ic-blue   { background: rgba(88,166,255,.1);  border: 1px solid rgba(88,166,255,.2); }
-    .ic-green  { background: rgba(63,185,80,.1);   border: 1px solid rgba(63,185,80,.2); }
-    .ic-orange { background: rgba(255,166,87,.1);  border: 1px solid rgba(255,166,87,.2); }
     .ic-purple { background: rgba(210,168,255,.1); border: 1px solid rgba(210,168,255,.2); }
-    .module-header-text h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
-    .module-header-text p  { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .ic-orange { background: rgba(255,166,87,.1);  border: 1px solid rgba(255,166,87,.2); }
 
-    /* ── 子项列表 ── */
-    .item-list { display: flex; flex-direction: column; gap: 12px; }
+    .module-meta { flex: 1; min-width: 0; }
+    .module-number { font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+    .module-name { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .module-tagline { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
 
-    .item {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 18px 20px;
-      transition: border-color .15s;
+    .module-badge {
+      font-size: 10px; font-weight: 600; letter-spacing: .05em;
+      padding: 4px 12px; border-radius: 20px; flex-shrink: 0; white-space: nowrap;
     }
-    .item:hover { border-color: var(--text-dim); }
+    .bd-blue   { background: rgba(88,166,255,.1); color: var(--accent);  border: 1px solid rgba(88,166,255,.2); }
+    .bd-purple { background: rgba(210,168,255,.1);color: var(--accent4); border: 1px solid rgba(210,168,255,.2); }
+    .bd-orange { background: rgba(255,166,87,.1); color: var(--accent5); border: 1px solid rgba(255,166,87,.2); }
 
-    .item-head {
-      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
-    }
-    .item-icon { font-size: 17px; }
-    .item-name { font-size: 14px; font-weight: 600; color: var(--text); }
-    .badge {
-      margin-left: auto; font-size: 10px; font-weight: 600; letter-spacing: .04em;
-      padding: 2px 8px; border-radius: 20px;
-    }
-    .bd-blue   { background: rgba(88,166,255,.12); color: var(--accent);  border: 1px solid rgba(88,166,255,.25); }
-    .bd-green  { background: rgba(63,185,80,.12);  color: var(--accent2); border: 1px solid rgba(63,185,80,.25); }
-    .bd-orange { background: rgba(255,166,87,.12); color: var(--accent5); border: 1px solid rgba(255,166,87,.25); }
-    .bd-purple { background: rgba(210,168,255,.12);color: var(--accent4); border: 1px solid rgba(210,168,255,.25); }
-    .bd-red    { background: rgba(247,129,102,.12);color: var(--accent3); border: 1px solid rgba(247,129,102,.25); }
-
-    .item-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
-    .item-desc strong { color: var(--text); font-weight: 600; }
-
-    /* ── 品牌 chips ── */
-    .brand-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-    .brand-chip {
-      font-size: 11px; padding: 3px 10px; border-radius: 20px;
+    .module-chevron {
+      width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
       background: var(--surface2); color: var(--text-muted);
-      border: 1px solid var(--border);
+      transition: transform .3s cubic-bezier(.4,0,.2,1), background .2s, color .2s;
+    }
+    .module-card.open .module-chevron { transform: rotate(180deg); background: var(--surface3); color: var(--text); }
+
+    /* expand/collapse */
+    .module-body { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1); }
+    .module-card.open .module-body { max-height: 800px; }
+    .module-body-inner {
+      border-top: 1px solid var(--border);
+      padding: 28px 32px 32px;
     }
 
-    /* ── 三列报告子项 ── */
-    .report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
-    .report-card {
+    /* sub items */
+    .sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 12px; }
+    .sub-item {
       background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 12px 14px;
+      border-radius: 10px; padding: 18px 20px;
+      transition: border-color .15s, background .15s;
     }
-    .report-card-icon { font-size: 20px; margin-bottom: 6px; }
-    .report-card-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
-    .report-card-desc { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+    .sub-item:hover { border-color: var(--border2); background: var(--surface3); }
+    .sub-item-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .sub-item-icon { font-size: 17px; }
+    .sub-item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+    .sub-item-desc { font-size: 12px; color: var(--text-muted); line-height: 1.75; }
 
-    /* ── 趋势品网格 ── */
-    .trend-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .trend-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px 18px;
-      transition: border-color .15s;
-    }
-    .trend-card:hover { border-color: var(--text-dim); }
-    .trend-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-    .trend-card-icon { font-size: 18px; }
-    .trend-card-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .trend-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
-
-    /* ── 竞争分析两列 ── */
-    .compete-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-
-    /* ── 提示框 ── */
-    .tip {
-      display: flex; gap: 10px; align-items: flex-start;
-      padding: 12px 16px; border-radius: 8px; margin-top: 16px;
-      background: rgba(88,166,255,.05); border: 1px solid rgba(88,166,255,.18);
-    }
-    .tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
-    .tip-text { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
-    .tip-text strong { color: var(--accent); }
-
-    /* ── 打法标签列 ── */
-    .method-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-    .method-tag {
-      font-size: 11px; padding: 4px 10px; border-radius: 6px;
-      background: var(--surface2); color: var(--text-muted);
-      border: 1px solid var(--border);
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px; max-width: 1080px; margin: 0 auto;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
 
-    /* ── 分隔线 ── */
-    .divider { height: 1px; background: var(--border); margin-bottom: 56px; }
+    /* ── FOOTER ── */
+    .footer { padding: 52px 24px; text-align: center; border-top: 1px solid var(--border); }
+    .footer-logo { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+    .footer-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+    .footer-desc { font-size: 12px; color: var(--text-dim); line-height: 2; }
 
-    /* ── 滚动条 ── */
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
@@ -200,316 +229,191 @@
 </head>
 <body>
 
-<header class="topbar">
-  <div class="topbar-brand">
-    <div class="dot"></div>
+<!-- ══ TOPBAR ══ -->
+<header class="topbar" id="topbar">
+  <div class="brand">
+    <div class="brand-dot"></div>
     3C商分情报处
+    <span class="brand-sub">Intelligence Center</span>
   </div>
-  <div class="topbar-right">使用说明</div>
+  <nav class="topbar-nav">
+    <a href="#modules">三大模块</a>
+    <a href="https://joyspace.jd.com/pages/pBHui1QbQoqczTAtcX3G" target="_blank">完整文档 ↗</a>
+  </nav>
 </header>
 
-<div class="layout">
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-grid"></div>
 
-  <!-- ── 左侧导航 ── -->
-  <nav class="toc-nav">
-    <div class="toc-label">目录</div>
-    <div class="toc-group">
-      <a href="#intel" class="toc-item active">
-        <span class="toc-icon">📡</span>情报中心
-      </a>
-      <div class="toc-sub">
-        <a href="#intel-weekly" class="toc-sub-item">每周资讯解读</a>
-        <a href="#intel-news" class="toc-sub-item">行业资讯</a>
-        <a href="#intel-comp" class="toc-sub-item">竞对平台资讯</a>
-        <a href="#intel-report" class="toc-sub-item">3C 报告库</a>
-        <a href="#intel-brand" class="toc-sub-item">品牌解读</a>
-      </div>
-    </div>
-    <div class="toc-group">
-      <a href="#trend" class="toc-item">
-        <span class="toc-icon">📈</span>趋势洞察
-      </a>
-      <div class="toc-sub">
-        <a href="#trend-ai" class="toc-sub-item">AI 硬件</a>
-        <a href="#trend-audio" class="toc-sub-item">高端音频</a>
-        <a href="#trend-ip" class="toc-sub-item">IP 趋势品</a>
-        <a href="#trend-stationery" class="toc-sub-item">文具</a>
-        <a href="#trend-book" class="toc-sub-item">图书</a>
-      </div>
-    </div>
-    <div class="toc-group">
-      <a href="#compete" class="toc-item">
-        <span class="toc-icon">⚔️</span>竞争分析
-      </a>
-    </div>
-    <div class="toc-group">
-      <a href="#other" class="toc-item">
-        <span class="toc-icon">🔧</span>其它工具
-      </a>
-    </div>
-  </nav>
+  <div class="hero-eyebrow">
+    <div class="live-dot"></div>
+    3C Business Intelligence
+  </div>
 
-  <!-- ── 正文 ── -->
-  <main class="content">
+  <h1 class="hero-title">
+    洞见先于市场<br><em>决策快于对手</em>
+  </h1>
 
-    <!-- Hero -->
-    <div class="hero">
-      <div class="hero-eyebrow">📖 使用说明</div>
-      <h1>3C商分<em>情报处</em></h1>
-      <p class="hero-desc">聚合行业资讯、品牌动态、趋势洞察与竞争分析，帮助 3C 品类团队快速获取关键情报，支撑选品、运营与战略决策。</p>
+  <p class="hero-vision">
+    引领公司商业战略与创新方法论，构建<strong>前瞻性行业情报体系</strong><br>
+    洞察行业发展方向，推动公司<strong>长期战略创新与突破</strong>
+  </p>
+
+  <div class="hero-cta">
+    <a href="#modules" class="btn-primary">探索三大模块 ↓</a>
+    <a href="https://joyspace.jd.com/pages/pBHui1QbQoqczTAtcX3G" target="_blank" class="btn-ghost">查看完整文档</a>
+  </div>
+
+  <div class="hero-scroll">
+    <svg width="16" height="20" viewBox="0 0 16 20" fill="none">
+      <path d="M8 1v14M8 15l-5-5M8 15l5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    向下滚动
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ MODULES ══ -->
+<section class="section" id="modules">
+  <div class="section-inner">
+    <div class="section-head">
+      <div class="section-label">Core Modules</div>
+      <h2 class="section-title">三大战略情报模块</h2>
+      <p class="section-desc">从行业全景到竞争细节，从当下格局到未来信号，三个维度构成完整的商业情报闭环。</p>
     </div>
 
-    <!-- ████ 情报中心 ████ -->
-    <section class="module" id="intel">
-      <div class="module-header">
-        <div class="module-icon ic-blue">📡</div>
-        <div class="module-header-text">
-          <h2>情报中心</h2>
-          <p>汇聚行业资讯、研究报告与主要品牌动态，快速精准获取外部情报</p>
-        </div>
-      </div>
+    <div class="modules-wrap">
 
-      <div class="item-list">
-
-        <!-- 每周资讯解读 -->
-        <div class="item" id="intel-weekly">
-          <div class="item-head">
-            <span class="item-icon">📰</span>
-            <span class="item-name">每周资讯解读</span>
-            <span class="badge bd-blue">每周更新</span>
+      <!-- ① 看外部 · 行业情报 -->
+      <div class="module-card" id="card-ext">
+        <div class="module-trigger" onclick="toggle('card-ext')">
+          <div class="module-icon ic-blue">📡</div>
+          <div class="module-meta">
+            <div class="module-number">Module 01</div>
+            <div class="module-name">看外部 · 行业情报</div>
+            <div class="module-tagline">系统性扫描外部环境，将行业噪音过滤为精准可用的竞争情报</div>
           </div>
-          <div class="item-desc">
-            由分析师筛选并解读当周最重要的 3C 行业资讯，涵盖政策、技术、市场变化，节省信息筛选时间，直取核心结论。每条资讯附带 <strong>京东影响分析</strong> 与 <strong>行业趋势影响解读</strong>。
+          <span class="module-badge bd-blue">行业视野</span>
+          <div class="module-chevron">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-
-        <!-- 行业资讯 -->
-        <div class="item" id="intel-news">
-          <div class="item-head">
-            <span class="item-icon">🌐</span>
-            <span class="item-name">行业资讯</span>
-            <span class="badge bd-green">实时</span>
-          </div>
-          <div class="item-desc">
-            聚合 3C 消费电子行业的实时资讯流，覆盖新品发布、供应链动态、技术突破等，适合快速了解行业全貌。
-          </div>
-        </div>
-
-        <!-- 竞对平台资讯 -->
-        <div class="item" id="intel-comp">
-          <div class="item-head">
-            <span class="item-icon">🔍</span>
-            <span class="item-name">竞对平台资讯</span>
-            <span class="badge bd-red">重点关注</span>
-          </div>
-          <div class="item-desc">
-            追踪淘天、抖音、拼多多等主要竞对平台的最新动作，包括活动策略、产品上线、运营政策变化，辅助制定差异化应对策略。
-          </div>
-        </div>
-
-        <!-- 3C 报告库 -->
-        <div class="item" id="intel-report">
-          <div class="item-head">
-            <span class="item-icon">📚</span>
-            <span class="item-name">3C 报告库</span>
-            <span class="badge bd-purple">深度阅读</span>
-          </div>
-          <div class="item-desc">收录三类深度报告，按需查阅：</div>
-          <div class="report-grid">
-            <div class="report-card">
-              <div class="report-card-icon">🎙️</div>
-              <div class="report-card-name">专家纪要</div>
-              <div class="report-card-desc">行业专家访谈与电话会纪要，获取一手判断与前沿洞察</div>
-            </div>
-            <div class="report-card">
-              <div class="report-card-icon">📊</div>
-              <div class="report-card-name">行业研报</div>
-              <div class="report-card-desc">券商 / 咨询机构 3C 行业深度研究报告</div>
-            </div>
-            <div class="report-card">
-              <div class="report-card-icon">🌍</div>
-              <div class="report-card-name">宏观解读</div>
-              <div class="report-card-desc">宏观经济与政策对消费电子行业的影响分析</div>
+        <div class="module-body">
+          <div class="module-body-inner">
+            <div class="sub-grid">
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">📰</span><span class="sub-item-name">行业资讯解读 · 周刊</span></div>
+                <div class="sub-item-desc">甄选对 3C 业务具备核心参考价值的行业事件，完整还原从事件发生→行业影响→京东机遇→业务行动的逻辑链条，结论直达，无需二次加工。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">🔍</span><span class="sub-item-name">竞对平台资讯</span></div>
+                <div class="sub-item-desc">持续追踪淘天、抖音、拼多多等主要平台的策略动向，将零散竞对信息整合为结构化情报，让你比对手先一步洞察变化、做出部署。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">📚</span><span class="sub-item-name">3C 报告库</span></div>
+                <div class="sub-item-desc">系统收录专家纪要、行业研报、宏观解读三类深度报告，构建 3C 行业专属知识资产底座，为战略方案提供数据支撑与专业背书。</div>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- 品牌解读 -->
-        <div class="item" id="intel-brand">
-          <div class="item-head">
-            <span class="item-icon">🏷️</span>
-            <span class="item-name">品牌解读</span>
-            <span class="badge bd-orange">重点品牌</span>
+      <!-- ② 看未来 · 望远镜 -->
+      <div class="module-card" id="card-future">
+        <div class="module-trigger" onclick="toggle('card-future')">
+          <div class="module-icon ic-purple">🔭</div>
+          <div class="module-meta">
+            <div class="module-number">Module 02</div>
+            <div class="module-name">看未来 · 望远镜</div>
+            <div class="module-tagline">以前瞻视野追踪产业演进趋势，在爆发窗口开启之前完成布局</div>
           </div>
-          <div class="item-desc">
-            针对重点品牌的专项洞察，内容涵盖 <strong>财报分析</strong>、<strong>新品动态</strong>、<strong>定价策略</strong>、<strong>渠道布局</strong>、<strong>营销事件</strong> 等维度，帮助了解对手节奏、提前布防。
-          </div>
-          <div class="brand-row">
-            <span class="brand-chip">🍎 苹果</span>
-            <span class="brand-chip">📱 华为</span>
-            <span class="brand-chip">💻 联想</span>
-            <span class="brand-chip">🖥️ 华硕</span>
-            <span class="brand-chip">🚁 大疆</span>
-            <span class="brand-chip">🎥 索尼</span>
-            <span class="brand-chip">📷 佳能</span>
-            <span class="brand-chip">···</span>
+          <span class="module-badge bd-purple">趋势前瞻</span>
+          <div class="module-chevron">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ████ 趋势洞察 ████ -->
-    <section class="module" id="trend">
-      <div class="module-header">
-        <div class="module-icon ic-green">📈</div>
-        <div class="module-header-text">
-          <h2>趋势洞察</h2>
-          <p>识别各品类当前热门趋势品，支撑选品决策与流量卡位，覆盖 3C 及泛消费电子核心赛道</p>
+        <div class="module-body">
+          <div class="module-body-inner">
+            <div class="sub-grid">
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">🤖</span><span class="sub-item-name">AI 硬件趋势研判</span></div>
+                <div class="sub-item-desc">交叉整合多维信号，前置识别 AI 眼镜、AI PC、AI 手机等新兴品类的爆品窗口期，为品类布局提供比市场热度早 2-4 周的判断依据。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">📈</span><span class="sub-item-name">多品类趋势追踪</span></div>
+                <div class="sub-item-desc">覆盖高端音频、IP 联名、智能文具、图书硬件等品类，结合需求节点与内容声量变化，持续捕捉高潜品类爆发前的早期信号。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">⚡</span><span class="sub-item-name">AI 前沿工具</span></div>
+                <div class="sub-item-desc">持续评估全球 AI 工具在业务场景中的实际效能，筛选可落地的提效路径，让每一位团队成员的工作方式站在技术前沿。</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="trend-grid">
-        <div class="trend-card" id="trend-ai">
-          <div class="trend-card-head">
-            <span class="trend-card-icon">🤖</span>
-            <span class="trend-card-name">AI 硬件趋势品</span>
-            <span class="badge bd-blue" style="margin-left:auto">高热</span>
+      <!-- ③ 看机会 · 显微镜 -->
+      <div class="module-card" id="card-opp">
+        <div class="module-trigger" onclick="toggle('card-opp')">
+          <div class="module-icon ic-orange">🔬</div>
+          <div class="module-meta">
+            <div class="module-number">Module 03</div>
+            <div class="module-name">看机会 · 显微镜</div>
+            <div class="module-tagline">深入竞争格局内部，精准定位优势盲区与战略突破口</div>
           </div>
-          <div class="trend-card-desc">追踪 AI 眼镜、AI PC、AI 手机、AI 音箱等新兴硬件品类的热度变化与销量趋势，识别爆品窗口期。</div>
-        </div>
-        <div class="trend-card" id="trend-audio">
-          <div class="trend-card-head">
-            <span class="trend-card-icon">🎵</span>
-            <span class="trend-card-name">高端音频趋势品</span>
-            <span class="badge bd-purple" style="margin-left:auto">稳增</span>
-          </div>
-          <div class="trend-card-desc">监控耳机、音响、Hi-Fi 设备等高端音频品类的趋势走向，涵盖旗舰新品与小众发烧品牌的声量变化。</div>
-        </div>
-        <div class="trend-card" id="trend-ip">
-          <div class="trend-card-head">
-            <span class="trend-card-icon">🎮</span>
-            <span class="trend-card-name">IP 趋势品</span>
-            <span class="badge bd-orange" style="margin-left:auto">季节性</span>
-          </div>
-          <div class="trend-card-desc">跟踪联名 IP 授权周边、潮玩电子等 IP 驱动型商品趋势，把握年轻消费群体兴趣热点与购买时机。</div>
-        </div>
-        <div class="trend-card" id="trend-stationery">
-          <div class="trend-card-head">
-            <span class="trend-card-icon">✏️</span>
-            <span class="trend-card-name">文具趋势品</span>
-            <span class="badge bd-green" style="margin-left:auto">开学季</span>
-          </div>
-          <div class="trend-card-desc">覆盖智能文具、电子笔记本、学习机等品类，结合开学季与学习需求节点，发现高潜趋势品。</div>
-        </div>
-        <div class="trend-card" id="trend-book" style="grid-column: span 2;">
-          <div class="trend-card-head">
-            <span class="trend-card-icon">📖</span>
-            <span class="trend-card-name">图书趋势品</span>
-            <span class="badge bd-blue" style="margin-left:auto">内容消费</span>
-          </div>
-          <div class="trend-card-desc">追踪电子书阅读器、智能学习平板等内容消费硬件的趋势，结合畅销书榜单捕捉交叉选品机会。</div>
-        </div>
-      </div>
-
-      <div class="tip">
-        <span class="tip-icon">💡</span>
-        <span class="tip-text"><strong>使用建议：</strong>趋势品数据每周更新，建议在周一晨会前查阅，将高热趋势品纳入当周重点运营计划，在流量爆发前完成备货与坑位卡位。</span>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-
-    <!-- ████ 竞争分析 ████ -->
-    <section class="module" id="compete">
-      <div class="module-header">
-        <div class="module-icon ic-orange">⚔️</div>
-        <div class="module-header-text">
-          <h2>竞争分析</h2>
-          <p>从市场份额视角量化竞争格局，帮助定位优劣势品类，指导资源投入优先级</p>
-        </div>
-      </div>
-
-      <div class="compete-grid">
-        <div class="item">
-          <div class="item-head">
-            <span class="item-icon">🔌</span>
-            <span class="item-name">配件市占分析</span>
+          <span class="module-badge bd-orange">机会洞察</span>
+          <div class="module-chevron">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
         </div>
-        <div class="item">
-          <div class="item-head">
-            <span class="item-icon">🎥</span>
-            <span class="item-name">音频相机市占分析</span>
+        <div class="module-body">
+          <div class="module-body-inner">
+            <div class="sub-grid">
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">🏷️</span><span class="sub-item-name">品牌战略洞察</span></div>
+                <div class="sub-item-desc">整合苹果、华为、联想、华硕、大疆、索尼、佳能等核心品牌的财报、产品节奏、定价与渠道动作，深度拆解对手战略意图，构建完整品牌图谱。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">⚔️</span><span class="sub-item-name">竞争市占分析</span></div>
+                <div class="sub-item-desc">跨平台量化配件、音频、相机等核心品类的竞争格局，将复杂的市占变化转化为清晰的战略坐标——明确该守哪、该攻哪、机会在哪。</div>
+              </div>
+              <div class="sub-item">
+                <div class="sub-item-head"><span class="sub-item-icon">🎯</span><span class="sub-item-name">POP 八大打法监控</span></div>
+                <div class="sub-item-desc">系统梳理价格力、内容种草、搜索卡坑等八大运营维度的优秀打法，将实战经验沉淀为可直接复用的方法论资产，指导一线高效执行。</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
 
-    <div class="divider"></div>
-
-    <!-- ████ 其它工具 ████ -->
-    <section class="module" id="other">
-      <div class="module-header">
-        <div class="module-icon ic-purple">🔧</div>
-        <div class="module-header-text">
-          <h2>其它工具</h2>
-          <p>辅助运营执行与 AI 能力提效的专项工具，适合日常作战使用</p>
-        </div>
-      </div>
-
-      <div class="item-list">
-
-        <div class="item">
-          <div class="item-head">
-            <span class="item-icon">🎯</span>
-            <span class="item-name">POP 八大打法监控</span>
-          </div>
-          <div class="item-desc">实时监控京东 POP 商家在八大核心运营打法上的执行情况</div>
-        </div>
-
-        <div class="item">
-          <div class="item-head">
-            <span class="item-icon">🤖</span>
-            <span class="item-name">AI 前沿工具</span>
-          </div>
-          <div class="item-desc">
-            汇总值得关注的 AI 工具与用法，例如：
-            <br><br>
-            <strong>Claude Code</strong><br>
-            <strong>Codex</strong><br>
-            <strong>Joycode/Joyclaw</strong>
-            <br><br>
-            帮助运营同学快速上手 AI 工具，提升日常工作效率。
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <div style="padding-top:24px; border-top:1px solid var(--border); font-size:12px; color:var(--text-dim); text-align:center;">
-      如有内容更新建议或数据问题，请联系情报中心负责人
     </div>
+  </div>
+</section>
 
-  </main>
-</div>
+<div class="divider"></div>
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="footer-logo">
+    <div class="footer-dot"></div>
+    3C商分情报处 · Intelligence Center
+  </div>
+  <div class="footer-desc">
+    依托专业商业分析师团队的深度研判能力，将分散信息转化为决策势能<br>
+    全程护航 3C 业务高质量增长 &nbsp;·&nbsp; 如有内容建议或相关咨询，可联络情报中心负责人
+  </div>
+</footer>
 
 <script>
-  // 滚动高亮左侧锚点
-  const sections = document.querySelectorAll('.module[id]');
-  const tocItems = document.querySelectorAll('.toc-item');
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        tocItems.forEach(t => t.classList.remove('active'));
-        const match = document.querySelector(`.toc-item[href="#${e.target.id}"]`);
-        if (match) match.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-20% 0px -70% 0px' });
-  sections.forEach(s => obs.observe(s));
+  function toggle(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+  window.addEventListener('scroll', () => {
+    document.getElementById('topbar').style.borderBottomColor =
+      window.scrollY > 10 ? 'rgba(48,54,61,.9)' : 'rgba(33,38,45,1)';
+  });
 </script>
 </body>
 </html>
