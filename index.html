@@ -117,12 +117,16 @@
       font-size: 13px; font-weight: 600; color: var(--text-dim);
       letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0;
     }
+    .modules-row {
+      flex: 1; min-height: 0;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    }
 
     /* MODULE CARD */
     .module-card {
       background: var(--surface); border: 1px solid var(--border);
       border-radius: 12px; overflow: hidden; transition: border-color .2s;
-      flex-shrink: 0;
+      display: flex; flex-direction: column;
     }
     .module-card.open { border-color: var(--border2); }
 
@@ -159,11 +163,11 @@
     .module-card.open .module-chevron { transform: rotate(180deg); background: var(--surface3); color: var(--text); }
 
     .module-body { max-height: 0; overflow: hidden; transition: max-height .35s cubic-bezier(.4,0,.2,1); }
-    .module-card.open .module-body { max-height: 300px; }
+    .module-card.open .module-body { max-height: 600px; }
     .module-body-inner {
       border-top: 1px solid var(--border);
-      padding: 14px 20px 18px;
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+      padding: 14px 16px 18px;
+      display: flex; flex-direction: column; gap: 10px;
     }
 
     .sub-item {
@@ -215,8 +219,7 @@
 <!-- ══ MODULES ══ -->
 <main class="modules">
   <div class="modules-label">三大战略情报模块 &nbsp;·&nbsp; 点击展开子模块</div>
-
-  <!-- ① 看外部 -->
+  <div class="modules-row">
   <div class="module-card" id="card-ext">
     <div class="module-trigger" onclick="toggle('card-ext')">
       <div class="module-icon ic-blue">📡</div>
@@ -299,6 +302,7 @@
       </div>
     </div>
   </div>
+  </div><!-- end modules-row -->
 
 </main>
 
