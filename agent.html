@@ -77,7 +77,7 @@
 
     .category-grid {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-      width: 100%; max-width: 760px;
+      width: 100%; max-width: 860px;
     }
     .cat-card {
       background: var(--surface); border: 1px solid var(--border);
@@ -327,45 +327,60 @@
     </div>
 
     <div class="category-grid">
-      <div class="cat-card" onclick="selectCat(this,'AI硬件','🤖')">
-        <div class="cat-icon">🤖</div>
-        <div class="cat-name">AI 硬件</div>
-        <div class="cat-desc">AI眼镜 · AI PC · 智能音箱</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'高端音频','🎵')">
-        <div class="cat-icon">🎵</div>
-        <div class="cat-name">高端音频</div>
-        <div class="cat-desc">耳机 · 音响 · Hi-Fi</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'影像设备','📷')">
-        <div class="cat-icon">📷</div>
-        <div class="cat-name">影像设备</div>
-        <div class="cat-desc">相机 · 摄像机 · 无人机</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'3C配件','🔌')">
-        <div class="cat-icon">🔌</div>
-        <div class="cat-name">3C 配件</div>
-        <div class="cat-desc">充电 · 数据线 · 保护壳</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'智能手机','📱')">
+      <div class="cat-card" onclick="selectCat(this,'手机','📱')">
         <div class="cat-icon">📱</div>
-        <div class="cat-name">智能手机</div>
+        <div class="cat-name">手机</div>
         <div class="cat-desc">旗舰 · 中端 · 折叠屏</div>
       </div>
-      <div class="cat-card" onclick="selectCat(this,'电脑整机','💻')">
+      <div class="cat-card" onclick="selectCat(this,'笔记本电脑','💻')">
         <div class="cat-icon">💻</div>
-        <div class="cat-name">电脑整机</div>
-        <div class="cat-desc">笔记本 · 台式 · 平板</div>
+        <div class="cat-name">笔记本电脑</div>
+        <div class="cat-desc">轻薄本 · 游戏本 · AI PC</div>
       </div>
-      <div class="cat-card" onclick="selectCat(this,'IP趋势品','🎮')">
-        <div class="cat-icon">🎮</div>
-        <div class="cat-name">IP 趋势品</div>
-        <div class="cat-desc">联名 · 潮玩 · 限定</div>
+      <div class="cat-card" onclick="selectCat(this,'数码','🤖')">
+        <div class="cat-icon">🤖</div>
+        <div class="cat-name">数码</div>
+        <div class="cat-desc">AI眼镜 · 智能穿戴 · 音箱</div>
       </div>
-      <div class="cat-card" onclick="selectCat(this,'学习设备','📚')">
+      <div class="cat-card" onclick="selectCat(this,'平板','🖥️')">
+        <div class="cat-icon">🖥️</div>
+        <div class="cat-name">平板</div>
+        <div class="cat-desc">旗舰平板 · 学习平板 · 电纸书</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'台式机','🖱️')">
+        <div class="cat-icon">🖱️</div>
+        <div class="cat-name">台式机</div>
+        <div class="cat-desc">整机 · 组装机 · 一体机</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'音频','🎵')">
+        <div class="cat-icon">🎵</div>
+        <div class="cat-name">音频</div>
+        <div class="cat-desc">耳机 · 音响 · Hi-Fi</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'相机','📷')">
+        <div class="cat-icon">📷</div>
+        <div class="cat-name">相机</div>
+        <div class="cat-desc">无反 · 卡片机 · 无人机</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'3C数码配件','🔌')">
+        <div class="cat-icon">🔌</div>
+        <div class="cat-name">3C 数码配件</div>
+        <div class="cat-desc">充电 · 数据线 · 保护壳</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'图书','📚')">
         <div class="cat-icon">📚</div>
-        <div class="cat-name">学习设备</div>
-        <div class="cat-desc">学习机 · 电纸书 · 文具</div>
+        <div class="cat-name">图书</div>
+        <div class="cat-desc">畅销书 · 教育 · 电子阅读</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'外设','🎮')">
+        <div class="cat-icon">🎮</div>
+        <div class="cat-name">外设</div>
+        <div class="cat-desc">键盘 · 鼠标 · 显示器</div>
+      </div>
+      <div class="cat-card" onclick="selectCat(this,'文具','✏️')">
+        <div class="cat-icon">✏️</div>
+        <div class="cat-name">文具</div>
+        <div class="cat-desc">学习机 · 智能文具 · 办公</div>
       </div>
     </div>
 
@@ -516,108 +531,249 @@
 <script>
   // ── 品类对应品牌数据 ──
   const BRANDS = {
-    'AI硬件':   [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'三星',i:'🌀'},{n:'小米',i:'📲'},{n:'Meta',i:'🥽'},{n:'联想',i:'💻'}],
-    '高端音频': [{n:'索尼',i:'🎵'},{n:'Bose',i:'🔊'},{n:'森海塞尔',i:'🎧'},{n:'铁三角',i:'🎼'},{n:'苹果',i:'🍎'},{n:'华为',i:'📱'}],
-    '影像设备': [{n:'佳能',i:'📷'},{n:'索尼',i:'🎥'},{n:'尼康',i:'📸'},{n:'大疆',i:'🚁'},{n:'富士',i:'🖼️'},{n:'徕卡',i:'🔍'}],
-    '3C配件':   [{n:'苹果',i:'🍎'},{n:'安克',i:'🔌'},{n:'绿联',i:'🟢'},{n:'贝尔金',i:'🔗'},{n:'华为',i:'📱'},{n:'小米',i:'📲'}],
-    '智能手机': [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'小米',i:'📲'},{n:'OPPO',i:'🟢'},{n:'vivo',i:'🔵'},{n:'三星',i:'🌀'}],
-    '电脑整机': [{n:'苹果',i:'🍎'},{n:'联想',i:'💻'},{n:'华硕',i:'🖥️'},{n:'戴尔',i:'🖱️'},{n:'华为',i:'📱'},{n:'微软',i:'🪟'}],
-    'IP趋势品': [{n:'泡泡玛特',i:'🎀'},{n:'迪士尼',i:'🏰'},{n:'三丽鸥',i:'🐱'},{n:'漫威',i:'🦸'},{n:'KAWS',i:'🎨'},{n:'宝可梦',i:'⭐'}],
-    '学习设备': [{n:'科大讯飞',i:'🎤'},{n:'步步高',i:'📖'},{n:'文石',i:'📄'},{n:'汉王',i:'✍️'},{n:'Kindle',i:'📚'},{n:'华为',i:'📱'}],
+    '手机':       [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'小米',i:'📲'},{n:'OPPO',i:'🟢'},{n:'vivo',i:'🔵'},{n:'三星',i:'🌀'}],
+    '笔记本电脑': [{n:'苹果',i:'🍎'},{n:'联想',i:'💻'},{n:'华硕',i:'🖥️'},{n:'戴尔',i:'🖱️'},{n:'华为',i:'📱'},{n:'微软',i:'🪟'}],
+    '数码':       [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'小米',i:'📲'},{n:'Meta',i:'🥽'},{n:'索尼',i:'🎵'},{n:'大疆',i:'🚁'}],
+    '平板':       [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'三星',i:'🌀'},{n:'联想',i:'💻'},{n:'小米',i:'📲'},{n:'文石',i:'📄'}],
+    '台式机':     [{n:'联想',i:'💻'},{n:'戴尔',i:'🖱️'},{n:'华硕',i:'🖥️'},{n:'惠普',i:'🖨️'},{n:'苹果',i:'🍎'},{n:'微星',i:'⚡'}],
+    '音频':       [{n:'索尼',i:'🎵'},{n:'Bose',i:'🔊'},{n:'森海塞尔',i:'🎧'},{n:'铁三角',i:'🎼'},{n:'苹果',i:'🍎'},{n:'华为',i:'📱'}],
+    '相机':       [{n:'佳能',i:'📷'},{n:'索尼',i:'🎥'},{n:'尼康',i:'📸'},{n:'大疆',i:'🚁'},{n:'富士',i:'🖼️'},{n:'徕卡',i:'🔍'}],
+    '3C数码配件': [{n:'苹果',i:'🍎'},{n:'安克',i:'🔌'},{n:'绿联',i:'🟢'},{n:'贝尔金',i:'🔗'},{n:'华为',i:'📱'},{n:'小米',i:'📲'}],
+    '图书':       [{n:'人民文学',i:'📖'},{n:'中信出版',i:'📗'},{n:'商务印书馆',i:'📘'},{n:'Kindle',i:'📚'},{n:'文石',i:'📄'},{n:'掌阅',i:'📱'}],
+    '外设':       [{n:'罗技',i:'🖱️'},{n:'雷蛇',i:'🐍'},{n:'飞利浦',i:'🖥️'},{n:'三星',i:'🌀'},{n:'苹果',i:'🍎'},{n:'华硕',i:'⌨️'}],
+    '文具':       [{n:'科大讯飞',i:'🎤'},{n:'步步高',i:'📖'},{n:'得力',i:'✏️'},{n:'晨光',i:'🖊️'},{n:'汉王',i:'✍️'},{n:'百度',i:'🤖'}],
   };
 
   // ── 品类对应情报数据 ──
   const DATA = {
-    'AI硬件': {
+    '手机': {
       intel: [
-        {name:'AI眼镜出货量突破预期', badge:'🔥 热点', badgeClass:'rc-hot', desc:'Meta Ray-Ban 出货量超 300 万，国内品牌跟进加速，供应链进入紧张期，建议关注备货节奏。'},
-        {name:'端侧 AI 芯片降本提速', badge:'趋势', badgeClass:'rc-blue', desc:'高通、联发科相继推出新一代 NPU，端侧推理成本下降 40%，AI 手机换机周期有望提前。'},
-        {name:'工信部 AI 设备认证新规', badge:'政策', badgeClass:'rc-blue', desc:'AI 相关设备需通过新一轮产品认证，合规成本提升，头部品牌更具优势。'},
+        {name:'折叠屏手机出货量同比增长 68%', badge:'🔥 热点', badgeClass:'rc-hot', desc:'2026 上半年折叠屏出货量大幅增长，华为、三星、荣耀三强争霸，京东折叠屏份额领先全网。'},
+        {name:'苹果 iPhone 17 供应链确认量产', badge:'新品', badgeClass:'rc-blue', desc:'iPhone 17 Pro 预计 9 月发布，Ultra 薄机身+AI 功能强化，届时将带动换机需求集中释放。'},
+        {name:'以旧换新补贴延续至 Q3', badge:'政策', badgeClass:'rc-blue', desc:'国家以旧换新补贴持续，手机品类受益显著，建议提前规划补贴活动节点的流量与备货策略。'},
+      ],
+      trends: [
+        {name:'折叠屏旗舰（华为 Mate X 系列）', val:91, label:'+91%'},
+        {name:'AI 手机（Copilot / 小艺）', val:83, label:'+83%'},
+        {name:'轻薄直板旗舰', val:72, label:'+72%'},
+        {name:'千元 5G 机型', val:58, label:'+58%'},
+        {name:'二手翻新旗舰', val:44, label:'+44%'},
+      ],
+      compete: [
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'手机品类抖音 GMV 增速 +41%，直播间秒杀成核心转化场景，建议加强官方直播频次。'},
+        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫手机份额同比下滑 4.1%，618 大促期间有回补空间，价格力是核心竞争维度。'},
+      ],
+      aiInsights: [
+        'iPhone 17 发布节点（预计 9 月）是全年手机类目最重要的流量窗口，建议提前 6 周备货并规划预售活动。',
+        '折叠屏品类高速增长且客单价高，建议重点投入华为、三星旗舰折叠屏的内容种草与正品保障背书。',
+        '以旧换新政策窗口期内，建议联合品牌推出专属换新套餐，放大补贴优势吸引存量用户迁移。',
+      ],
+    },
+    '笔记本电脑': {
+      intel: [
+        {name:'AI PC 渗透率突破 35%', badge:'趋势', badgeClass:'rc-blue', desc:'搭载 NPU 的 AI PC 出货量快速增长，联想、华硕等品牌主推 Copilot+ 系列，带动均价提升。'},
+        {name:'苹果 M4 MacBook 全系上市', badge:'🔥 热点', badgeClass:'rc-hot', desc:'M4 芯片全系 MacBook 正式发售，AI 性能大幅提升，高端笔记本市场竞争进一步加剧。'},
+        {name:'游戏本市场稳中有升', badge:'趋势', badgeClass:'rc-blue', desc:'电竞需求带动游戏本保持 12% 增速，华硕 ROG、联想拯救者双强格局稳固。'},
+      ],
+      trends: [
+        {name:'AI PC（Copilot+ 认证）', val:88, label:'+88%'},
+        {name:'MacBook Air M4', val:79, label:'+79%'},
+        {name:'轻薄商务本（1kg 级）', val:67, label:'+67%'},
+        {name:'游戏本（RTX 4070+）', val:61, label:'+61%'},
+        {name:'二合一平板本', val:48, label:'+48%'},
+      ],
+      compete: [
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'笔记本抖音渗透率快速提升，品牌直播间成为 AI PC 新品首发重要阵地。'},
+        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'天猫笔记本份额基本稳定，京东在正品保障和极速达方面仍具显著优势。'},
+      ],
+      aiInsights: [
+        'AI PC 是当前笔记本市场最确定的增量方向，建议将联想、华硕、华为的 AI PC 旗舰作为大促重点选品。',
+        'MacBook M4 上市将带动高端笔记本流量集中，建议在发售前 2 周启动预热，保障首发库存。',
+        '游戏本品类客单价高、评测内容消费活跃，建议加大 B 站、抖音的专业测评内容投入。',
+      ],
+    },
+    '数码': {
+      intel: [
+        {name:'AI 眼镜出货量突破预期', badge:'🔥 热点', badgeClass:'rc-hot', desc:'Meta Ray-Ban 出货量超 300 万，国内品牌跟进加速，供应链进入紧张期，建议关注备货节奏。'},
+        {name:'智能手表健康功能强化', badge:'趋势', badgeClass:'rc-blue', desc:'血糖监测、心电图等医疗级功能加速落地，推动智能手表均价提升，高端市场扩容。'},
+        {name:'智能音箱市场重新活跃', badge:'趋势', badgeClass:'rc-blue', desc:'大模型赋能智能音箱，小米、华为、阿里新品密集发布，唤醒沉寂两年的市场需求。'},
       ],
       trends: [
         {name:'AI 眼镜', val:94, label:'+94%'},
-        {name:'AI PC（Copilot+）', val:82, label:'+82%'},
-        {name:'AI 音箱新品', val:71, label:'+71%'},
-        {name:'折叠屏手机', val:58, label:'+58%'},
-        {name:'智能穿戴设备', val:47, label:'+47%'},
+        {name:'智能手表（医疗级）', val:76, label:'+76%'},
+        {name:'AI 智能音箱', val:68, label:'+68%'},
+        {name:'无线耳机（开放式）', val:61, label:'+61%'},
+        {name:'智能戒指', val:52, label:'+52%'},
       ],
       compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'AI 硬件类目 GMV 增速 +38%，抖音加大流量扶持，品牌自播占比持续提升。'},
-        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'AI 硬件整体份额同比下滑 3.2%，主要由新品节奏滞后所致，大促期间有望回补。'},
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'数码品类抖音 GMV 增速领跑，AI 眼镜等新品借助内容生态快速放量。'},
+        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫数码份额承压，京东在 3C 数码正品心智上仍具竞争优势。'},
       ],
       aiInsights: [
-        '当前 AI 眼镜处于爆发窗口前期，建议在品牌发布会节点前完成坑位卡位与库存储备。',
-        'AI PC 换机周期信号明确，联想、华硕等主力品牌的 Copilot+ 新品可作为重点运营资源投入方向。',
-        '抖音份额上涨趋势明显，建议在大促前加强抖音渠道内容种草，缩小与竞对的平台差距。',
+        'AI 眼镜处于爆发窗口前期，建议优先保障 Meta、华为、小米等主力品牌的货品充足率。',
+        '智能手表医疗功能差异化明显，建议强化健康场景内容输出，触达中高端健康消费人群。',
+        '智能音箱大模型版集中上市，建议借助新品发布节点做流量卡位，抢占换机用户。',
       ],
     },
-    '高端音频': {
+    '平板': {
       intel: [
-        {name:'Hi-Fi 耳机市场持续高端化', badge:'趋势', badgeClass:'rc-blue', desc:'旗舰耳机均价突破 3000 元，消费者对音质的付费意愿持续增强，高端市场竞争升温。'},
-        {name:'索尼 WH 新品发布在即', badge:'🔥 热点', badgeClass:'rc-hot', desc:'据供应链消息，索尼 WH-1000XM6 预计本季发布，将直接影响竞品定价策略。'},
-        {name:'无线音频协议更新', badge:'技术', badgeClass:'rc-blue', desc:'LE Audio / Auracast 协议加速普及，支持该协议的耳机市场认可度快速提升。'},
+        {name:'iPad Pro M4 带动高端平板升级', badge:'🔥 热点', badgeClass:'rc-hot', desc:'苹果 iPad Pro M4 超薄设计引发换机热潮，带动整体平板均价上移，高端市场份额集中。'},
+        {name:'学习平板需求旺季临近', badge:'趋势', badgeClass:'rc-blue', desc:'开学季备货窗口开启，学习平板（步步高、科大讯飞）搜索热度快速攀升。'},
+        {name:'电纸书色彩屏加速普及', badge:'技术', badgeClass:'rc-blue', desc:'Kaleido 彩色墨水屏成本下降，文石、掌阅等品牌密集推出彩色电纸书，市场扩容明显。'},
       ],
       trends: [
-        {name:'开放式耳机', val:89, label:'+89%'},
+        {name:'iPad Pro M4', val:87, label:'+87%'},
+        {name:'华为 MatePad Pro', val:74, label:'+74%'},
+        {name:'学习平板（开学季）', val:82, label:'+82%'},
+        {name:'彩色电纸书', val:69, label:'+69%'},
+        {name:'小米平板 7', val:55, label:'+55%'},
+      ],
+      compete: [
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'学习平板通过家长群体内容种草转化效果显著，建议加强亲子教育场景内容布局。'},
+        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'天猫平板份额稳定，京东在专业旗舰机型和极速达上具备优势。'},
+      ],
+      aiInsights: [
+        '开学季是学习平板全年最大销售窗口，建议提前 4 周完成备货并启动家长人群定向投放。',
+        '彩色电纸书是 2026 年最值得押注的新兴品类，建议重点引入文石、掌阅彩色新品，卡位早期市场。',
+        'iPad Pro M4 发售带动苹果生态配件需求（Apple Pencil、键盘），建议做套装捆绑推广。',
+      ],
+    },
+    '音频': {
+      intel: [
+        {name:'开放式耳机成增速最快子品类', badge:'🔥 热点', badgeClass:'rc-hot', desc:'开放式耳机出货量同比增长 120%+，索尼、韶音、华为密集布局，品类教育期已过，进入放量阶段。'},
+        {name:'索尼 WH-1000XM6 发布在即', badge:'新品', badgeClass:'rc-blue', desc:'旗舰降噪耳机新品即将发布，将直接影响 XM5 等现款产品定价与库存策略。'},
+        {name:'LE Audio 协议加速普及', badge:'技术', badgeClass:'rc-blue', desc:'支持 LE Audio 的耳机市场认可度快速提升，旧款产品升级换代意愿增强。'},
+      ],
+      trends: [
+        {name:'开放式耳机', val:92, label:'+92%'},
         {name:'旗舰降噪耳机', val:76, label:'+76%'},
-        {name:'Hi-Fi 便携播放器', val:63, label:'+63%'},
-        {name:'桌面音响系统', val:54, label:'+54%'},
-        {name:'真无线耳机（中高端）', val:48, label:'+48%'},
+        {name:'Hi-Fi 便携播放器', val:64, label:'+64%'},
+        {name:'桌面 Hi-Fi 音响系统', val:55, label:'+55%'},
+        {name:'骨传导运动耳机', val:48, label:'+48%'},
       ],
       compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'开放式耳机借助内容种草迅速放量，抖音高端音频 GMV 同比增长 52%。'},
-        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'旗舰耳机份额稳定，超高端（5000+）价格段京东仍具明显优势。'},
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'开放式耳机借助运动健康内容生态在抖音快速放量，建议加强户外场景种草内容投入。'},
+        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'旗舰耳机天猫份额稳定，5000+ 超高端品类京东正品心智优势明显。'},
       ],
       aiInsights: [
-        '开放式耳机是当前增速最快的子品类，建议将其列为大促重点选品，并加强产品场景化内容输出。',
-        '索尼新品发布前，老款产品将进入价格敏感期，可提前布局降价促销窗口。',
-        'Hi-Fi 便携播放器客单价高、复购率低，建议与高端耳机做套装捆绑，提升客单价。',
+        '开放式耳机是当前增速最快的品类，建议将韶音、索尼、华为的主力开放式新品列为大促重点资源。',
+        '索尼新品发布前，XM5 等老款将进入价格敏感期，可提前规划清库存促销节点。',
+        'Hi-Fi 便携播放器客单价高，建议与高端耳机做套装捆绑，同时强化专业音质测评内容背书。',
       ],
     },
-    '影像设备': {
+    '相机': {
       intel: [
-        {name:'全画幅无反相机销量创新高', badge:'🔥 热点', badgeClass:'rc-hot', desc:'2026 上半年全画幅无反出货量同比增长 28%，索尼、佳能双强争霸格局持续。'},
-        {name:'大疆无人机新规落地', badge:'政策', badgeClass:'rc-blue', desc:'民用无人机登记新规正式实施，消费级市场短期承压，但合规产品需求长期向好。'},
-        {name:'AI 辅助摄影功能成标配', badge:'趋势', badgeClass:'rc-blue', desc:'AI 对焦、AI 降噪、AI 剪辑功能正成为新品必备，旧款产品更新换代意愿增强。'},
+        {name:'全画幅无反销量创历史新高', badge:'🔥 热点', badgeClass:'rc-hot', desc:'2026 上半年全画幅无反出货量同比增长 28%，索尼、佳能双强争霸，Vlog 需求持续拉动市场。'},
+        {name:'大疆新品无人机正式上市', badge:'新品', badgeClass:'rc-blue', desc:'大疆 Mavic 4 Pro 正式发售，影像素质大幅提升，带动消费级无人机市场重新活跃。'},
+        {name:'AI 辅助摄影功能成新品标配', badge:'技术', badgeClass:'rc-blue', desc:'AI 对焦、AI 降噪、AI 剪辑成旗舰相机必备功能，旧款相机更新换代意愿明显增强。'},
       ],
       trends: [
-        {name:'全画幅无反相机', val:86, label:'+86%'},
-        {name:'消费级无人机', val:74, label:'+74%'},
-        {name:'运动相机', val:68, label:'+68%'},
-        {name:'长焦旅游机', val:55, label:'+55%'},
-        {name:'胶片风格数码相机', val:49, label:'+49%'},
+        {name:'全画幅无反旗舰', val:86, label:'+86%'},
+        {name:'消费级无人机（大疆）', val:78, label:'+78%'},
+        {name:'运动相机（GoPro / 大疆）', val:69, label:'+69%'},
+        {name:'胶片风数码相机（富士）', val:62, label:'+62%'},
+        {name:'长焦旅游机', val:51, label:'+51%'},
       ],
       compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'相机类目在抖音借助 Vlog 内容生态快速放量，达人测评是主要转化路径。'},
-        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫相机份额整体下滑，但在专业级产品（3 万+）方向仍保持优势。'},
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'相机品类借助 Vlog 内容生态在抖音快速放量，达人测评是最主要的转化路径。'},
+        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫相机份额整体下滑，但在专业级产品（3 万+）价格段仍保持一定优势。'},
       ],
       aiInsights: [
-        '全画幅无反相机正处于换代周期，建议优先保障索尼 A7 系列和佳能 R 系列的货品充足率。',
-        '大疆新规短期影响可控，消费级旗舰机型（Mavic 4 Pro）需求预期稳健，可适当提前备货。',
-        '运动相机受户外消费趋势带动，建议在旅游旺季前加大内容种草投入，卡位夏季流量峰值。',
+        '全画幅无反处于换代周期高峰，建议优先保障索尼 A7 系列、佳能 R 系列的货品充足率与首发资源。',
+        '大疆新品发售是无人机品类全年最大流量节点，建议同步规划新品首发专区与配件套装。',
+        '富士胶片风相机在年轻女性用户中声量持续高涨，建议加强小红书场景内容种草投入。',
       ],
     },
-    '3C配件': {
+    '3C数码配件': {
       intel: [
-        {name:'百瓦快充成配件新标准', badge:'趋势', badgeClass:'rc-blue', desc:'新发布旗舰机型均支持 100W+ 快充，原装及三方充电器需求同步拉升。'},
-        {name:'MagSafe 生态持续扩张', badge:'🔥 热点', badgeClass:'rc-hot', desc:'苹果 MagSafe 配件生态加速扩张，磁吸配件市场规模预计增长 60%。'},
-        {name:'USB4 接口普及提速', badge:'技术', badgeClass:'rc-blue', desc:'新一代笔记本 USB4 接口普及，兼容数据线与扩展坞需求将持续释放。'},
+        {name:'百瓦快充成配件新标准', badge:'趋势', badgeClass:'rc-blue', desc:'新发布旗舰机型均支持 100W+ 快充，原装及三方充电器需求同步拉升，GaN 品类加速渗透。'},
+        {name:'MagSafe 生态持续扩张', badge:'🔥 热点', badgeClass:'rc-hot', desc:'苹果 MagSafe 配件生态持续扩张，磁吸配件市场规模预计增长 60%，第三方品牌加速跟进。'},
+        {name:'USB4 扩展坞需求快速释放', badge:'技术', badgeClass:'rc-blue', desc:'AI PC 和新款 MacBook 带动 USB4 扩展坞需求，绿联、安克等国产品牌率先放量。'},
       ],
       trends: [
-        {name:'GaN 氮化镓充电器', val:88, label:'+88%'},
-        {name:'MagSafe 磁吸配件', val:79, label:'+79%'},
-        {name:'USB4 扩展坞', val:65, label:'+65%'},
-        {name:'保护壳（透明/高端）', val:57, label:'+57%'},
-        {name:'无线充电板', val:44, label:'+44%'},
+        {name:'GaN 氮化镓充电器（100W+）', val:88, label:'+88%'},
+        {name:'MagSafe 磁吸配件套装', val:79, label:'+79%'},
+        {name:'USB4 扩展坞', val:68, label:'+68%'},
+        {name:'高端手机壳（透明/联名）', val:57, label:'+57%'},
+        {name:'无线充电板（多设备）', val:46, label:'+46%'},
       ],
       compete: [
-        {name:'拼多多', badge:'份额 ↑', badgeClass:'rc-hot', desc:'低价配件市场拼多多优势明显，京东需在品质感和官方正品上强化差异化。'},
+        {name:'拼多多', badge:'份额 ↑', badgeClass:'rc-hot', desc:'低价配件市场拼多多优势明显，京东需在正品保障和品牌旗舰店入口上强化差异化。'},
         {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'网红配件通过短视频种草转化率高，建议加强达人合作覆盖新品推广。'},
       ],
       aiInsights: [
-        'GaN 充电器是当前增速最快的配件品类，建议将安克、绿联等主力品牌列为流量重点。',
-        'MagSafe 生态扩张带来跨品类联动机会，建议与 iPhone 手机做套装捆绑推广，提升客单价。',
-        '面对拼多多低价竞争，建议在正品保障、品牌旗舰店入口和极速达体验上强化差异化。',
+        'GaN 充电器是增速最快的配件品类，建议将安克、绿联、紫米等主力品牌列为大促重点资源。',
+        'MagSafe 生态扩张带来跨品类联动机会，建议与 iPhone 新品发售做套装捆绑，提升客单价。',
+        '面对拼多多低价竞争，建议在正品溯源、品牌旗舰店认证和极速达体验上构建差异化优势。',
+      ],
+    },
+    '图书': {
+      intel: [
+        {name:'AI 辅助阅读功能成电纸书标配', badge:'趋势', badgeClass:'rc-blue', desc:'文石、掌阅新款电纸书内置 AI 问答与摘要功能，推动电纸书均价提升，换机需求释放。'},
+        {name:'暑期阅读旺季即将到来', badge:'🔥 热点', badgeClass:'rc-hot', desc:'7-8 月暑期为图书品类最大销售窗口，教辅、儿童读物、课外阅读需求集中爆发。'},
+        {name:'有声书与纸书联动趋势增强', badge:'趋势', badgeClass:'rc-blue', desc:'纸书+有声书套装销量快速增长，内容消费硬件（耳机、音箱）形成联动选品机会。'},
+      ],
+      trends: [
+        {name:'暑期教辅畅销书', val:89, label:'+89%'},
+        {name:'彩色电纸书（阅读器）', val:75, label:'+75%'},
+        {name:'儿童绘本套装', val:68, label:'+68%'},
+        {name:'商业/自我提升类', val:59, label:'+59%'},
+        {name:'有声书配套硬件', val:47, label:'+47%'},
+      ],
+      compete: [
+        {name:'当当网', badge:'份额 ↑', badgeClass:'rc-hot', desc:'图书品类当当仍具心智优势，京东需在配送速度、价格力和套装选品上强化差异化。'},
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'知识类内容带货在抖音快速增长，名师推荐、读书 UP 主成为图书转化核心路径。'},
+      ],
+      aiInsights: [
+        '暑期备货窗口已开启，建议提前 3-4 周锁定教辅和儿童读物的头部 SKU，确保库存充足率。',
+        '彩色电纸书是 2026 年图书硬件最大增量方向，建议将文石 C 系列等彩色新品作为重点推广资源。',
+        '图书 + 有声书硬件的跨品类联动选品空间大，建议设计"书+耳机"场景化套装，提升客单价。',
+      ],
+    },
+    '外设': {
+      intel: [
+        {name:'电竞外设市场持续高景气', badge:'趋势', badgeClass:'rc-blue', desc:'电竞外设需求保持稳定增长，机械键盘、高刷鼠标、电竞耳机三件套成核心消费场景。'},
+        {name:'高端显示器 4K/OLED 普及加速', badge:'🔥 热点', badgeClass:'rc-hot', desc:'4K OLED 显示器价格快速下探，设计师和游戏玩家换机需求集中，均价显著提升。'},
+        {name:'办公外设远程协作需求稳定', badge:'趋势', badgeClass:'rc-blue', desc:'混合办公模式持续，高端办公键鼠套装（罗技 MX 系列）需求稳中有增。'},
+      ],
+      trends: [
+        {name:'4K OLED 电竞显示器', val:85, label:'+85%'},
+        {name:'客制化机械键盘', val:77, label:'+77%'},
+        {name:'高精度电竞鼠标', val:68, label:'+68%'},
+        {name:'罗技 MX 办公套装', val:62, label:'+62%'},
+        {name:'电竞椅 / 桌搭套装', val:54, label:'+54%'},
+      ],
+      compete: [
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'电竞外设在抖音测评内容带动下转化效率高，建议加强 B 站、抖音的电竞 UP 主合作。'},
+        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'外设天猫份额稳定，京东在配送速度和正品保障方面具备明显优势。'},
+      ],
+      aiInsights: [
+        '4K OLED 显示器是当前外设品类单品增速最快的方向，建议提前锁定三星、LG、飞利浦主力 SKU。',
+        '客制化键盘在年轻用户中声量持续高涨，建议开设客制化专区，引入更多小众高端品牌。',
+        '电竞三件套（键鼠耳机）套装化销售转化率高，建议在大促期间主推套装 Bundle 方案。',
+      ],
+    },
+    '文具': {
+      intel: [
+        {name:'AI 学习机市场快速扩容', badge:'🔥 热点', badgeClass:'rc-hot', desc:'科大讯飞学习机新品搭载大模型，AI 辅导功能获家长高度认可，暑期备货需求旺盛。'},
+        {name:'开学季备货窗口启动', badge:'趋势', badgeClass:'rc-blue', desc:'7-8 月为文具品类最大销售节点，铅笔、笔记本、书包等基础文具需求集中爆发。'},
+        {name:'智能文具（电子纸笔记本）普及', badge:'技术', badgeClass:'rc-blue', desc:'可擦写电子纸笔记本价格下降至百元级别，学生和商务人群接受度快速提升。'},
+      ],
+      trends: [
+        {name:'AI 学习机（讯飞 / 步步高）', val:91, label:'+91%'},
+        {name:'电子纸智能笔记本', val:73, label:'+73%'},
+        {name:'开学季文具礼盒', val:85, label:'+85%'},
+        {name:'高端钢笔 / 圆珠笔套装', val:58, label:'+58%'},
+        {name:'办公收纳 / 桌面整理', val:49, label:'+49%'},
+      ],
+      compete: [
+        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'文具品类在抖音通过"开学 vlog"内容快速放量，建议布局家长和学生群体场景内容。'},
+        {name:'拼多多', badge:'份额 ↑', badgeClass:'rc-hot', desc:'基础文具拼多多价格竞争激烈，建议京东聚焦品质文具和 AI 学习类高端产品差异化。'},
+      ],
+      aiInsights: [
+        '开学季是文具品类全年最大销售窗口，建议提前 4-5 周完成核心 SKU 备货，重点保障 AI 学习机库存。',
+        'AI 学习机是最具增量价值的文具硬件品类，建议将科大讯飞、步步高新品列为大促首推资源。',
+        '面对拼多多价格竞争，建议在品质感、正品背书和 AI 功能差异化上构建高端文具专区。',
       ],
     },
   };
