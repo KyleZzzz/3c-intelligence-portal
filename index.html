@@ -50,7 +50,7 @@
     /* ── HERO (compact) ── */
     .hero {
       flex-shrink: 0;
-      padding: 20px 40px 18px;
+      padding: 24px 40px;
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center; justify-content: space-between; gap: 24px;
       position: relative; overflow: hidden;
@@ -62,22 +62,28 @@
       background: radial-gradient(ellipse, rgba(88,166,255,.06) 0%, transparent 70%);
       pointer-events: none;
     }
-    .hero-left { position: relative; z-index: 1; }
+    .hero-left { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; }
     .hero-eyebrow {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
       color: var(--accent); padding: 3px 10px; border-radius: 20px;
       border: 1px solid rgba(88,166,255,.25); background: rgba(88,166,255,.06);
-      margin-bottom: 10px;
+      width: fit-content;
     }
     .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
     @keyframes pulse {
       0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(88,166,255,.5); }
       50% { opacity:.6; box-shadow: 0 0 0 5px rgba(88,166,255,0); }
     }
-    .hero-title { font-size: 26px; font-weight: 800; line-height: 1.2; letter-spacing: -.02em; margin-bottom: 8px; }
+    .hero-title {
+      font-size: 32px; font-weight: 800; line-height: 1; letter-spacing: -.02em;
+      white-space: nowrap;
+    }
     .hero-title em { font-style: normal; color: var(--accent); }
-    .hero-desc { font-size: 12px; color: var(--text-muted); line-height: 1.8; max-width: 500px; }
+    .hero-desc {
+      font-size: 12px; color: var(--text-muted); line-height: 1.5;
+      white-space: nowrap;
+    }
     .hero-desc strong { color: var(--text); font-weight: 600; }
 
     .hero-right {
