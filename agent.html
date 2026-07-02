@@ -6,49 +6,22 @@
   <title>3C 商分智能体</title>
   <style>
     :root {
-      --bg: #060a10;
-      --surface: #0d1117;
-      --surface2: #161b22;
-      --surface3: #1c2333;
-      --border: #21262d;
-      --border2: #30363d;
-      --accent: #58a6ff;
-      --accent2: #3fb950;
-      --accent3: #f78166;
-      --accent4: #d2a8ff;
-      --accent5: #ffa657;
-      --text: #e6edf3;
-      --text-muted: #8b949e;
-      --text-dim: #484f58;
+      --bg: #060a10; --surface: #0d1117; --surface2: #161b22; --surface3: #1c2333;
+      --border: #21262d; --border2: #30363d;
+      --accent: #58a6ff; --accent2: #3fb950; --accent3: #f78166; --accent4: #d2a8ff; --accent5: #ffa657;
+      --text: #e6edf3; --text-muted: #8b949e; --text-dim: #484f58;
+      --future: #58a6ff; --opp: #3fb950; --ext: #ffa657;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-      background: var(--bg); color: var(--text);
-      min-height: 100vh; display: flex; flex-direction: column;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
     /* ══ TOPBAR ══ */
-    .topbar {
-      height: 52px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 36px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(6,10,16,.95);
-      position: sticky; top: 0; z-index: 100;
-    }
+    .topbar { height: 52px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; border-bottom: 1px solid var(--border); background: rgba(6,10,16,.95); position: sticky; top: 0; z-index: 100; }
     .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; }
     .brand-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent); }
     .brand-sub { font-size: 12px; color: var(--text-muted); font-weight: 400; }
-    .topbar-right { display: flex; align-items: center; gap: 10px; }
     .step-indicator { display: flex; align-items: center; gap: 6px; }
-    .step-dot {
-      width: 28px; height: 28px; border-radius: 50%; font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border);
-      transition: all .3s;
-    }
+    .step-dot { width: 28px; height: 28px; border-radius: 50%; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; background: var(--surface2); color: var(--text-dim); border: 1px solid var(--border); transition: all .3s; }
     .step-dot.active { background: var(--accent); color: #060a10; border-color: var(--accent); }
     .step-dot.done { background: rgba(63,185,80,.2); color: var(--accent2); border-color: rgba(63,185,80,.4); }
     .step-line { width: 24px; height: 1px; background: var(--border); }
@@ -58,338 +31,223 @@
     .page.active { display: flex; flex-direction: column; }
 
     /* ══ PAGE 1: 选品类 ══ */
-    .p1-wrap {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; padding: 48px 24px; gap: 36px;
-    }
+    .p1-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 24px; gap: 32px; }
     .p1-hero { text-align: center; }
-    .p1-eyebrow {
-      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;
-      font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
-      color: var(--accent); padding: 4px 12px; border-radius: 20px;
-      border: 1px solid rgba(88,166,255,.25); background: rgba(88,166,255,.07);
-    }
+    .p1-eyebrow { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 14px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(88,166,255,.25); background: rgba(88,166,255,.07); }
     .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
     @keyframes pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(88,166,255,.5)} 50%{opacity:.6;box-shadow:0 0 0 5px rgba(88,166,255,0)} }
-    .p1-title { font-size: 32px; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+    .p1-title { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
     .p1-title em { font-style: normal; color: var(--accent); }
     .p1-sub { font-size: 14px; color: var(--text-muted); }
-
-    .category-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-      width: 100%; max-width: 860px;
-    }
-    .cat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 20px 16px; cursor: pointer;
-      transition: all .2s; text-align: center; user-select: none;
-    }
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 860px; }
+    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 14px; cursor: pointer; transition: all .2s; text-align: center; user-select: none; }
     .cat-card:hover { border-color: var(--accent); background: rgba(88,166,255,.04); transform: translateY(-2px); }
     .cat-card.selected { border-color: var(--accent); background: rgba(88,166,255,.08); }
-    .cat-icon { font-size: 28px; margin-bottom: 10px; }
-    .cat-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .cat-icon { font-size: 26px; margin-bottom: 8px; }
+    .cat-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
     .cat-desc { font-size: 11px; color: var(--text-muted); }
-
-    .p1-footer { display: flex; justify-content: center; }
-    .btn-next {
-      padding: 12px 40px; border-radius: 8px; font-size: 15px; font-weight: 600;
-      background: var(--accent); color: #060a10; border: none; cursor: pointer;
-      transition: all .2s; opacity: .4; pointer-events: none;
-    }
+    .btn-next { padding: 11px 36px; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: #060a10; border: none; cursor: pointer; transition: all .2s; opacity: .4; pointer-events: none; }
     .btn-next.ready { opacity: 1; pointer-events: auto; }
-    .btn-next.ready:hover { background: #79b8ff; transform: translateY(-1px); }
+    .btn-next.ready:hover { background: #79b8ff; }
 
-    /* ══ PAGE 2: 选品牌 ══ */
-    .p2-wrap {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      padding: 40px 24px; gap: 28px;
-    }
+    /* ══ PAGE 2: 配置报告 ══ */
+    .p2-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 24px; gap: 24px; overflow-y: auto; }
     .p2-head { text-align: center; }
-    .p2-back {
-      display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px;
-      font-size: 13px; color: var(--text-muted); cursor: pointer; transition: color .15s;
-    }
+    .p2-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: var(--text-muted); cursor: pointer; transition: color .15s; }
     .p2-back:hover { color: var(--text); }
-    .p2-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    .p2-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
     .p2-sub { font-size: 13px; color: var(--text-muted); }
-    .p2-hint { font-size: 12px; color: var(--text-dim); }
+    .config-wrap { width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 16px; }
 
-    .brand-grid {
-      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
-      max-width: 700px; width: 100%;
-    }
-    .brand-chip {
-      display: flex; align-items: center; gap: 8px;
-      padding: 10px 18px; border-radius: 10px;
-      background: var(--surface); border: 1px solid var(--border);
-      cursor: pointer; transition: all .2s; user-select: none;
-      font-size: 14px; font-weight: 500;
-    }
+    /* 模块选择 */
+    .config-label { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 4px; }
+    .module-picks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .module-pick-card { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; overflow: hidden; cursor: pointer; transition: all .2s; }
+    .module-pick-card.selected { border-color: var(--mp-color); }
+    .module-pick-header { display: flex; align-items: center; gap: 10px; padding: 14px 16px 12px; border-bottom: 1px solid var(--border); transition: background .2s; }
+    .module-pick-card.selected .module-pick-header { background: color-mix(in srgb, var(--mp-color) 8%, transparent); }
+    .mp-check { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; transition: all .2s; }
+    .module-pick-card.selected .mp-check { background: var(--mp-color); border-color: var(--mp-color); color: #060a10; font-weight: 700; }
+    .mp-icon { font-size: 18px; }
+    .mp-name { font-size: 14px; font-weight: 700; flex: 1; }
+    .mp-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; }
+    .module-pick-subs { padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 5px; }
+    .mp-sub-item { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border-radius: 6px; cursor: pointer; transition: background .15s; }
+    .mp-sub-item:hover { background: var(--surface2); }
+    .mp-sub-check { width: 15px; height: 15px; border-radius: 3px; border: 1px solid var(--border2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; transition: all .15s; }
+    .mp-sub-item.sub-on .mp-sub-check { background: var(--mp-color); border-color: var(--mp-color); color: #060a10; font-weight: 700; }
+    .mp-sub-label { font-size: 12px; color: var(--text-muted); }
+    .mp-sub-item.sub-on .mp-sub-label { color: var(--text); }
+
+    /* 品类色 */
+    .mpc-future { --mp-color: var(--future); }
+    .mpc-opp    { --mp-color: var(--opp); }
+    .mpc-ext    { --mp-color: var(--ext); }
+
+    .mp-tag-future { background: rgba(88,166,255,.12); color: var(--future); border: 1px solid rgba(88,166,255,.25); }
+    .mp-tag-opp    { background: rgba(63,185,80,.12);  color: var(--opp);    border: 1px solid rgba(63,185,80,.25); }
+    .mp-tag-ext    { background: rgba(255,166,87,.12); color: var(--ext);    border: 1px solid rgba(255,166,87,.25); }
+
+    /* 品牌选择 */
+    .brand-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+    .brand-section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .brand-optional { font-size: 11px; color: var(--text-dim); padding: 2px 8px; border-radius: 4px; background: var(--surface2); }
+    .brand-mode-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+    .brand-tab { padding: 5px 14px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: transparent; color: var(--text-muted); transition: all .15s; }
+    .brand-tab.active { background: rgba(88,166,255,.1); color: var(--accent); border-color: rgba(88,166,255,.3); }
+    .brand-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .brand-chip { display: flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; transition: all .2s; font-size: 13px; font-weight: 500; }
     .brand-chip:hover { border-color: var(--accent); background: rgba(88,166,255,.04); }
     .brand-chip.selected { border-color: var(--accent); background: rgba(88,166,255,.1); color: var(--accent); }
-    .brand-chip-icon { font-size: 18px; }
-
-    .selected-tags {
-      display: flex; flex-wrap: wrap; gap: 6px; justify-content: center;
-      min-height: 32px; max-width: 700px; width: 100%;
-    }
-    .sel-tag {
-      display: flex; align-items: center; gap: 6px;
-      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;
-      background: rgba(88,166,255,.1); color: var(--accent);
-      border: 1px solid rgba(88,166,255,.25);
-    }
+    .brand-chip-icon { font-size: 16px; }
 
     .p2-footer { display: flex; gap: 12px; justify-content: center; }
-    .btn-ghost {
-      padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 500;
-      background: transparent; color: var(--text-muted); border: 1px solid var(--border2);
-      cursor: pointer; transition: all .2s;
-    }
+    .btn-ghost { padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 500; background: transparent; color: var(--text-muted); border: 1px solid var(--border2); cursor: pointer; transition: all .2s; }
     .btn-ghost:hover { background: var(--surface2); color: var(--text); }
-    .btn-generate {
-      padding: 10px 32px; border-radius: 8px; font-size: 14px; font-weight: 600;
-      background: var(--accent); color: #060a10; border: none;
-      cursor: pointer; transition: all .2s; opacity: .4; pointer-events: none;
-    }
+    .btn-generate { padding: 10px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: #060a10; border: none; cursor: pointer; transition: all .2s; opacity: .4; pointer-events: none; }
     .btn-generate.ready { opacity: 1; pointer-events: auto; }
     .btn-generate.ready:hover { background: #79b8ff; }
 
     /* ══ PAGE 3: 生成中 ══ */
-    .p3-wrap {
-      flex: 1; display: flex; flex-direction: column; align-items: center;
-      justify-content: center; gap: 28px; padding: 48px 24px;
-    }
-    .loading-ring {
-      width: 72px; height: 72px; border-radius: 50%;
-      border: 3px solid var(--border2);
-      border-top-color: var(--accent);
-      animation: spin 1s linear infinite;
-    }
+    .p3-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; padding: 48px 24px; }
+    .loading-ring { width: 64px; height: 64px; border-radius: 50%; border: 3px solid var(--border2); border-top-color: var(--accent); animation: spin 1s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-steps { display: flex; flex-direction: column; gap: 10px; max-width: 360px; width: 100%; }
-    .loading-step {
-      display: flex; align-items: center; gap: 12px;
-      font-size: 13px; color: var(--text-dim);
-      transition: color .3s;
-    }
+    .loading-steps { display: flex; flex-direction: column; gap: 8px; max-width: 340px; width: 100%; }
+    .loading-step { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--text-dim); transition: color .3s; }
     .loading-step.done { color: var(--accent2); }
     .loading-step.active { color: var(--text); }
-    .loading-step-icon { font-size: 14px; width: 20px; text-align: center; }
+    .ls-icon { font-size: 14px; width: 20px; text-align: center; }
     .loading-title { font-size: 20px; font-weight: 700; text-align: center; }
     .loading-sub { font-size: 13px; color: var(--text-muted); text-align: center; }
 
-    /* ══ PAGE 4: 结果 ══ */
-    .p4-wrap {
-      flex: 1; display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 0;
-    }
-
-    /* 左侧摘要 */
-    .p4-sidebar {
-      border-right: 1px solid var(--border);
-      padding: 28px 20px;
-      display: flex; flex-direction: column; gap: 20px;
-      overflow-y: auto;
-    }
-    .sidebar-profile {
-      padding: 16px; border-radius: 10px;
-      background: var(--surface2); border: 1px solid var(--border);
-    }
-    .sidebar-profile-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 10px; }
-    .profile-row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .profile-icon { font-size: 14px; }
+    /* ══ PAGE 4: 报告 ══ */
+    .p4-wrap { flex: 1; display: grid; grid-template-columns: 240px 1fr; min-height: 0; }
+    .p4-sidebar { border-right: 1px solid var(--border); padding: 22px 16px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto; }
+    .sidebar-profile { padding: 14px; border-radius: 10px; background: var(--surface2); border: 1px solid var(--border); }
+    .sidebar-profile-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+    .profile-row { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; }
+    .profile-icon { font-size: 13px; }
     .profile-text { font-size: 13px; color: var(--text); font-weight: 500; }
-    .profile-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
-    .profile-tag {
-      font-size: 11px; padding: 2px 8px; border-radius: 4px;
-      background: rgba(88,166,255,.1); color: var(--accent);
-      border: 1px solid rgba(88,166,255,.2);
-    }
+    .profile-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .profile-tag { font-size: 11px; padding: 2px 7px; border-radius: 4px; background: rgba(88,166,255,.1); color: var(--accent); border: 1px solid rgba(88,166,255,.2); }
+    .profile-mod-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .pmt-future { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(88,166,255,.1); color: var(--future); border: 1px solid rgba(88,166,255,.2); }
+    .pmt-opp    { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(63,185,80,.1);  color: var(--opp);    border: 1px solid rgba(63,185,80,.2); }
+    .pmt-ext    { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: rgba(255,166,87,.1); color: var(--ext);    border: 1px solid rgba(255,166,87,.2); }
+    .reset-btn { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 6px; font-size: 12px; background: transparent; color: var(--text-muted); border: 1px solid var(--border2); cursor: pointer; transition: all .2s; margin-top: 10px; }
+    .reset-btn:hover { background: var(--surface3); color: var(--text); }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 1px; }
+    .snav-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; padding: 0 8px; }
+    .snav-group-label { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 6px 10px 2px; color: var(--text-dim); }
+    .snav-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 13px; color: var(--text-muted); transition: all .15s; }
+    .snav-item:hover { background: var(--surface2); color: var(--text); }
+    .snav-item.active { background: rgba(88,166,255,.1); color: var(--accent); }
+    .snav-icon { font-size: 13px; width: 16px; text-align: center; }
 
-    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
-    .sidebar-nav-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 6px; padding: 0 8px; }
-    .sidebar-nav-item {
-      display: flex; align-items: center; gap: 9px;
-      padding: 8px 10px; border-radius: 7px; cursor: pointer;
-      font-size: 13px; color: var(--text-muted); transition: all .15s;
-    }
-    .sidebar-nav-item:hover { background: var(--surface2); color: var(--text); }
-    .sidebar-nav-item.active { background: rgba(88,166,255,.1); color: var(--accent); }
-    .sidebar-nav-icon { font-size: 14px; width: 18px; text-align: center; }
+    /* ══ 报告内容 ══ */
+    .p4-content { overflow-y: auto; padding: 24px 36px; display: flex; flex-direction: column; gap: 28px; }
+    .report-section { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 20px; }
+    .report-section.hidden { display: none; }
+    .rsh { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .rsh-icon { width: 34px; height: 34px; border-radius: 8px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+    .ri-future { background: rgba(88,166,255,.1);  border: 1px solid rgba(88,166,255,.2); }
+    .ri-opp    { background: rgba(63,185,80,.1);   border: 1px solid rgba(63,185,80,.2); }
+    .ri-ext    { background: rgba(255,166,87,.1);  border: 1px solid rgba(255,166,87,.2); }
+    .ri-brand  { background: rgba(210,168,255,.1); border: 1px solid rgba(210,168,255,.2); }
+    .rsh-title { font-size: 16px; font-weight: 700; }
+    .rsh-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .rsh-badge { margin-left: auto; font-size: 10px; font-weight: 600; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+    .rb-future { background: rgba(88,166,255,.1); color: var(--future); border: 1px solid rgba(88,166,255,.2); }
+    .rb-opp    { background: rgba(63,185,80,.1);  color: var(--opp);    border: 1px solid rgba(63,185,80,.2); }
+    .rb-ext    { background: rgba(255,166,87,.1); color: var(--ext);    border: 1px solid rgba(255,166,87,.2); }
 
-    /* 右侧报告内容 */
-    .p4-content { overflow-y: auto; padding: 28px 36px; display: flex; flex-direction: column; gap: 28px; }
-
-    .report-section { display: flex; flex-direction: column; gap: 14px; scroll-margin-top: 24px; }
-    .report-section-header {
-      display: flex; align-items: center; gap: 12px;
-      padding-bottom: 12px; border-bottom: 1px solid var(--border);
-    }
-    .report-section-icon {
-      width: 36px; height: 36px; border-radius: 8px; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; font-size: 16px;
-    }
-    .rs-blue   { background: rgba(88,166,255,.1);  border: 1px solid rgba(88,166,255,.2); }
-    .rs-purple { background: rgba(210,168,255,.1); border: 1px solid rgba(210,168,255,.2); }
-    .rs-orange { background: rgba(255,166,87,.1);  border: 1px solid rgba(255,166,87,.2); }
-    .rs-green  { background: rgba(63,185,80,.1);   border: 1px solid rgba(63,185,80,.2); }
-    .report-section-title { font-size: 17px; font-weight: 700; }
-    .report-section-sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
-
+    /* 卡片 */
     .report-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
-    .report-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 14px 16px; transition: border-color .15s;
-    }
+    .report-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; transition: border-color .15s; }
     .report-card:hover { border-color: var(--border2); }
-    .report-card-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .report-card-name { font-size: 13px; font-weight: 600; }
-    .rc-badge {
-      font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 600;
-    }
-    .rc-up   { background: rgba(63,185,80,.12); color: #3fb950; border: 1px solid rgba(63,185,80,.25); }
+    .rc-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+    .rc-name { font-size: 13px; font-weight: 600; }
+    .rc-badge { font-size: 10px; padding: 2px 7px; border-radius: 20px; font-weight: 600; flex-shrink: 0; }
     .rc-hot  { background: rgba(247,129,102,.12); color: #f78166; border: 1px solid rgba(247,129,102,.25); }
     .rc-blue { background: rgba(88,166,255,.12); color: var(--accent); border: 1px solid rgba(88,166,255,.25); }
-    .report-card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
+    .rc-green{ background: rgba(63,185,80,.12); color: var(--accent2); border: 1px solid rgba(63,185,80,.25); }
+    .rc-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
 
-    /* 趋势品行 */
-    .trend-row {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 14px; border-radius: 8px;
-      background: var(--surface); border: 1px solid var(--border);
-    }
-    .trend-rank {
-      width: 24px; height: 24px; border-radius: 6px; font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--surface2); color: var(--text-dim); flex-shrink: 0;
-    }
+    /* 趋势品 */
+    .trend-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+    .trend-rank { width: 22px; height: 22px; border-radius: 5px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; background: var(--surface2); color: var(--text-dim); flex-shrink: 0; }
     .trend-rank.top { background: rgba(247,129,102,.15); color: #f78166; }
     .trend-name { font-size: 13px; font-weight: 600; flex: 1; }
     .trend-bar-wrap { width: 80px; height: 4px; background: var(--surface2); border-radius: 2px; }
     .trend-bar { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--accent4), var(--accent)); }
     .trend-val { font-size: 12px; color: var(--accent4); font-weight: 600; min-width: 36px; text-align: right; }
 
-    /* AI 洞察框 */
-    .ai-insight {
-      display: flex; gap: 12px; align-items: flex-start;
-      padding: 14px 16px; border-radius: 10px;
-      background: rgba(88,166,255,.04); border: 1px solid rgba(88,166,255,.15);
-    }
-    .ai-insight-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-    .ai-insight-text { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
-    .ai-insight-text strong { color: var(--accent); font-weight: 600; }
-
-    /* 热卖排行榜 */
-    .rank-table { display: flex; flex-direction: column; gap: 8px; }
-    .rank-row {
-      display: grid; grid-template-columns: 28px 1fr auto auto;
-      align-items: center; gap: 12px;
-      padding: 10px 14px; border-radius: 8px;
-      background: var(--surface); border: 1px solid var(--border);
-      transition: border-color .15s;
-    }
-    .rank-row:hover { border-color: var(--border2); }
-    .rank-num {
-      width: 24px; height: 24px; border-radius: 6px; font-size: 11px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--surface2); color: var(--text-dim);
-    }
+    /* 热卖榜 */
+    .rank-table { display: flex; flex-direction: column; gap: 7px; }
+    .rank-row { display: grid; grid-template-columns: 26px 1fr auto auto; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); }
+    .rank-num { width: 22px; height: 22px; border-radius: 5px; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; background: var(--surface2); color: var(--text-dim); }
     .rank-num.top3 { background: rgba(247,129,102,.15); color: #f78166; }
-    .rank-info { min-width: 0; }
-    .rank-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
-    .rank-platform { font-size: 11px; color: var(--text-dim); }
-    .rank-change { font-size: 12px; font-weight: 600; white-space: nowrap; }
-    .rank-change.up { color: var(--accent2); }
-    .rank-change.hot { color: var(--accent3); }
+    .rank-info-name { font-size: 13px; font-weight: 600; }
+    .rank-info-plat { font-size: 11px; color: var(--text-dim); }
     .rank-price { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+    .rank-chg { font-size: 12px; font-weight: 600; white-space: nowrap; color: var(--accent3); }
+    .rank-chg.up { color: var(--accent2); }
 
-    /* 热搜词云 */
+    /* 热搜词 */
     .hot-words { display: flex; flex-wrap: wrap; gap: 8px; }
-    .hot-word {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
-      cursor: default; transition: all .15s;
-    }
+    .hot-word { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 20px; font-weight: 500; cursor: default; }
     .hw-l1 { background: rgba(247,129,102,.15); color: #f78166; border: 1px solid rgba(247,129,102,.3); font-size: 14px; font-weight: 700; }
     .hw-l2 { background: rgba(255,166,87,.12); color: var(--accent5); border: 1px solid rgba(255,166,87,.25); font-size: 13px; }
     .hw-l3 { background: rgba(88,166,255,.1); color: var(--accent); border: 1px solid rgba(88,166,255,.2); font-size: 12px; }
     .hw-l4 { background: var(--surface2); color: var(--text-muted); border: 1px solid var(--border); font-size: 11px; }
-    .hw-heat { font-size: 10px; opacity: .7; }
+    .hw-heat { font-size: 10px; opacity: .65; }
 
     /* 潜在爆发品 */
-    .burst-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
-    .burst-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 14px 16px;
-      transition: border-color .15s;
-    }
+    .burst-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; }
+    .burst-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; transition: border-color .15s; }
     .burst-card:hover { border-color: var(--border2); }
-    .burst-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
-    .burst-name { font-size: 13px; font-weight: 600; color: var(--text); }
-    .burst-signal {
-      font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 20px; flex-shrink: 0;
-      white-space: nowrap;
-    }
+    .burst-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
+    .burst-name { font-size: 13px; font-weight: 600; }
+    .burst-signal { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
     .sig-high { background: rgba(247,129,102,.15); color: #f78166; border: 1px solid rgba(247,129,102,.3); }
     .sig-mid  { background: rgba(255,166,87,.12); color: var(--accent5); border: 1px solid rgba(255,166,87,.25); }
     .burst-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
-    .burst-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-    .burst-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; background: var(--surface2); color: var(--text-dim); }
+    .burst-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 7px; }
+    .burst-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: var(--surface2); color: var(--text-dim); }
 
     /* 国外趋势 */
     .global-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
-    .global-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; padding: 14px 16px;
-      transition: border-color .15s;
-    }
+    .global-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; transition: border-color .15s; }
     .global-card:hover { border-color: var(--border2); }
-    .global-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-    .global-flag { font-size: 20px; }
-    .global-region { font-size: 13px; font-weight: 600; color: var(--text); }
-    .global-timing { font-size: 11px; color: var(--text-muted); margin-left: auto; }
+    .global-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .global-flag { font-size: 18px; }
+    .global-region { font-size: 13px; font-weight: 600; }
+    .global-timing { font-size: 11px; color: var(--text-dim); margin-left: auto; }
     .global-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
-    .global-signal { margin-top: 8px; font-size: 11px; color: var(--accent4); }
+    .global-signal { margin-top: 7px; font-size: 11px; color: var(--accent4); }
 
-    /* 重新配置按钮 */
-    .reset-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 500;
-      background: transparent; color: var(--text-muted);
-      border: 1px solid var(--border2); cursor: pointer; transition: all .2s;
-    }
-    .reset-btn:hover { background: var(--surface2); color: var(--text); }
+    /* AI 建议 */
+    .ai-insight { display: flex; gap: 10px; align-items: flex-start; padding: 13px 15px; border-radius: 9px; margin-bottom: 9px; background: rgba(88,166,255,.04); border: 1px solid rgba(88,166,255,.15); }
+    .ai-insight-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+    .ai-insight-text { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
+    .ai-insight-text strong { color: var(--accent); font-weight: 600; }
 
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+    ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   </style>
 </head>
 <body>
 
 <!-- ══ TOPBAR ══ -->
 <header class="topbar">
-  <div class="brand">
-    <div class="brand-dot"></div>
-    3C 商分智能体
-    <span class="brand-sub">Intelligence Agent</span>
-  </div>
-  <div class="topbar-right">
-    <div class="step-indicator" id="stepIndicator">
-      <div class="step-dot active" id="step1">1</div>
-      <div class="step-line"></div>
-      <div class="step-dot" id="step2">2</div>
-      <div class="step-line"></div>
-      <div class="step-dot" id="step3">✓</div>
-    </div>
+  <div class="brand"><div class="brand-dot"></div>3C 商分智能体<span class="brand-sub">Intelligence Agent</span></div>
+  <div class="step-indicator">
+    <div class="step-dot active" id="step1">1</div><div class="step-line"></div>
+    <div class="step-dot" id="step2">2</div><div class="step-line"></div>
+    <div class="step-dot" id="step3">✓</div>
   </div>
 </header>
 
-<!-- ══════════════════════════════════════ -->
-<!-- PAGE 1: 选品类                         -->
-<!-- ══════════════════════════════════════ -->
+<!-- ══ PAGE 1: 选品类 ══ -->
 <div class="page active" id="page1">
   <div class="p1-wrap">
     <div class="p1-hero">
@@ -397,265 +255,153 @@
       <h1 class="p1-title">你负责哪个<em>品类</em>？</h1>
       <p class="p1-sub">选择后，智能体将为你精准匹配情报内容</p>
     </div>
-
     <div class="category-grid">
-      <div class="cat-card" onclick="selectCat(this,'手机','📱')">
-        <div class="cat-icon">📱</div>
-        <div class="cat-name">手机</div>
-        <div class="cat-desc">旗舰 · 中端 · 折叠屏</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'笔记本电脑','💻')">
-        <div class="cat-icon">💻</div>
-        <div class="cat-name">笔记本电脑</div>
-        <div class="cat-desc">轻薄本 · 游戏本 · AI PC</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'数码','🤖')">
-        <div class="cat-icon">🤖</div>
-        <div class="cat-name">数码</div>
-        <div class="cat-desc">AI眼镜 · 智能穿戴 · 音箱</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'平板','🖥️')">
-        <div class="cat-icon">🖥️</div>
-        <div class="cat-name">平板</div>
-        <div class="cat-desc">旗舰平板 · 学习平板 · 电纸书</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'台式机','🖱️')">
-        <div class="cat-icon">🖱️</div>
-        <div class="cat-name">台式机</div>
-        <div class="cat-desc">整机 · 组装机 · 一体机</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'音频','🎵')">
-        <div class="cat-icon">🎵</div>
-        <div class="cat-name">音频</div>
-        <div class="cat-desc">耳机 · 音响 · Hi-Fi</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'相机','📷')">
-        <div class="cat-icon">📷</div>
-        <div class="cat-name">相机</div>
-        <div class="cat-desc">无反 · 卡片机 · 无人机</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'3C数码配件','🔌')">
-        <div class="cat-icon">🔌</div>
-        <div class="cat-name">3C 数码配件</div>
-        <div class="cat-desc">充电 · 数据线 · 保护壳</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'图书','📚')">
-        <div class="cat-icon">📚</div>
-        <div class="cat-name">图书</div>
-        <div class="cat-desc">畅销书 · 教育 · 电子阅读</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'外设','🎮')">
-        <div class="cat-icon">🎮</div>
-        <div class="cat-name">外设</div>
-        <div class="cat-desc">键盘 · 鼠标 · 显示器</div>
-      </div>
-      <div class="cat-card" onclick="selectCat(this,'文具','✏️')">
-        <div class="cat-icon">✏️</div>
-        <div class="cat-name">文具</div>
-        <div class="cat-desc">学习机 · 智能文具 · 办公</div>
-      </div>
+      <div class="cat-card" onclick="selectCat(this,'手机','📱')"><div class="cat-icon">📱</div><div class="cat-name">手机</div><div class="cat-desc">旗舰 · 中端 · 折叠屏</div></div>
+      <div class="cat-card" onclick="selectCat(this,'笔记本电脑','💻')"><div class="cat-icon">💻</div><div class="cat-name">笔记本电脑</div><div class="cat-desc">轻薄本 · 游戏本 · AI PC</div></div>
+      <div class="cat-card" onclick="selectCat(this,'数码','🤖')"><div class="cat-icon">🤖</div><div class="cat-name">数码</div><div class="cat-desc">AI眼镜 · 智能穿戴 · 音箱</div></div>
+      <div class="cat-card" onclick="selectCat(this,'平板','🖥️')"><div class="cat-icon">🖥️</div><div class="cat-name">平板</div><div class="cat-desc">旗舰平板 · 学习平板 · 电纸书</div></div>
+      <div class="cat-card" onclick="selectCat(this,'台式机','🖱️')"><div class="cat-icon">🖱️</div><div class="cat-name">台式机</div><div class="cat-desc">整机 · 组装机 · 一体机</div></div>
+      <div class="cat-card" onclick="selectCat(this,'音频','🎵')"><div class="cat-icon">🎵</div><div class="cat-name">音频</div><div class="cat-desc">耳机 · 音响 · Hi-Fi</div></div>
+      <div class="cat-card" onclick="selectCat(this,'相机','📷')"><div class="cat-icon">📷</div><div class="cat-name">相机</div><div class="cat-desc">无反 · 卡片机 · 无人机</div></div>
+      <div class="cat-card" onclick="selectCat(this,'3C数码配件','🔌')"><div class="cat-icon">🔌</div><div class="cat-name">3C 数码配件</div><div class="cat-desc">充电 · 数据线 · 保护壳</div></div>
+      <div class="cat-card" onclick="selectCat(this,'图书','📚')"><div class="cat-icon">📚</div><div class="cat-name">图书</div><div class="cat-desc">畅销书 · 教育 · 电子阅读</div></div>
+      <div class="cat-card" onclick="selectCat(this,'外设','🎮')"><div class="cat-icon">🎮</div><div class="cat-name">外设</div><div class="cat-desc">键盘 · 鼠标 · 显示器</div></div>
+      <div class="cat-card" onclick="selectCat(this,'文具','✏️')"><div class="cat-icon">✏️</div><div class="cat-name">文具</div><div class="cat-desc">学习机 · 智能文具 · 办公</div></div>
     </div>
-
-    <div class="p1-footer">
-      <button class="btn-next" id="btnNext1" onclick="goPage2()">下一步 →</button>
-    </div>
+    <button class="btn-next" id="btnNext1" onclick="goPage2()">下一步 →</button>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════ -->
-<!-- PAGE 2: 选品牌                         -->
-<!-- ══════════════════════════════════════ -->
+<!-- ══ PAGE 2: 配置报告 ══ -->
 <div class="page" id="page2">
   <div class="p2-wrap">
     <div class="p2-head">
       <div class="p2-back" onclick="goPage1()">← 返回修改品类</div>
-      <h2 class="p2-title">你重点关注哪些<span id="p2CatName" style="color:var(--accent)"></span>品牌？</h2>
-      <p class="p2-sub">可多选，智能体将为你聚焦这些品牌的情报 &nbsp;<span class="p2-hint">（最多选 5 个）</span></p>
+      <h2 class="p2-title">配置你的<span id="p2CatName" style="color:var(--accent)"></span>情报报告</h2>
+      <p class="p2-sub">选择你想看的维度，可多选或全选</p>
     </div>
 
-    <div class="brand-grid" id="brandGrid"></div>
+    <div class="config-wrap">
+      <!-- 维度选择 -->
+      <div>
+        <div class="config-label">选择情报维度（可多选）</div>
+        <div class="module-picks">
 
-    <div class="selected-tags" id="selectedTags">
-      <span style="font-size:12px;color:var(--text-dim)">暂未选择品牌</span>
+          <!-- 看未来 -->
+          <div class="module-pick-card mpc-future" id="mpFuture" onclick="toggleModule('future')">
+            <div class="module-pick-header">
+              <div class="mp-check" id="mc-future">✓</div>
+              <span class="mp-icon">🔭</span>
+              <span class="mp-name">看未来</span>
+              <span class="mp-tag mp-tag-future">行业洞察</span>
+            </div>
+            <div class="module-pick-subs" onclick="event.stopPropagation()">
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="biz" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的商业模式</span></div>
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="brand" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的品牌 / 品类</span></div>
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="industry" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的行业趋势</span></div>
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="user" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的用户需求变化</span></div>
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="policy" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的政策变化</span></div>
+              <div class="mp-sub-item sub-on" data-mod="future" data-key="tech" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">新的技术</span></div>
+            </div>
+          </div>
+
+          <!-- 看机会 -->
+          <div class="module-pick-card mpc-opp selected" id="mpOpp" onclick="toggleModule('opp')">
+            <div class="module-pick-header">
+              <div class="mp-check" id="mc-opp">✓</div>
+              <span class="mp-icon">🔬</span>
+              <span class="mp-name">看机会</span>
+              <span class="mp-tag mp-tag-opp">选品决策</span>
+            </div>
+            <div class="module-pick-subs" onclick="event.stopPropagation()">
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="rank" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">竞对平台热卖榜</span></div>
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="hotword" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">内容平台热搜词</span></div>
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="trend" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">趋势品分析</span></div>
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="burst" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">潜在爆发品</span></div>
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="compete" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">竞争分析</span></div>
+            </div>
+          </div>
+
+          <!-- 看外部 -->
+          <div class="module-pick-card mpc-ext" id="mpExt" onclick="toggleModule('ext')">
+            <div class="module-pick-header">
+              <div class="mp-check" id="mc-ext">✓</div>
+              <span class="mp-icon">📡</span>
+              <span class="mp-name">看外部</span>
+              <span class="mp-tag mp-tag-ext">战略视野</span>
+            </div>
+            <div class="module-pick-subs" onclick="event.stopPropagation()">
+              <div class="mp-sub-item sub-on" data-mod="ext" data-key="global" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">国外流行趋势</span></div>
+              <div class="mp-sub-item sub-on" data-mod="ext" data-key="report" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">行业研报精华</span></div>
+              <div class="mp-sub-item sub-on" data-mod="ext" data-key="expert" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">专家纪要洞察</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 品牌选择 -->
+      <div class="brand-section">
+        <div class="brand-section-head">
+          <div class="config-label" style="margin-bottom:0">关注品牌</div>
+          <span class="brand-optional">可选，最多 5 个</span>
+        </div>
+        <div class="brand-mode-tabs">
+          <div class="brand-tab active" id="tabAll" onclick="setBrandMode('all')">不限品牌，看整体品类</div>
+          <div class="brand-tab" id="tabPick" onclick="setBrandMode('pick')">指定关注品牌</div>
+        </div>
+        <div id="brandPickWrap" style="display:none">
+          <div class="brand-grid" id="brandGrid"></div>
+        </div>
+      </div>
+
     </div>
 
     <div class="p2-footer">
       <button class="btn-ghost" onclick="goPage1()">上一步</button>
-      <button class="btn-generate" id="btnGenerate" onclick="goGenerate()">生成我的情报报告 ✦</button>
+      <button class="btn-generate ready" id="btnGenerate" onclick="goGenerate()">生成情报报告 ✦</button>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════ -->
-<!-- PAGE 3: 生成中                         -->
-<!-- ══════════════════════════════════════ -->
+<!-- ══ PAGE 3: 生成中 ══ -->
 <div class="page" id="page3">
   <div class="p3-wrap">
     <div class="loading-ring"></div>
-    <div>
-      <div class="loading-title">正在为你生成专属情报报告</div>
-      <div class="loading-sub" style="margin-top:8px" id="loadingCat"></div>
-    </div>
+    <div><div class="loading-title">正在为你生成专属情报报告</div><div class="loading-sub" id="loadingCat" style="margin-top:8px"></div></div>
     <div class="loading-steps" id="loadingSteps">
-      <div class="loading-step" id="ls1"><span class="loading-step-icon">📡</span> 拉取行业最新资讯与竞对动态</div>
-      <div class="loading-step" id="ls2"><span class="loading-step-icon">🏆</span> 抓取竞对平台热卖 TOP 榜单</div>
-      <div class="loading-step" id="ls3"><span class="loading-step-icon">🔥</span> 扫描内容平台热搜词与话题</div>
-      <div class="loading-step" id="ls4"><span class="loading-step-icon">📈</span> 识别品类潜在爆发品信号</div>
-      <div class="loading-step" id="ls5"><span class="loading-step-icon">🌍</span> 追踪海外市场流行趋势</div>
-      <div class="loading-step" id="ls6"><span class="loading-step-icon">🏷️</span> 整合关注品牌的战略洞察</div>
-      <div class="loading-step" id="ls7"><span class="loading-step-icon">✦</span> 生成 AI 决策建议</div>
+      <div class="loading-step" id="ls1"><span class="ls-icon">🔭</span>扫描行业最新动态与政策变化</div>
+      <div class="loading-step" id="ls2"><span class="ls-icon">🏆</span>抓取竞对平台热卖 TOP 榜单</div>
+      <div class="loading-step" id="ls3"><span class="ls-icon">🔥</span>扫描内容平台热搜词</div>
+      <div class="loading-step" id="ls4"><span class="ls-icon">💥</span>识别潜在爆发品信号</div>
+      <div class="loading-step" id="ls5"><span class="ls-icon">🌍</span>追踪海外流行趋势与研报</div>
+      <div class="loading-step" id="ls6"><span class="ls-icon">✦</span>生成 AI 决策建议</div>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════ -->
-<!-- PAGE 4: 情报报告                        -->
-<!-- ══════════════════════════════════════ -->
+<!-- ══ PAGE 4: 报告 ══ -->
 <div class="page" id="page4">
   <div class="p4-wrap">
-
-    <!-- 左侧导航 -->
     <aside class="p4-sidebar">
       <div class="sidebar-profile">
-        <div class="sidebar-profile-label">我的情报配置</div>
+        <div class="sidebar-profile-label">情报配置</div>
         <div class="profile-row"><span class="profile-icon">📦</span><span class="profile-text" id="profCat">—</span></div>
+        <div class="profile-mod-tags" id="profMods"></div>
         <div class="profile-tags" id="profBrands"></div>
-        <div style="margin-top:12px">
-          <button class="reset-btn" onclick="goPage1()">⟳ 重新配置</button>
-        </div>
+        <button class="reset-btn" onclick="goPage1()">⟳ 重新配置</button>
       </div>
       <div class="sidebar-nav">
-        <div class="sidebar-nav-label">报告目录</div>
-        <div class="sidebar-nav-item active" onclick="navTo('sec1',this)"><span class="sidebar-nav-icon">📡</span>行业情报速览</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec2',this)"><span class="sidebar-nav-icon">🏆</span>竞对平台热卖榜</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec3',this)"><span class="sidebar-nav-icon">🔥</span>内容平台热搜词</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec4',this)"><span class="sidebar-nav-icon">📈</span>趋势品分析</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec5',this)"><span class="sidebar-nav-icon">💥</span>潜在爆发品</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec6',this)"><span class="sidebar-nav-icon">🌍</span>国外流行趋势</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec7',this)"><span class="sidebar-nav-icon">🏷️</span>品牌解读</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec8',this)"><span class="sidebar-nav-icon">⚔️</span>竞争分析</div>
-        <div class="sidebar-nav-item" onclick="navTo('sec9',this)"><span class="sidebar-nav-icon">✦</span>AI 决策建议</div>
+        <div class="snav-label">报告目录</div>
+        <div id="snavContent"></div>
       </div>
     </aside>
-
-    <!-- 右侧报告 -->
-    <main class="p4-content" id="p4Content">
-
-      <!-- § 1 行业情报 -->
-      <div class="report-section" id="sec1">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-blue">📡</div>
-          <div>
-            <div class="report-section-title">行业情报速览</div>
-            <div class="report-section-sub">本周最值得关注的行业动态，已完成影响推导</div>
-          </div>
-        </div>
-        <div class="report-cards" id="intelCards"></div>
-      </div>
-
-      <!-- § 2 竞对热卖榜 -->
-      <div class="report-section" id="sec2">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-green">🏆</div>
-          <div>
-            <div class="report-section-title">竞对平台热卖 TOP 榜</div>
-            <div class="report-section-sub" id="rankSub">淘宝天猫 · 抖音电商 · 拼多多 近7日销量榜</div>
-          </div>
-        </div>
-        <div class="rank-table" id="rankRows"></div>
-      </div>
-
-      <!-- § 3 热搜词 -->
-      <div class="report-section" id="sec3">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-orange">🔥</div>
-          <div>
-            <div class="report-section-title">内容平台热搜词</div>
-            <div class="report-section-sub" id="hotwordSub">抖音 · 小红书 · 微博 近7日搜索热词</div>
-          </div>
-        </div>
-        <div class="hot-words" id="hotWords"></div>
-      </div>
-
-      <!-- § 4 趋势品 -->
-      <div class="report-section" id="sec4">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-purple">📈</div>
-          <div>
-            <div class="report-section-title">趋势品分析</div>
-            <div class="report-section-sub" id="trendSub">当前品类热度最高的趋势品</div>
-          </div>
-        </div>
-        <div id="trendRows"></div>
-      </div>
-
-      <!-- § 5 潜在爆发品 -->
-      <div class="report-section" id="sec5">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-orange">💥</div>
-          <div>
-            <div class="report-section-title">潜在爆发品</div>
-            <div class="report-section-sub" id="burstSub">信号已出现但尚未大规模爆发，值得提前布局</div>
-          </div>
-        </div>
-        <div class="burst-grid" id="burstCards"></div>
-      </div>
-
-      <!-- § 6 国外趋势 -->
-      <div class="report-section" id="sec6">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-blue">🌍</div>
-          <div>
-            <div class="report-section-title">国外流行趋势</div>
-            <div class="report-section-sub" id="globalSub">美日欧韩市场前沿动向，提前 6-12 个月预判国内趋势</div>
-          </div>
-        </div>
-        <div class="global-grid" id="globalCards"></div>
-      </div>
-
-      <!-- § 7 品牌解读 -->
-      <div class="report-section" id="sec7">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-orange">🏷️</div>
-          <div>
-            <div class="report-section-title">品牌解读</div>
-            <div class="report-section-sub" id="brandSub">你关注品牌的最新战略动向</div>
-          </div>
-        </div>
-        <div class="report-cards" id="brandCards"></div>
-      </div>
-
-      <!-- § 8 竞争分析 -->
-      <div class="report-section" id="sec8">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-green">⚔️</div>
-          <div>
-            <div class="report-section-title">竞争分析</div>
-            <div class="report-section-sub" id="competeSub">市占格局与竞争平台动向</div>
-          </div>
-        </div>
-        <div class="report-cards" id="competeCards"></div>
-      </div>
-
-      <!-- § 9 AI 建议 -->
-      <div class="report-section" id="sec9">
-        <div class="report-section-header">
-          <div class="report-section-icon rs-blue">✦</div>
-          <div>
-            <div class="report-section-title">AI 决策建议</div>
-            <div class="report-section-sub">基于以上情报的综合行动建议</div>
-          </div>
-        </div>
-        <div id="aiInsights"></div>
-      </div>
-
-    </main>
+    <main class="p4-content" id="p4Content"></main>
   </div>
 </div>
 
 <!-- ══ SCRIPT ══ -->
 <script>
-  // ── 品类对应品牌数据 ──
   const BRANDS = {
     '手机':       [{n:'苹果',i:'🍎'},{n:'华为',i:'📱'},{n:'小米',i:'📲'},{n:'OPPO',i:'🟢'},{n:'vivo',i:'🔵'},{n:'三星',i:'🌀'}],
     '笔记本电脑': [{n:'苹果',i:'🍎'},{n:'联想',i:'💻'},{n:'华硕',i:'🖥️'},{n:'戴尔',i:'🖱️'},{n:'华为',i:'📱'},{n:'微软',i:'🪟'}],
@@ -670,394 +416,226 @@
     '文具':       [{n:'科大讯飞',i:'🎤'},{n:'步步高',i:'📖'},{n:'得力',i:'✏️'},{n:'晨光',i:'🖊️'},{n:'汉王',i:'✍️'},{n:'百度',i:'🤖'}],
   };
 
-  // ── 品类对应情报数据 ──
+  // ── 报告维度定义 ──
+  // key → { id, nav图标, 标题, 副标题, badge class, icon class, 渲染函数 }
+  const SECTION_DEFS = {
+    // 看未来
+    future_biz:      { mod:'future', icon:'🚀', label:'新的商业模式',     sub:'品类内涌现的新商业模式与盈利逻辑',  badge:'rb-future', ri:'ri-future' },
+    future_brand:    { mod:'future', icon:'🏷️', label:'新的品牌/品类',    sub:'值得关注的新兴品牌与新赛道信号',     badge:'rb-future', ri:'ri-future' },
+    future_industry: { mod:'future', icon:'🏗️', label:'新的行业趋势',     sub:'驱动品类结构性变化的行业动向',       badge:'rb-future', ri:'ri-future' },
+    future_user:     { mod:'future', icon:'👥', label:'用户需求变化',      sub:'消费心理与购买行为的新变化',         badge:'rb-future', ri:'ri-future' },
+    future_policy:   { mod:'future', icon:'📋', label:'政策变化',          sub:'影响品类发展的最新政策与法规',       badge:'rb-future', ri:'ri-future' },
+    future_tech:     { mod:'future', icon:'⚡', label:'新的技术',           sub:'可能颠覆品类格局的前沿技术动态',     badge:'rb-future', ri:'ri-future' },
+    // 看机会
+    opp_rank:        { mod:'opp',    icon:'🏆', label:'竞对平台热卖榜',    sub:'淘宝天猫 / 抖音电商 / 拼多多 近7日', badge:'rb-opp', ri:'ri-opp' },
+    opp_hotword:     { mod:'opp',    icon:'🔥', label:'内容平台热搜词',    sub:'抖音 / 小红书 / 微博 近7日热词',     badge:'rb-opp', ri:'ri-opp' },
+    opp_trend:       { mod:'opp',    icon:'📈', label:'趋势品分析',         sub:'当前品类热度最高的趋势品',           badge:'rb-opp', ri:'ri-opp' },
+    opp_burst:       { mod:'opp',    icon:'💥', label:'潜在爆发品',         sub:'信号已出现但尚未大规模爆发',         badge:'rb-opp', ri:'ri-opp' },
+    opp_compete:     { mod:'opp',    icon:'⚔️', label:'竞争分析',           sub:'主要平台市占格局与动向',             badge:'rb-opp', ri:'ri-opp' },
+    // 看外部
+    ext_global:      { mod:'ext',    icon:'🌍', label:'国外流行趋势',       sub:'美日欧韩市场前沿，提前预判国内走势', badge:'rb-ext', ri:'ri-ext' },
+    ext_report:      { mod:'ext',    icon:'📊', label:'行业研报精华',       sub:'券商 / 咨询机构最新 3C 研究报告',    badge:'rb-ext', ri:'ri-ext' },
+    ext_expert:      { mod:'ext',    icon:'🎙️', label:'专家纪要洞察',       sub:'行业专家访谈与电话会一手判断',       badge:'rb-ext', ri:'ri-ext' },
+  };
+
+  // ── 品类数据（手机完整，其余 fallback DEFAULT_DATA）──
   const DATA = {
     '手机': {
-      intel: [
-        {name:'折叠屏手机出货量同比增长 68%', badge:'🔥 热点', badgeClass:'rc-hot', desc:'2026 上半年折叠屏出货量大幅增长，华为、三星、荣耀三强争霸，京东折叠屏份额领先全网。'},
-        {name:'苹果 iPhone 17 供应链确认量产', badge:'新品', badgeClass:'rc-blue', desc:'iPhone 17 Pro 预计 9 月发布，Ultra 薄机身+AI 功能强化，届时将带动换机需求集中释放。'},
-        {name:'以旧换新补贴延续至 Q3', badge:'政策', badgeClass:'rc-blue', desc:'国家以旧换新补贴持续，手机品类受益显著，建议提前规划补贴活动节点的流量与备货策略。'},
-      ],
-      trends: [
-        {name:'折叠屏旗舰（华为 Mate X 系列）', val:91, label:'+91%'},
-        {name:'AI 手机（Copilot / 小艺）', val:83, label:'+83%'},
-        {name:'轻薄直板旗舰', val:72, label:'+72%'},
-        {name:'千元 5G 机型', val:58, label:'+58%'},
-        {name:'二手翻新旗舰', val:44, label:'+44%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'手机品类抖音 GMV 增速 +41%，直播间秒杀成核心转化场景，建议加强官方直播频次。'},
-        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫手机份额同比下滑 4.1%，618 大促期间有回补空间，价格力是核心竞争维度。'},
-      ],
-      aiInsights: [
-        'iPhone 17 发布节点（预计 9 月）是全年手机类目最重要的流量窗口，建议提前 6 周备货并规划预售活动。',
-        '折叠屏品类高速增长且客单价高，建议重点投入华为、三星旗舰折叠屏的内容种草与正品保障背书。',
-        '以旧换新政策窗口期内，建议联合品牌推出专属换新套餐，放大补贴优势吸引存量用户迁移。',
-      ],
-      rank: [
+      future_biz:      [{name:'即时零售+手机换新', badge:'新模式', bc:'rc-blue', desc:'手机以旧换新与即时履约结合，1小时上门换机模式在一线城市试点，平均客单价提升 22%。'},{name:'手机金融分期重构', badge:'趋势', bc:'rc-blue', desc:'花呗/白条免息分期降低旗舰门槛，折叠屏月均销量因此提升 35%，用户决策周期缩短。'}],
+      future_brand:    [{name:'Nothing Phone 入华', badge:'新品牌', bc:'rc-hot', desc:'英国设计感手机品牌 Nothing 正在评估中国市场策略，潮流科技用户群体已有高关注度。'},{name:'折叠屏品类分化', badge:'新品类', bc:'rc-blue', desc:'折叠屏开始细分为"大折"（平板形态）和"小折"（竖折时尚款），两个子品类需求差异显著。'}],
+      future_industry: [{name:'AI 手机芯片军备竞赛', badge:'🔥 热点', bc:'rc-hot', desc:'高通、联发科、苹果相继发布端侧 AI 旗舰芯片，NPU 算力成新购机核心评估维度。'},{name:'手机供应链国产化提速', badge:'趋势', bc:'rc-blue', desc:'华为带动国产屏幕、摄像头模组渗透率快速提升，供应链安全成品牌核心竞争力之一。'}],
+      future_user:     [{name:'Z世代"手机即身份"消费观', badge:'需求变化', bc:'rc-blue', desc:'18-28岁用户将手机外观设计、品牌调性纳入社交货币考量，颜色与材质决策权重超过参数。'},{name:'中老年旗舰手机需求爆发', badge:'新人群', bc:'rc-blue', desc:'50岁以上用户旗舰机购买占比从8%升至14%，大字体、AI辅助、健康监测成核心诉求。'}],
+      future_policy:   [{name:'以旧换新补贴延续 Q3', badge:'政策', bc:'rc-blue', desc:'国家以旧换新补贴持续推进，手机品类单品最高补贴 500 元，建议提前规划补贴节点活动。'},{name:'数据安全新规影响进口机', badge:'监管', bc:'rc-blue', desc:'数据本地化存储新规对境外品牌国内业务产生一定限制，部分功能受限，华为受益明显。'}],
+      future_tech:     [{name:'卫星通信手机全面普及', badge:'新技术', bc:'rc-hot', desc:'天通/北斗双卫星通信支持成旗舰标配，户外安全场景成购机新驱动，相关搜索量增长 4 倍。'},{name:'屏下摄像头商用化量产', badge:'新技术', bc:'rc-blue', desc:'三星、华为量产屏下摄像头方案，真全面屏形态可能在 2026 年底成为旗舰新标准。'}],
+      opp_rank: [
         {name:'华为 Mate X5 折叠屏 16+512G', platform:'天猫', change:'↑3', price:'¥9,999', hot:true},
         {name:'苹果 iPhone 16 Pro 256G', platform:'抖音', change:'↑1', price:'¥8,499', hot:true},
         {name:'小米 15 Ultra 16+512G', platform:'拼多多', change:'↑5', price:'¥5,999', hot:true},
         {name:'荣耀 Magic7 Pro 12+256G', platform:'天猫', change:'NEW', price:'¥4,699', hot:false},
         {name:'OPPO Find X8 Pro 12+256G', platform:'抖音', change:'↓2', price:'¥5,499', hot:false},
       ],
-      hotwords: [
-        {word:'折叠屏手机', heat:'98万', level:'hw-l1'},{word:'iPhone17 预测', heat:'76万', level:'hw-l1'},
-        {word:'AI手机推荐', heat:'64万', level:'hw-l2'},{word:'华为旗舰', heat:'58万', level:'hw-l2'},
-        {word:'手机以旧换新', heat:'51万', level:'hw-l2'},{word:'小米15评测', heat:'43万', level:'hw-l3'},
-        {word:'vivo X200 Ultra', heat:'38万', level:'hw-l3'},{word:'骁龙8至尊版', heat:'34万', level:'hw-l3'},
-        {word:'手机散热', heat:'27万', level:'hw-l4'},{word:'国产旗舰对比', heat:'25万', level:'hw-l4'},
-        {word:'折叠屏耐用性', heat:'21万', level:'hw-l4'},{word:'5G套餐', heat:'19万', level:'hw-l4'},
+      opp_hotword: [
+        {word:'折叠屏手机',heat:'98万',level:'hw-l1'},{word:'iPhone17预测',heat:'76万',level:'hw-l1'},
+        {word:'AI手机推荐',heat:'64万',level:'hw-l2'},{word:'华为旗舰',heat:'58万',level:'hw-l2'},
+        {word:'手机以旧换新',heat:'51万',level:'hw-l2'},{word:'小米15评测',heat:'43万',level:'hw-l3'},
+        {word:'vivo X200 Ultra',heat:'38万',level:'hw-l3'},{word:'骁龙8至尊版',heat:'34万',level:'hw-l3'},
+        {word:'手机散热',heat:'27万',level:'hw-l4'},{word:'国产旗舰对比',heat:'25万',level:'hw-l4'},
       ],
-      burst: [
-        {name:'卫星通信手机', signal:'高潜', sigClass:'sig-high', desc:'华为、苹果相继支持卫星通话，户外探险用户需求快速觉醒，供给侧稀缺期窗口明显。', tags:['户外', '安全', '新功能']},
-        {name:'AI 实时翻译手机', signal:'中潜', sigClass:'sig-mid', desc:'AI 实时翻译功能搜索量环比增长 280%，出境游恢复带动场景需求，尚未形成独立品类认知。', tags:['出行', 'AI', '留学']},
-        {name:'长续航越野手机', signal:'高潜', sigClass:'sig-high', desc:'户外运动热潮延伸至手机需求，三防+大电池+卫星定位机型需求集中爆发，品类格局未定。', tags:['户外', '越野', '耐用']},
+      opp_trend: [
+        {name:'折叠屏旗舰（华为 Mate X 系列）',val:91,label:'+91%'},
+        {name:'AI 手机（Copilot+ / 小艺）',val:83,label:'+83%'},
+        {name:'轻薄直板旗舰',val:72,label:'+72%'},
+        {name:'千元 5G 机型',val:58,label:'+58%'},
+        {name:'二手翻新旗舰',val:44,label:'+44%'},
       ],
-      global: [
-        {flag:'🇺🇸', region:'北美', timing:'领先约 8 个月', desc:'可折叠柔性屏 Galaxy Z Flip 系列在北美 Z 世代中热度持续攀升，时尚属性超越功能属性成主要购买驱动。', signal:'→ 折叠屏"颜值经济"化，预计 6-9 个月内在国内年轻女性群体爆发'},
+      opp_burst: [
+        {name:'卫星通信手机', signal:'高潜', sigClass:'sig-high', desc:'天通/北斗双星支持成卖点，户外探险需求觉醒，现有供给极度稀缺，爆发窗口明显。', tags:['户外','安全','新功能']},
+        {name:'长续航越野手机', signal:'高潜', sigClass:'sig-high', desc:'三防+大电池+卫星定位机型搜索量环比增长 180%，品类格局未定，先入者优势大。', tags:['户外','越野','耐用']},
+        {name:'AI 实时翻译手机', signal:'中潜', sigClass:'sig-mid', desc:'AI 实时翻译搜索量增长 280%，出境游恢复带动场景需求，尚未形成独立品类认知。', tags:['出行','AI','留学']},
+      ],
+      opp_compete: [
+        {name:'抖音电商', badge:'份额 ↑', bc:'rc-hot', desc:'手机品类抖音 GMV 增速 +41%，直播间秒杀成核心转化场景，建议加强官方直播频次。'},
+        {name:'淘宝天猫', badge:'份额 ↓', bc:'rc-blue', desc:'天猫手机份额同比下滑 4.1%，618 大促期间有回补空间，价格力是核心竞争维度。'},
+      ],
+      ext_global: [
+        {flag:'🇺🇸', region:'北美', timing:'领先约 8 个月', desc:'折叠屏 Galaxy Z Flip 系列在北美 Z 世代中热度持续攀升，时尚属性超越功能属性成主要购买驱动。', signal:'→ 折叠屏"颜值经济"化，预计 6-9 个月内在国内年轻女性群体爆发'},
         {flag:'🇯🇵', region:'日本', timing:'领先约 6 个月', desc:'小型化旗舰手机在日本市场需求回升，Sony Xperia Compact 系列再度热销，单手操作诉求强烈。', signal:'→ 小屏旗舰需求信号，国内市场可关注 Sony、iPhone mini 方向'},
-        {flag:'🇰🇷', region:'韩国', timing:'领先约 4 个月', desc:'三星 Galaxy AI 功能在韩国已成换机核心驱动，AI 通话翻译、实时字幕功能渗透率超 60%。', signal:'→ AI 功能驱动换机的势能正向国内传导，旗舰 AI 功能卖点需前置布局'},
+        {flag:'🇰🇷', region:'韩国', timing:'领先约 4 个月', desc:'三星 Galaxy AI 功能在韩国已成换机核心驱动，AI 通话翻译、实时字幕渗透率超 60%。', signal:'→ AI 功能驱动换机势能正向国内传导，旗舰 AI 功能卖点需前置布局'},
       ],
-    },
-    '笔记本电脑': {
-      intel: [
-        {name:'AI PC 渗透率突破 35%', badge:'趋势', badgeClass:'rc-blue', desc:'搭载 NPU 的 AI PC 出货量快速增长，联想、华硕等品牌主推 Copilot+ 系列，带动均价提升。'},
-        {name:'苹果 M4 MacBook 全系上市', badge:'🔥 热点', badgeClass:'rc-hot', desc:'M4 芯片全系 MacBook 正式发售，AI 性能大幅提升，高端笔记本市场竞争进一步加剧。'},
-        {name:'游戏本市场稳中有升', badge:'趋势', badgeClass:'rc-blue', desc:'电竞需求带动游戏本保持 12% 增速，华硕 ROG、联想拯救者双强格局稳固。'},
+      ext_report: [
+        {name:'2026 中国智能手机市场半年报', badge:'研报', bc:'rc-blue', desc:'IDC 最新数据：Q2 出货量同比+6.2%，折叠屏占比 4.8% 创历史新高，华为重回第一。'},
+        {name:'AI 手机普及路径研究', badge:'深度', bc:'rc-blue', desc:'中信证券报告指出 AI 功能将在 2026 年底覆盖 60%+ 新出货旗舰，换机周期缩短至 22 个月。'},
       ],
-      trends: [
-        {name:'AI PC（Copilot+ 认证）', val:88, label:'+88%'},
-        {name:'MacBook Air M4', val:79, label:'+79%'},
-        {name:'轻薄商务本（1kg 级）', val:67, label:'+67%'},
-        {name:'游戏本（RTX 4070+）', val:61, label:'+61%'},
-        {name:'二合一平板本', val:48, label:'+48%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'笔记本抖音渗透率快速提升，品牌直播间成为 AI PC 新品首发重要阵地。'},
-        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'天猫笔记本份额基本稳定，京东在正品保障和极速达方面仍具显著优势。'},
+      ext_expert: [
+        {name:'供应链专家电话会 · 折叠屏铰链', badge:'纪要', bc:'rc-hot', desc:'折叠屏铰链供应链专家指出：精研科技、安费诺产能已基本饱和，Q3 新品将面临供货压力。'},
+        {name:'前三星大中华区高管访谈', badge:'访谈', bc:'rc-blue', desc:'三星在华市场策略转向精品路线，旗舰折叠屏将是 2026 年下半年核心发力方向，渠道政策调整中。'},
       ],
       aiInsights: [
-        'AI PC 是当前笔记本市场最确定的增量方向，建议将联想、华硕、华为的 AI PC 旗舰作为大促重点选品。',
-        'MacBook M4 上市将带动高端笔记本流量集中，建议在发售前 2 周启动预热，保障首发库存。',
-        '游戏本品类客单价高、评测内容消费活跃，建议加大 B 站、抖音的专业测评内容投入。',
-      ],
-    },
-    '数码': {
-      intel: [
-        {name:'AI 眼镜出货量突破预期', badge:'🔥 热点', badgeClass:'rc-hot', desc:'Meta Ray-Ban 出货量超 300 万，国内品牌跟进加速，供应链进入紧张期，建议关注备货节奏。'},
-        {name:'智能手表健康功能强化', badge:'趋势', badgeClass:'rc-blue', desc:'血糖监测、心电图等医疗级功能加速落地，推动智能手表均价提升，高端市场扩容。'},
-        {name:'智能音箱市场重新活跃', badge:'趋势', badgeClass:'rc-blue', desc:'大模型赋能智能音箱，小米、华为、阿里新品密集发布，唤醒沉寂两年的市场需求。'},
-      ],
-      trends: [
-        {name:'AI 眼镜', val:94, label:'+94%'},
-        {name:'智能手表（医疗级）', val:76, label:'+76%'},
-        {name:'AI 智能音箱', val:68, label:'+68%'},
-        {name:'无线耳机（开放式）', val:61, label:'+61%'},
-        {name:'智能戒指', val:52, label:'+52%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'数码品类抖音 GMV 增速领跑，AI 眼镜等新品借助内容生态快速放量。'},
-        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫数码份额承压，京东在 3C 数码正品心智上仍具竞争优势。'},
-      ],
-      aiInsights: [
-        'AI 眼镜处于爆发窗口前期，建议优先保障 Meta、华为、小米等主力品牌的货品充足率。',
-        '智能手表医疗功能差异化明显，建议强化健康场景内容输出，触达中高端健康消费人群。',
-        '智能音箱大模型版集中上市，建议借助新品发布节点做流量卡位，抢占换机用户。',
-      ],
-    },
-    '平板': {
-      intel: [
-        {name:'iPad Pro M4 带动高端平板升级', badge:'🔥 热点', badgeClass:'rc-hot', desc:'苹果 iPad Pro M4 超薄设计引发换机热潮，带动整体平板均价上移，高端市场份额集中。'},
-        {name:'学习平板需求旺季临近', badge:'趋势', badgeClass:'rc-blue', desc:'开学季备货窗口开启，学习平板（步步高、科大讯飞）搜索热度快速攀升。'},
-        {name:'电纸书色彩屏加速普及', badge:'技术', badgeClass:'rc-blue', desc:'Kaleido 彩色墨水屏成本下降，文石、掌阅等品牌密集推出彩色电纸书，市场扩容明显。'},
-      ],
-      trends: [
-        {name:'iPad Pro M4', val:87, label:'+87%'},
-        {name:'华为 MatePad Pro', val:74, label:'+74%'},
-        {name:'学习平板（开学季）', val:82, label:'+82%'},
-        {name:'彩色电纸书', val:69, label:'+69%'},
-        {name:'小米平板 7', val:55, label:'+55%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'学习平板通过家长群体内容种草转化效果显著，建议加强亲子教育场景内容布局。'},
-        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'天猫平板份额稳定，京东在专业旗舰机型和极速达上具备优势。'},
-      ],
-      aiInsights: [
-        '开学季是学习平板全年最大销售窗口，建议提前 4 周完成备货并启动家长人群定向投放。',
-        '彩色电纸书是 2026 年最值得押注的新兴品类，建议重点引入文石、掌阅彩色新品，卡位早期市场。',
-        'iPad Pro M4 发售带动苹果生态配件需求（Apple Pencil、键盘），建议做套装捆绑推广。',
-      ],
-    },
-    '音频': {
-      intel: [
-        {name:'开放式耳机成增速最快子品类', badge:'🔥 热点', badgeClass:'rc-hot', desc:'开放式耳机出货量同比增长 120%+，索尼、韶音、华为密集布局，品类教育期已过，进入放量阶段。'},
-        {name:'索尼 WH-1000XM6 发布在即', badge:'新品', badgeClass:'rc-blue', desc:'旗舰降噪耳机新品即将发布，将直接影响 XM5 等现款产品定价与库存策略。'},
-        {name:'LE Audio 协议加速普及', badge:'技术', badgeClass:'rc-blue', desc:'支持 LE Audio 的耳机市场认可度快速提升，旧款产品升级换代意愿增强。'},
-      ],
-      trends: [
-        {name:'开放式耳机', val:92, label:'+92%'},
-        {name:'旗舰降噪耳机', val:76, label:'+76%'},
-        {name:'Hi-Fi 便携播放器', val:64, label:'+64%'},
-        {name:'桌面 Hi-Fi 音响系统', val:55, label:'+55%'},
-        {name:'骨传导运动耳机', val:48, label:'+48%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'开放式耳机借助运动健康内容生态在抖音快速放量，建议加强户外场景种草内容投入。'},
-        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'旗舰耳机天猫份额稳定，5000+ 超高端品类京东正品心智优势明显。'},
-      ],
-      aiInsights: [
-        '开放式耳机是当前增速最快的品类，建议将韶音、索尼、华为的主力开放式新品列为大促重点资源。',
-        '索尼新品发布前，XM5 等老款将进入价格敏感期，可提前规划清库存促销节点。',
-        'Hi-Fi 便携播放器客单价高，建议与高端耳机做套装捆绑，同时强化专业音质测评内容背书。',
-      ],
-    },
-    '相机': {
-      intel: [
-        {name:'全画幅无反销量创历史新高', badge:'🔥 热点', badgeClass:'rc-hot', desc:'2026 上半年全画幅无反出货量同比增长 28%，索尼、佳能双强争霸，Vlog 需求持续拉动市场。'},
-        {name:'大疆新品无人机正式上市', badge:'新品', badgeClass:'rc-blue', desc:'大疆 Mavic 4 Pro 正式发售，影像素质大幅提升，带动消费级无人机市场重新活跃。'},
-        {name:'AI 辅助摄影功能成新品标配', badge:'技术', badgeClass:'rc-blue', desc:'AI 对焦、AI 降噪、AI 剪辑成旗舰相机必备功能，旧款相机更新换代意愿明显增强。'},
-      ],
-      trends: [
-        {name:'全画幅无反旗舰', val:86, label:'+86%'},
-        {name:'消费级无人机（大疆）', val:78, label:'+78%'},
-        {name:'运动相机（GoPro / 大疆）', val:69, label:'+69%'},
-        {name:'胶片风数码相机（富士）', val:62, label:'+62%'},
-        {name:'长焦旅游机', val:51, label:'+51%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'相机品类借助 Vlog 内容生态在抖音快速放量，达人测评是最主要的转化路径。'},
-        {name:'淘宝天猫', badge:'份额 ↓', badgeClass:'rc-blue', desc:'天猫相机份额整体下滑，但在专业级产品（3 万+）价格段仍保持一定优势。'},
-      ],
-      aiInsights: [
-        '全画幅无反处于换代周期高峰，建议优先保障索尼 A7 系列、佳能 R 系列的货品充足率与首发资源。',
-        '大疆新品发售是无人机品类全年最大流量节点，建议同步规划新品首发专区与配件套装。',
-        '富士胶片风相机在年轻女性用户中声量持续高涨，建议加强小红书场景内容种草投入。',
-      ],
-    },
-    '3C数码配件': {
-      intel: [
-        {name:'百瓦快充成配件新标准', badge:'趋势', badgeClass:'rc-blue', desc:'新发布旗舰机型均支持 100W+ 快充，原装及三方充电器需求同步拉升，GaN 品类加速渗透。'},
-        {name:'MagSafe 生态持续扩张', badge:'🔥 热点', badgeClass:'rc-hot', desc:'苹果 MagSafe 配件生态持续扩张，磁吸配件市场规模预计增长 60%，第三方品牌加速跟进。'},
-        {name:'USB4 扩展坞需求快速释放', badge:'技术', badgeClass:'rc-blue', desc:'AI PC 和新款 MacBook 带动 USB4 扩展坞需求，绿联、安克等国产品牌率先放量。'},
-      ],
-      trends: [
-        {name:'GaN 氮化镓充电器（100W+）', val:88, label:'+88%'},
-        {name:'MagSafe 磁吸配件套装', val:79, label:'+79%'},
-        {name:'USB4 扩展坞', val:68, label:'+68%'},
-        {name:'高端手机壳（透明/联名）', val:57, label:'+57%'},
-        {name:'无线充电板（多设备）', val:46, label:'+46%'},
-      ],
-      compete: [
-        {name:'拼多多', badge:'份额 ↑', badgeClass:'rc-hot', desc:'低价配件市场拼多多优势明显，京东需在正品保障和品牌旗舰店入口上强化差异化。'},
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'网红配件通过短视频种草转化率高，建议加强达人合作覆盖新品推广。'},
-      ],
-      aiInsights: [
-        'GaN 充电器是增速最快的配件品类，建议将安克、绿联、紫米等主力品牌列为大促重点资源。',
-        'MagSafe 生态扩张带来跨品类联动机会，建议与 iPhone 新品发售做套装捆绑，提升客单价。',
-        '面对拼多多低价竞争，建议在正品溯源、品牌旗舰店认证和极速达体验上构建差异化优势。',
-      ],
-    },
-    '图书': {
-      intel: [
-        {name:'AI 辅助阅读功能成电纸书标配', badge:'趋势', badgeClass:'rc-blue', desc:'文石、掌阅新款电纸书内置 AI 问答与摘要功能，推动电纸书均价提升，换机需求释放。'},
-        {name:'暑期阅读旺季即将到来', badge:'🔥 热点', badgeClass:'rc-hot', desc:'7-8 月暑期为图书品类最大销售窗口，教辅、儿童读物、课外阅读需求集中爆发。'},
-        {name:'有声书与纸书联动趋势增强', badge:'趋势', badgeClass:'rc-blue', desc:'纸书+有声书套装销量快速增长，内容消费硬件（耳机、音箱）形成联动选品机会。'},
-      ],
-      trends: [
-        {name:'暑期教辅畅销书', val:89, label:'+89%'},
-        {name:'彩色电纸书（阅读器）', val:75, label:'+75%'},
-        {name:'儿童绘本套装', val:68, label:'+68%'},
-        {name:'商业/自我提升类', val:59, label:'+59%'},
-        {name:'有声书配套硬件', val:47, label:'+47%'},
-      ],
-      compete: [
-        {name:'当当网', badge:'份额 ↑', badgeClass:'rc-hot', desc:'图书品类当当仍具心智优势，京东需在配送速度、价格力和套装选品上强化差异化。'},
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'知识类内容带货在抖音快速增长，名师推荐、读书 UP 主成为图书转化核心路径。'},
-      ],
-      aiInsights: [
-        '暑期备货窗口已开启，建议提前 3-4 周锁定教辅和儿童读物的头部 SKU，确保库存充足率。',
-        '彩色电纸书是 2026 年图书硬件最大增量方向，建议将文石 C 系列等彩色新品作为重点推广资源。',
-        '图书 + 有声书硬件的跨品类联动选品空间大，建议设计"书+耳机"场景化套装，提升客单价。',
-      ],
-    },
-    '外设': {
-      intel: [
-        {name:'电竞外设市场持续高景气', badge:'趋势', badgeClass:'rc-blue', desc:'电竞外设需求保持稳定增长，机械键盘、高刷鼠标、电竞耳机三件套成核心消费场景。'},
-        {name:'高端显示器 4K/OLED 普及加速', badge:'🔥 热点', badgeClass:'rc-hot', desc:'4K OLED 显示器价格快速下探，设计师和游戏玩家换机需求集中，均价显著提升。'},
-        {name:'办公外设远程协作需求稳定', badge:'趋势', badgeClass:'rc-blue', desc:'混合办公模式持续，高端办公键鼠套装（罗技 MX 系列）需求稳中有增。'},
-      ],
-      trends: [
-        {name:'4K OLED 电竞显示器', val:85, label:'+85%'},
-        {name:'客制化机械键盘', val:77, label:'+77%'},
-        {name:'高精度电竞鼠标', val:68, label:'+68%'},
-        {name:'罗技 MX 办公套装', val:62, label:'+62%'},
-        {name:'电竞椅 / 桌搭套装', val:54, label:'+54%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'电竞外设在抖音测评内容带动下转化效率高，建议加强 B 站、抖音的电竞 UP 主合作。'},
-        {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'外设天猫份额稳定，京东在配送速度和正品保障方面具备明显优势。'},
-      ],
-      aiInsights: [
-        '4K OLED 显示器是当前外设品类单品增速最快的方向，建议提前锁定三星、LG、飞利浦主力 SKU。',
-        '客制化键盘在年轻用户中声量持续高涨，建议开设客制化专区，引入更多小众高端品牌。',
-        '电竞三件套（键鼠耳机）套装化销售转化率高，建议在大促期间主推套装 Bundle 方案。',
-      ],
-    },
-    '文具': {
-      intel: [
-        {name:'AI 学习机市场快速扩容', badge:'🔥 热点', badgeClass:'rc-hot', desc:'科大讯飞学习机新品搭载大模型，AI 辅导功能获家长高度认可，暑期备货需求旺盛。'},
-        {name:'开学季备货窗口启动', badge:'趋势', badgeClass:'rc-blue', desc:'7-8 月为文具品类最大销售节点，铅笔、笔记本、书包等基础文具需求集中爆发。'},
-        {name:'智能文具（电子纸笔记本）普及', badge:'技术', badgeClass:'rc-blue', desc:'可擦写电子纸笔记本价格下降至百元级别，学生和商务人群接受度快速提升。'},
-      ],
-      trends: [
-        {name:'AI 学习机（讯飞 / 步步高）', val:91, label:'+91%'},
-        {name:'电子纸智能笔记本', val:73, label:'+73%'},
-        {name:'开学季文具礼盒', val:85, label:'+85%'},
-        {name:'高端钢笔 / 圆珠笔套装', val:58, label:'+58%'},
-        {name:'办公收纳 / 桌面整理', val:49, label:'+49%'},
-      ],
-      compete: [
-        {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'文具品类在抖音通过"开学 vlog"内容快速放量，建议布局家长和学生群体场景内容。'},
-        {name:'拼多多', badge:'份额 ↑', badgeClass:'rc-hot', desc:'基础文具拼多多价格竞争激烈，建议京东聚焦品质文具和 AI 学习类高端产品差异化。'},
-      ],
-      aiInsights: [
-        '开学季是文具品类全年最大销售窗口，建议提前 4-5 周完成核心 SKU 备货，重点保障 AI 学习机库存。',
-        'AI 学习机是最具增量价值的文具硬件品类，建议将科大讯飞、步步高新品列为大促首推资源。',
-        '面对拼多多价格竞争，建议在品质感、正品背书和 AI 功能差异化上构建高端文具专区。',
+        'iPhone 17 发布节点（预计 9 月）是全年手机类目最重要流量窗口，建议提前 6 周备货并规划预售活动。',
+        '折叠屏品类高速增长且客单价高，建议重点投入华为、三星旗舰折叠屏的内容种草与正品保障背书。',
+        '卫星通信手机是当前最值得前置布局的潜在爆发方向，建议提前接洽华为、三星相关 SKU 的独家首发资源。',
+        '以旧换新政策窗口期内，建议联合品牌推出专属换新套餐，放大补贴优势吸引存量用户迁移。',
       ],
     },
   };
 
-  // 默认其余品类使用通用数据
+  // ── DEFAULT_DATA（其他品类 fallback）──
   const DEFAULT_DATA = {
-    intel: [
-      {name:'市场整体需求平稳增长', badge:'趋势', badgeClass:'rc-blue', desc:'该品类市场规模保持稳定增长态势，头部品牌集中度进一步提升，新兴品牌市场空间受到压缩。'},
-      {name:'竞对平台价格战升温', badge:'🔥 热点', badgeClass:'rc-hot', desc:'抖音、拼多多持续加大该品类补贴力度，建议重点关注价格竞争力与正品差异化策略。'},
-      {name:'政策利好消费刺激', badge:'政策', badgeClass:'rc-blue', desc:'国家以旧换新政策持续推进，相关品类受益明显，建议配合政策节奏规划活动节点。'},
-    ],
-    rank: [
+    future_biz:      [{name:'订阅制服务模式兴起', badge:'新模式', bc:'rc-blue', desc:'该品类出现硬件+服务订阅捆绑的新商业模式，用户 LTV 显著提升，头部品牌率先试水。'}],
+    future_brand:    [{name:'新兴细分品牌崛起', badge:'新品牌', bc:'rc-blue', desc:'品类内出现专注细分场景的新兴品牌，凭借精准定位快速占据用户心智，值得持续追踪。'}],
+    future_industry: [{name:'品类结构性升级加速', badge:'趋势', bc:'rc-hot', desc:'AI 能力与品类深度融合推动产品升级周期缩短，高端化趋势明显，均价持续上移。'}],
+    future_user:     [{name:'消费者决策路径变化', badge:'需求变化', bc:'rc-blue', desc:'内容种草→搜索验证→即时购买的新决策链路在该品类渗透率已超 55%，内容投入 ROI 提升。'}],
+    future_policy:   [{name:'以旧换新政策持续利好', badge:'政策', bc:'rc-blue', desc:'国家以旧换新补贴延续，该品类受益明显，建议配合政策节奏规划大促活动节点。'}],
+    future_tech:     [{name:'AI 功能成品类新标配', badge:'新技术', bc:'rc-hot', desc:'AI 辅助功能正成为该品类旗舰标配，支持 AI 的产品溢价能力和市场份额双双提升。'}],
+    opp_rank: [
       {name:'品类热卖第一名（旗舰新品）', platform:'天猫', change:'↑2', price:'—', hot:true},
       {name:'品类热卖第二名（高性价比款）', platform:'抖音', change:'↑4', price:'—', hot:true},
-      {name:'品类热卖第三名（爆款套装）', platform:'拼多多', change:'NEW', price:'—', hot:true},
+      {name:'品类热卖第三名（套装礼盒）', platform:'拼多多', change:'NEW', price:'—', hot:true},
       {name:'品类热卖第四名', platform:'天猫', change:'↓1', price:'—', hot:false},
       {name:'品类热卖第五名', platform:'抖音', change:'持平', price:'—', hot:false},
     ],
-    hotwords: [
-      {word:'品类旗舰推荐', heat:'—', level:'hw-l1'},{word:'性价比之选', heat:'—', level:'hw-l2'},
-      {word:'品牌对比测评', heat:'—', level:'hw-l2'},{word:'618选购攻略', heat:'—', level:'hw-l3'},
-      {word:'以旧换新', heat:'—', level:'hw-l3'},{word:'学生党必买', heat:'—', level:'hw-l4'},
+    opp_hotword: [
+      {word:'品类旗舰推荐',heat:'—',level:'hw-l1'},{word:'性价比之选',heat:'—',level:'hw-l2'},
+      {word:'品牌对比测评',heat:'—',level:'hw-l2'},{word:'618选购攻略',heat:'—',level:'hw-l3'},
+      {word:'以旧换新',heat:'—',level:'hw-l3'},{word:'学生党必买',heat:'—',level:'hw-l4'},
     ],
-    trends: [
-      {name:'旗舰新品', val:82, label:'+82%'},
-      {name:'高性价比中端品', val:71, label:'+71%'},
-      {name:'联名限定款', val:65, label:'+65%'},
-      {name:'套装礼盒', val:54, label:'+54%'},
-      {name:'二手翻新品', val:38, label:'+38%'},
+    opp_trend: [
+      {name:'旗舰新品',val:82,label:'+82%'},{name:'高性价比中端品',val:71,label:'+71%'},
+      {name:'联名限定款',val:65,label:'+65%'},{name:'套装礼盒',val:54,label:'+54%'},
+      {name:'二手翻新品',val:38,label:'+38%'},
     ],
-    burst: [
-      {name:'品类新兴细分方向 A', signal:'高潜', sigClass:'sig-high', desc:'海外市场已验证，国内搜索量环比快速上升，供给侧稀缺，爆发窗口即将打开。', tags:['新兴', '前沿']},
-      {name:'品类新兴细分方向 B', signal:'中潜', sigClass:'sig-mid', desc:'内容平台话题持续发酵，但尚未形成规模化购买，需持续追踪转化信号。', tags:['观察中', '内容驱动']},
+    opp_burst: [
+      {name:'品类新兴细分方向 A', signal:'高潜', sigClass:'sig-high', desc:'海外市场已验证，国内搜索量环比快速上升，供给侧稀缺，爆发窗口即将打开。', tags:['新兴','前沿']},
+      {name:'品类新兴细分方向 B', signal:'中潜', sigClass:'sig-mid', desc:'内容平台话题持续发酵，但尚未形成规模化购买，需持续追踪转化信号。', tags:['观察中','内容驱动']},
     ],
-    global: [
+    opp_compete: [
+      {name:'抖音电商', badge:'份额 ↑', bc:'rc-hot', desc:'内容电商对该品类渗透率持续提升，建议加强直播和短视频内容矩阵建设。'},
+      {name:'淘宝天猫', badge:'持平', bc:'rc-blue', desc:'该品类天猫份额保持稳定，旗舰店运营质量是核心差异化要素。'},
+    ],
+    ext_global: [
       {flag:'🇺🇸', region:'北美', timing:'领先约 8 个月', desc:'该品类在北美市场出现新的消费趋势，功能升级与用户需求变化明显，值得密切关注。', signal:'→ 预计 6-9 个月后趋势向国内传导'},
       {flag:'🇯🇵', region:'日本', timing:'领先约 6 个月', desc:'日本市场在该品类出现新的使用场景需求，相关产品需求快速扩容，品类教育期已过。', signal:'→ 可关注日本主流品牌的产品策略变化'},
     ],
-    compete: [
-      {name:'抖音电商', badge:'份额 ↑', badgeClass:'rc-hot', desc:'内容电商对该品类渗透率持续提升，建议加强直播和短视频内容矩阵建设。'},
-      {name:'淘宝天猫', badge:'持平', badgeClass:'rc-blue', desc:'该品类天猫份额保持稳定，旗舰店运营质量是核心差异化要素。'},
+    ext_report: [
+      {name:'品类市场规模与竞争格局研究', badge:'研报', bc:'rc-blue', desc:'头部机构最新报告显示品类整体市场规模同比增长 12%，高端化趋势明显，前三名品牌份额集中度提升。'},
+    ],
+    ext_expert: [
+      {name:'品类供应链专家电话会纪要', badge:'纪要', bc:'rc-blue', desc:'供应链专家指出关键原材料价格下行利好产品降价空间，下半年有望掀起新一轮以旧换新浪潮。'},
     ],
     aiInsights: [
       '当前时间节点建议重点盘点大促备货节奏，确保爆品库存充足率不低于历史同期水平。',
       '竞对平台价格战背景下，建议在正品保障、快速履约和服务体验上构建差异化优势。',
-      '结合关注品牌的最新动态，适时调整选品结构，将资源向增长确定性高的品牌倾斜。',
+      '结合关注品牌最新动态，将资源向增长确定性高的品牌和潜在爆发品方向倾斜。',
     ],
   };
 
   // ── 状态 ──
-  let selectedCat = null;
-  let selectedCatIcon = null;
-  let selectedBrands = [];
+  let selectedCat = null, selectedCatIcon = null, selectedBrands = [], brandMode = 'all';
+  let moduleState = { future: true, opp: true, ext: true };
+  let subState = {};
+  // 初始化 subState
+  document.querySelectorAll('.mp-sub-item').forEach(el => {
+    const key = el.dataset.mod + '_' + el.dataset.key;
+    subState[key] = true;
+  });
 
   function selectCat(el, cat, icon) {
     document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selectedCat = cat;
-    selectedCatIcon = icon;
+    el.classList.add('selected'); selectedCat = cat; selectedCatIcon = icon;
     document.getElementById('btnNext1').classList.add('ready');
   }
 
-  function goPage1() {
-    showPage('page1');
-    setStep(1);
-  }
+  function goPage1() { showPage('page1'); setStep(1); }
 
   function goPage2() {
     if (!selectedCat) return;
     document.getElementById('p2CatName').textContent = selectedCat;
     renderBrands();
-    showPage('page2');
-    setStep(2);
+    showPage('page2'); setStep(2);
+  }
+
+  function toggleModule(mod) {
+    moduleState[mod] = !moduleState[mod];
+    const card = document.getElementById('mp' + mod.charAt(0).toUpperCase() + mod.slice(1));
+    card.classList.toggle('selected', moduleState[mod]);
+    // 联动子项
+    card.querySelectorAll('.mp-sub-item').forEach(el => {
+      const key = el.dataset.mod + '_' + el.dataset.key;
+      subState[key] = moduleState[mod];
+      el.classList.toggle('sub-on', moduleState[mod]);
+    });
+  }
+
+  function toggleSub(el) {
+    const key = el.dataset.mod + '_' + el.dataset.key;
+    subState[key] = !subState[key];
+    el.classList.toggle('sub-on', subState[key]);
+    // 若有子项开启则父模块也开启
+    const mod = el.dataset.mod;
+    const anyOn = Object.keys(subState).some(k => k.startsWith(mod+'_') && subState[k]);
+    moduleState[mod] = anyOn;
+    const card = document.getElementById('mp' + mod.charAt(0).toUpperCase() + mod.slice(1));
+    card.classList.toggle('selected', anyOn);
+  }
+
+  function setBrandMode(mode) {
+    brandMode = mode;
+    document.getElementById('tabAll').classList.toggle('active', mode === 'all');
+    document.getElementById('tabPick').classList.toggle('active', mode === 'pick');
+    document.getElementById('brandPickWrap').style.display = mode === 'pick' ? 'block' : 'none';
+    if (mode === 'all') { selectedBrands = []; document.querySelectorAll('.brand-chip').forEach(c => c.classList.remove('selected')); }
   }
 
   function renderBrands() {
     const brands = BRANDS[selectedCat] || [];
-    const grid = document.getElementById('brandGrid');
-    grid.innerHTML = brands.map(b =>
-      `<div class="brand-chip" onclick="toggleBrand(this,'${b.n}')">
-        <span class="brand-chip-icon">${b.i}</span>${b.n}
-      </div>`
+    document.getElementById('brandGrid').innerHTML = brands.map(b =>
+      `<div class="brand-chip" onclick="toggleBrand(this,'${b.n}')"><span class="brand-chip-icon">${b.i}</span>${b.n}</div>`
     ).join('');
     selectedBrands = [];
-    renderSelectedTags();
   }
 
   function toggleBrand(el, name) {
-    if (el.classList.contains('selected')) {
-      el.classList.remove('selected');
-      selectedBrands = selectedBrands.filter(b => b !== name);
-    } else {
-      if (selectedBrands.length >= 5) return;
-      el.classList.add('selected');
-      selectedBrands.push(name);
-    }
-    renderSelectedTags();
-    document.getElementById('btnGenerate').classList.toggle('ready', selectedBrands.length > 0);
-  }
-
-  function renderSelectedTags() {
-    const wrap = document.getElementById('selectedTags');
-    if (!selectedBrands.length) {
-      wrap.innerHTML = '<span style="font-size:12px;color:var(--text-dim)">暂未选择品牌</span>';
-    } else {
-      wrap.innerHTML = selectedBrands.map(b => `<span class="sel-tag">${b} ×</span>`).join('');
-    }
+    if (el.classList.contains('selected')) { el.classList.remove('selected'); selectedBrands = selectedBrands.filter(b => b !== name); }
+    else { if (selectedBrands.length >= 5) return; el.classList.add('selected'); selectedBrands.push(name); }
   }
 
   function goGenerate() {
-    if (!selectedBrands.length) return;
-    showPage('page3');
-    setStep(3);
-    document.getElementById('loadingCat').textContent = `品类：${selectedCat}  ·  品牌：${selectedBrands.join('、')}`;
+    const anyActive = Object.values(subState).some(v => v);
+    if (!anyActive) return;
+    showPage('page3'); setStep(3);
+    const brands = brandMode === 'all' ? '整体品类（不限品牌）' : selectedBrands.join('、') || '整体品类';
+    document.getElementById('loadingCat').textContent = `品类：${selectedCat}  ·  ${brands}`;
     animateLoading();
   }
 
   function animateLoading() {
-    const steps = ['ls1','ls2','ls3','ls4','ls5','ls6','ls7'];
-    steps.forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('done','active');
-    });
+    const steps = ['ls1','ls2','ls3','ls4','ls5','ls6'];
+    steps.forEach(id => { const el = document.getElementById(id); el.classList.remove('done','active'); });
     let i = 0;
     function next() {
       if (i > 0) document.getElementById(steps[i-1]).classList.replace('active','done');
-      if (i < steps.length) {
-        document.getElementById(steps[i]).classList.add('active');
-        i++;
-        setTimeout(next, 500);
-      } else {
-        setTimeout(buildReport, 400);
-      }
+      if (i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; setTimeout(next, 480); }
+      else { setTimeout(buildReport, 300); }
     }
     next();
   }
@@ -1065,114 +643,127 @@
   function buildReport() {
     const d = DATA[selectedCat] || DEFAULT_DATA;
 
-    // 配置信息
+    // 配置摘要
     document.getElementById('profCat').textContent = selectedCatIcon + ' ' + selectedCat;
-    const tagsEl = document.getElementById('profBrands');
-    tagsEl.innerHTML = selectedBrands.map(b => `<span class="profile-tag">${b}</span>`).join('');
+    const modLabels = [];
+    if (Object.keys(subState).some(k => k.startsWith('future_') && subState[k])) modLabels.push('<span class="pmt-future">看未来</span>');
+    if (Object.keys(subState).some(k => k.startsWith('opp_') && subState[k]))    modLabels.push('<span class="pmt-opp">看机会</span>');
+    if (Object.keys(subState).some(k => k.startsWith('ext_') && subState[k]))    modLabels.push('<span class="pmt-ext">看外部</span>');
+    document.getElementById('profMods').innerHTML = modLabels.join('');
+    const brandLabel = brandMode === 'all' ? '<span class="profile-tag">全品类</span>' : selectedBrands.map(b => `<span class="profile-tag">${b}</span>`).join('');
+    document.getElementById('profBrands').innerHTML = brandLabel;
 
-    // § 1 行业情报
-    document.getElementById('intelCards').innerHTML = d.intel.map(c =>
-      `<div class="report-card">
-        <div class="report-card-head"><span class="report-card-name">${c.name}</span><span class="rc-badge ${c.badgeClass}">${c.badge}</span></div>
-        <div class="report-card-desc">${c.desc}</div>
-      </div>`
-    ).join('');
+    // 构建报告区块和侧边栏
+    const content = document.getElementById('p4Content');
+    const snav = document.getElementById('snavContent');
+    content.innerHTML = ''; snav.innerHTML = '';
 
-    // § 2 竞对热卖榜
-    document.getElementById('rankSub').textContent = `${selectedCat}品类 · 淘宝天猫 / 抖音电商 / 拼多多 近7日热卖`;
-    const rankData = d.rank || DEFAULT_DATA.rank;
-    document.getElementById('rankRows').innerHTML = rankData.map((r,i) =>
-      `<div class="rank-row">
-        <div class="rank-num ${i<3?'top3':''}">${i+1}</div>
-        <div class="rank-info">
-          <div class="rank-name">${r.name}</div>
-          <div class="rank-platform">${r.platform}</div>
-        </div>
-        <div class="rank-price">${r.price}</div>
-        <div class="rank-change ${r.hot?'hot':'up'}">${r.change}</div>
-      </div>`
-    ).join('');
+    const activeKeys = Object.keys(subState).filter(k => subState[k]);
 
-    // § 3 热搜词
-    document.getElementById('hotwordSub').textContent = `${selectedCat}相关 · 抖音 / 小红书 / 微博 近7日热搜`;
-    const hwData = d.hotwords || DEFAULT_DATA.hotwords;
-    document.getElementById('hotWords').innerHTML = hwData.map(w =>
-      `<span class="hot-word ${w.level}">${w.word}<span class="hw-heat">${w.heat}</span></span>`
-    ).join('');
+    // 当前 mod 分组
+    const modGroups = { future: [], opp: [], ext: [] };
+    activeKeys.forEach(k => {
+      const [mod] = k.split('_');
+      modGroups[mod].push(k);
+    });
 
-    // § 4 趋势品
-    document.getElementById('trendSub').textContent = `${selectedCat}品类当前热度最高的趋势品`;
-    document.getElementById('trendRows').innerHTML = d.trends.map((t,i) =>
-      `<div class="trend-row">
-        <div class="trend-rank ${i<3?'top':''}">${i+1}</div>
-        <div class="trend-name">${t.name}</div>
-        <div class="trend-bar-wrap"><div class="trend-bar" style="width:${t.val}%"></div></div>
-        <div class="trend-val">${t.label}</div>
-      </div>`
-    ).join('');
+    const modMeta = { future: { label:'看未来', badge:'rb-future' }, opp: { label:'看机会', badge:'rb-opp' }, ext: { label:'看外部', badge:'rb-ext' } };
 
-    // § 5 潜在爆发品
-    document.getElementById('burstSub').textContent = `${selectedCat}品类 · 信号已出现但尚未大规模爆发`;
-    const burstData = d.burst || DEFAULT_DATA.burst;
-    document.getElementById('burstCards').innerHTML = burstData.map(b =>
-      `<div class="burst-card">
-        <div class="burst-head">
-          <div class="burst-name">${b.name}</div>
-          <span class="burst-signal ${b.sigClass}">${b.signal}</span>
-        </div>
-        <div class="burst-desc">${b.desc}</div>
-        <div class="burst-tags">${b.tags.map(t=>`<span class="burst-tag">${t}</span>`).join('')}</div>
-      </div>`
-    ).join('');
+    ['future','opp','ext'].forEach(mod => {
+      if (!modGroups[mod].length) return;
+      // 侧边栏分组标题
+      snav.innerHTML += `<div class="snav-group-label">${modMeta[mod].label}</div>`;
+      modGroups[mod].forEach((key, idx) => {
+        const def = SECTION_DEFS[key];
+        const secId = 'sec_' + key;
+        const isFirst = idx === 0;
+        snav.innerHTML += `<div class="snav-item${isFirst && mod==='future'?' active':''}" onclick="navTo('${secId}',this)"><span class="snav-icon">${def.icon}</span>${def.label}</div>`;
+        // 报告内容
+        const sectionHtml = buildSection(key, def, d);
+        content.innerHTML += `<div class="report-section" id="${secId}">${sectionHtml}</div>`;
+      });
+    });
 
-    // § 6 国外趋势
-    document.getElementById('globalSub').textContent = `${selectedCat}品类 · 美日欧韩市场前沿动向`;
-    const globalData = d.global || DEFAULT_DATA.global;
-    document.getElementById('globalCards').innerHTML = globalData.map(g =>
-      `<div class="global-card">
-        <div class="global-head">
-          <span class="global-flag">${g.flag}</span>
-          <span class="global-region">${g.region}</span>
-          <span class="global-timing">${g.timing}</span>
-        </div>
-        <div class="global-desc">${g.desc}</div>
-        <div class="global-signal">${g.signal}</div>
-      </div>`
+    // AI 建议
+    snav.innerHTML += `<div class="snav-group-label">综合</div><div class="snav-item" onclick="navTo('sec_ai',this)"><span class="snav-icon">✦</span>AI 决策建议</div>`;
+    const insights = (d.aiInsights || DEFAULT_DATA.aiInsights).map((s,i) =>
+      `<div class="ai-insight"><span class="ai-insight-icon">✦</span><div class="ai-insight-text"><strong>建议 ${i+1}：</strong>${s}</div></div>`
     ).join('');
-
-    // § 7 品牌解读
-    document.getElementById('brandSub').textContent = `${selectedBrands.join('、')} 的最新战略动向`;
-    document.getElementById('brandCards').innerHTML = selectedBrands.map(b =>
-      `<div class="report-card">
-        <div class="report-card-head"><span class="report-card-name">${b}</span><span class="rc-badge rc-blue">最新动态</span></div>
-        <div class="report-card-desc">持续追踪 ${b} 在 ${selectedCat} 品类的新品节奏、定价策略与渠道布局，深度拆解其市场意图与竞争动作。</div>
-      </div>`
-    ).join('');
-
-    // § 8 竞争分析
-    document.getElementById('competeSub').textContent = `${selectedCat}品类在主要平台的市占格局`;
-    document.getElementById('competeCards').innerHTML = d.compete.map(c =>
-      `<div class="report-card">
-        <div class="report-card-head"><span class="report-card-name">${c.name}</span><span class="rc-badge ${c.badgeClass}">${c.badge}</span></div>
-        <div class="report-card-desc">${c.desc}</div>
-      </div>`
-    ).join('');
-
-    // § 9 AI 建议
-    document.getElementById('aiInsights').innerHTML = d.aiInsights.map((s,i) =>
-      `<div class="ai-insight" style="margin-bottom:10px">
-        <span class="ai-insight-icon">✦</span>
-        <div class="ai-insight-text"><strong>建议 ${i+1}：</strong>${s}</div>
-      </div>`
-    ).join('');
+    content.innerHTML += `<div class="report-section" id="sec_ai"><div class="rsh"><div class="rsh-icon ri-future">✦</div><div><div class="rsh-title">AI 决策建议</div><div class="rsh-sub">基于以上情报的综合行动建议</div></div></div>${insights}</div>`;
 
     showPage('page4');
   }
 
-  function showPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+  function buildSection(key, def, d) {
+    const header = `<div class="rsh"><div class="rsh-icon ${def.ri}">${def.icon}</div><div><div class="rsh-title">${def.label}</div><div class="rsh-sub">${def.sub}</div></div><span class="rsh-badge ${def.badge}">${SECTION_DEFS[key].mod === 'future' ? '看未来' : SECTION_DEFS[key].mod === 'opp' ? '看机会' : '看外部'}</span></div>`;
+
+    const raw = d[key] || DEFAULT_DATA[key];
+    if (!raw) return header + '<p style="font-size:13px;color:var(--text-dim);padding:8px 0">暂无数据</p>';
+
+    let body = '';
+
+    if (key === 'opp_rank') {
+      body = `<div class="rank-table">${raw.map((r,i) =>
+        `<div class="rank-row">
+          <div class="rank-num ${i<3?'top3':''}">${i+1}</div>
+          <div><div class="rank-info-name">${r.name}</div><div class="rank-info-plat">${r.platform}</div></div>
+          <div class="rank-price">${r.price}</div>
+          <div class="rank-chg ${r.hot?'':'up'}">${r.change}</div>
+        </div>`).join('')}</div>`;
+    } else if (key === 'opp_hotword') {
+      body = `<div class="hot-words">${raw.map(w => `<span class="hot-word ${w.level}">${w.word}<span class="hw-heat">${w.heat}</span></span>`).join('')}</div>`;
+    } else if (key === 'opp_trend') {
+      body = raw.map((t,i) =>
+        `<div class="trend-row" style="margin-bottom:7px">
+          <div class="trend-rank ${i<3?'top':''}">${i+1}</div>
+          <div class="trend-name">${t.name}</div>
+          <div class="trend-bar-wrap"><div class="trend-bar" style="width:${t.val}%"></div></div>
+          <div class="trend-val">${t.label}</div>
+        </div>`).join('');
+    } else if (key === 'opp_burst') {
+      body = `<div class="burst-grid">${raw.map(b =>
+        `<div class="burst-card">
+          <div class="burst-head"><div class="burst-name">${b.name}</div><span class="burst-signal ${b.sigClass}">${b.signal}</span></div>
+          <div class="burst-desc">${b.desc}</div>
+          <div class="burst-tags">${b.tags.map(t=>`<span class="burst-tag">${t}</span>`).join('')}</div>
+        </div>`).join('')}</div>`;
+    } else if (key === 'ext_global') {
+      body = `<div class="global-grid">${raw.map(g =>
+        `<div class="global-card">
+          <div class="global-head"><span class="global-flag">${g.flag}</span><span class="global-region">${g.region}</span><span class="global-timing">${g.timing}</span></div>
+          <div class="global-desc">${g.desc}</div>
+          <div class="global-signal">${g.signal}</div>
+        </div>`).join('')}</div>`;
+    } else {
+      // 通用卡片 (future_* / opp_compete / ext_report / ext_expert)
+      const items = Array.isArray(raw) ? raw : [raw];
+      body = `<div class="report-cards">${items.map(c =>
+        `<div class="report-card">
+          <div class="rc-head"><span class="rc-name">${c.name}</span><span class="rc-badge ${c.bc||c.badgeClass||'rc-blue'}">${c.badge}</span></div>
+          <div class="rc-desc">${c.desc}</div>
+        </div>`).join('')}</div>`;
+    }
+
+    // 如果是品牌解读也合并在 opp_compete 之后（若有选品牌）
+    if (key === 'opp_compete' && brandMode === 'pick' && selectedBrands.length > 0) {
+      body += `<div style="margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">品牌解读</div>
+        <div class="report-cards">${selectedBrands.map(b =>
+          `<div class="report-card">
+            <div class="rc-head"><span class="rc-name">${b}</span><span class="rc-badge rc-blue">关注品牌</span></div>
+            <div class="rc-desc">持续追踪 ${b} 在 ${selectedCat} 品类的新品节奏、定价策略与渠道布局，深度拆解其市场意图与竞争动作。</div>
+          </div>`).join('')}</div>`;
+    }
+
+    return header + body;
   }
+
+  function navTo(id, el) {
+    document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    document.querySelectorAll('.snav-item').forEach(e => e.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function showPage(id) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(id).classList.add('active'); }
 
   function setStep(n) {
     for (let i = 1; i <= 3; i++) {
@@ -1183,11 +774,9 @@
     }
   }
 
-  function navTo(id, el) {
-    document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
-    document.querySelectorAll('.sidebar-nav-item').forEach(e => e.classList.remove('active'));
-    el.classList.add('active');
-  }
+  // Page2 初始化：看未来和看外部默认不选中
+  toggleModule('future');
+  toggleModule('ext');
 </script>
 </body>
 </html>
