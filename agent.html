@@ -39,14 +39,37 @@
     .p1-title { font-size: 28px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
     .p1-title em { font-style: normal; color: var(--accent); }
     .p1-sub { font-size: 14px; color: var(--text-muted); }
-    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 860px; }
-    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 14px; cursor: pointer; transition: all .2s; text-align: center; user-select: none; }
-    .cat-card:hover { border-color: var(--accent); background: rgba(88,166,255,.04); transform: translateY(-2px); }
-    .cat-card.selected { border-color: var(--accent); background: rgba(88,166,255,.08); }
-    .cat-icon { font-size: 26px; margin-bottom: 8px; }
-    .cat-name { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
-    .cat-desc { font-size: 11px; color: var(--text-muted); }
-    .btn-next { padding: 11px 36px; border-radius: 8px; font-size: 14px; font-weight: 600; background: var(--accent); color: #060a10; border: none; cursor: pointer; transition: all .2s; opacity: .4; pointer-events: none; }
+
+    /* 输入框区域 */
+    .cat-input-wrap { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 12px; }
+    .cat-input-box {
+      display: flex; align-items: center; gap: 0;
+      background: var(--surface); border: 1.5px solid var(--border2);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .cat-input-box:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(88,166,255,.12); }
+    .cat-input-icon { padding: 0 14px; font-size: 20px; flex-shrink: 0; }
+    .cat-input {
+      flex: 1; background: transparent; border: none; outline: none;
+      font-size: 17px; font-weight: 500; color: var(--text);
+      padding: 16px 4px 16px 0;
+      font-family: inherit;
+    }
+    .cat-input::placeholder { color: var(--text-dim); font-weight: 400; }
+    .cat-input-hint { font-size: 12px; color: var(--text-dim); text-align: center; }
+
+    /* 快速选择标签 */
+    .cat-quick-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-dim); text-align: center; }
+    .cat-quick-tags { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    .cat-quick-tag {
+      padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 500;
+      background: var(--surface); border: 1px solid var(--border); color: var(--text-muted);
+      cursor: pointer; transition: all .15s;
+    }
+    .cat-quick-tag:hover { border-color: var(--accent); color: var(--accent); background: rgba(88,166,255,.06); }
+
+    .btn-next { padding: 12px 40px; border-radius: 8px; font-size: 15px; font-weight: 600; background: var(--accent); color: #060a10; border: none; cursor: pointer; transition: all .2s; opacity: .4; pointer-events: none; }
     .btn-next.ready { opacity: 1; pointer-events: auto; }
     .btn-next.ready:hover { background: #79b8ff; }
 
@@ -253,21 +276,34 @@
     <div class="p1-hero">
       <div class="p1-eyebrow"><div class="live-dot"></div>Step 1 · 选择品类</div>
       <h1 class="p1-title">你负责哪个<em>品类</em>？</h1>
-      <p class="p1-sub">选择后，智能体将为你精准匹配情报内容</p>
+      <p class="p1-sub">输入品类名称，或从常用品类中快速选择</p>
     </div>
-    <div class="category-grid">
-      <div class="cat-card" onclick="selectCat(this,'手机','📱')"><div class="cat-icon">📱</div><div class="cat-name">手机</div><div class="cat-desc">旗舰 · 中端 · 折叠屏</div></div>
-      <div class="cat-card" onclick="selectCat(this,'笔记本电脑','💻')"><div class="cat-icon">💻</div><div class="cat-name">笔记本电脑</div><div class="cat-desc">轻薄本 · 游戏本 · AI PC</div></div>
-      <div class="cat-card" onclick="selectCat(this,'数码','🤖')"><div class="cat-icon">🤖</div><div class="cat-name">数码</div><div class="cat-desc">AI眼镜 · 智能穿戴 · 音箱</div></div>
-      <div class="cat-card" onclick="selectCat(this,'平板','🖥️')"><div class="cat-icon">🖥️</div><div class="cat-name">平板</div><div class="cat-desc">旗舰平板 · 学习平板 · 电纸书</div></div>
-      <div class="cat-card" onclick="selectCat(this,'台式机','🖱️')"><div class="cat-icon">🖱️</div><div class="cat-name">台式机</div><div class="cat-desc">整机 · 组装机 · 一体机</div></div>
-      <div class="cat-card" onclick="selectCat(this,'音频','🎵')"><div class="cat-icon">🎵</div><div class="cat-name">音频</div><div class="cat-desc">耳机 · 音响 · Hi-Fi</div></div>
-      <div class="cat-card" onclick="selectCat(this,'相机','📷')"><div class="cat-icon">📷</div><div class="cat-name">相机</div><div class="cat-desc">无反 · 卡片机 · 无人机</div></div>
-      <div class="cat-card" onclick="selectCat(this,'3C数码配件','🔌')"><div class="cat-icon">🔌</div><div class="cat-name">3C 数码配件</div><div class="cat-desc">充电 · 数据线 · 保护壳</div></div>
-      <div class="cat-card" onclick="selectCat(this,'图书','📚')"><div class="cat-icon">📚</div><div class="cat-name">图书</div><div class="cat-desc">畅销书 · 教育 · 电子阅读</div></div>
-      <div class="cat-card" onclick="selectCat(this,'外设','🎮')"><div class="cat-icon">🎮</div><div class="cat-name">外设</div><div class="cat-desc">键盘 · 鼠标 · 显示器</div></div>
-      <div class="cat-card" onclick="selectCat(this,'文具','✏️')"><div class="cat-icon">✏️</div><div class="cat-name">文具</div><div class="cat-desc">学习机 · 智能文具 · 办公</div></div>
+
+    <div class="cat-input-wrap">
+      <div class="cat-input-box">
+        <span class="cat-input-icon">🔍</span>
+        <input class="cat-input" id="catInput" type="text" placeholder="输入品类，如：手机、耳机、咖啡机…" oninput="onCatInput(this.value)" onkeydown="if(event.key==='Enter')goPage2()" autocomplete="off" />
+      </div>
+      <div class="cat-input-hint">支持任意品类，不限 3C 范围</div>
     </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:center;width:100%;max-width:560px">
+      <div class="cat-quick-label">常用品类</div>
+      <div class="cat-quick-tags">
+        <span class="cat-quick-tag" onclick="pickQuick('手机')">📱 手机</span>
+        <span class="cat-quick-tag" onclick="pickQuick('笔记本电脑')">💻 笔记本电脑</span>
+        <span class="cat-quick-tag" onclick="pickQuick('平板')">🖥️ 平板</span>
+        <span class="cat-quick-tag" onclick="pickQuick('音频')">🎵 音频</span>
+        <span class="cat-quick-tag" onclick="pickQuick('相机')">📷 相机</span>
+        <span class="cat-quick-tag" onclick="pickQuick('数码')">🤖 数码</span>
+        <span class="cat-quick-tag" onclick="pickQuick('3C数码配件')">🔌 3C配件</span>
+        <span class="cat-quick-tag" onclick="pickQuick('外设')">🎮 外设</span>
+        <span class="cat-quick-tag" onclick="pickQuick('文具')">✏️ 文具</span>
+        <span class="cat-quick-tag" onclick="pickQuick('图书')">📚 图书</span>
+        <span class="cat-quick-tag" onclick="pickQuick('台式机')">🖱️ 台式机</span>
+      </div>
+    </div>
+
     <button class="btn-next" id="btnNext1" onclick="goPage2()">下一步 →</button>
   </div>
 </div>
@@ -553,17 +589,30 @@
   let selectedCat = null, selectedCatIcon = null, selectedBrands = [], brandMode = 'all';
   let moduleState = { future: true, opp: true, ext: true };
   let subState = {};
-  // 初始化 subState
   document.querySelectorAll('.mp-sub-item').forEach(el => {
     const key = el.dataset.mod + '_' + el.dataset.key;
     subState[key] = true;
   });
 
-  function selectCat(el, cat, icon) {
-    document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected'); selectedCat = cat; selectedCatIcon = icon;
+  const CAT_ICONS = {
+    '手机':'📱','笔记本电脑':'💻','数码':'🤖','平板':'🖥️','台式机':'🖱️',
+    '音频':'🎵','相机':'📷','3C数码配件':'🔌','图书':'📚','外设':'🎮','文具':'✏️',
+  };
+
+  function onCatInput(val) {
+    selectedCat = val.trim() || null;
+    selectedCatIcon = CAT_ICONS[selectedCat] || '📦';
+    document.getElementById('btnNext1').classList.toggle('ready', !!selectedCat);
+  }
+
+  function pickQuick(cat) {
+    selectedCat = cat;
+    selectedCatIcon = CAT_ICONS[cat] || '📦';
+    document.getElementById('catInput').value = cat;
     document.getElementById('btnNext1').classList.add('ready');
   }
+
+  function selectCat(el, cat, icon) { pickQuick(cat); } // backward compat
 
   function goPage1() { showPage('page1'); setStep(1); }
 
