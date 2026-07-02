@@ -249,8 +249,22 @@
     .global-desc { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
     .global-signal { margin-top: 7px; font-size: 11px; color: var(--accent4); }
 
-    /* AI 建议 */
-    .ai-insight { display: flex; gap: 10px; align-items: flex-start; padding: 13px 15px; border-radius: 9px; margin-bottom: 9px; background: rgba(88,166,255,.04); border: 1px solid rgba(88,166,255,.15); }
+    /* 品牌解读卡片 */
+    .brand-insight-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: border-color .15s; }
+    .brand-insight-card:hover { border-color: var(--border2); }
+    .bi-head { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--surface2); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+    .bi-icon { font-size: 20px; }
+    .bi-name { font-size: 15px; font-weight: 700; }
+    .bi-metrics { display: flex; gap: 14px; margin-left: 4px; }
+    .bi-metric { font-size: 12px; color: var(--text-muted); }
+    .bi-metric strong { color: var(--text); font-weight: 600; }
+    .bi-chg { font-size: 11px; color: var(--accent3); }
+    .bi-body { padding: 12px 16px; display: flex; flex-direction: column; gap: 8px; }
+    .bi-row { display: flex; gap: 10px; }
+    .bi-row-label { font-size: 11px; font-weight: 700; color: var(--text-dim); white-space: nowrap; padding-top: 1px; min-width: 52px; }
+    .bi-row-text { font-size: 12px; color: var(--text-muted); line-height: 1.65; }
+
+    /* AI 建议 */    .ai-insight { display: flex; gap: 10px; align-items: flex-start; padding: 13px 15px; border-radius: 9px; margin-bottom: 9px; background: rgba(88,166,255,.04); border: 1px solid rgba(88,166,255,.15); }
     .ai-insight-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
     .ai-insight-text { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
     .ai-insight-text strong { color: var(--accent); font-weight: 600; }
@@ -350,6 +364,7 @@
               <span class="mp-tag mp-tag-opp">选品决策</span>
             </div>
             <div class="module-pick-subs" onclick="event.stopPropagation()">
+              <div class="mp-sub-item sub-on" data-mod="opp" data-key="brand" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">品牌解读</span></div>
               <div class="mp-sub-item sub-on" data-mod="opp" data-key="rank" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">竞对平台热卖榜</span></div>
               <div class="mp-sub-item sub-on" data-mod="opp" data-key="hotword" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">内容平台热搜词</span></div>
               <div class="mp-sub-item sub-on" data-mod="opp" data-key="trend" onclick="toggleSub(this)"><div class="mp-sub-check">✓</div><span class="mp-sub-label">趋势品分析</span></div>
@@ -463,6 +478,7 @@
     future_policy:   { mod:'future', icon:'📋', label:'政策变化',          sub:'影响品类发展的最新政策与法规',       badge:'rb-future', ri:'ri-future' },
     future_tech:     { mod:'future', icon:'⚡', label:'新的技术',           sub:'可能颠覆品类格局的前沿技术动态',     badge:'rb-future', ri:'ri-future' },
     // 看机会
+    opp_brand:       { mod:'opp',    icon:'🏷️', label:'品牌解读',           sub:'商分解读 · 财报分析 · 品牌资讯',     badge:'rb-opp', ri:'ri-opp' },
     opp_rank:        { mod:'opp',    icon:'🏆', label:'竞对平台热卖榜',    sub:'淘宝天猫 / 抖音电商 / 拼多多 近7日', badge:'rb-opp', ri:'ri-opp' },
     opp_hotword:     { mod:'opp',    icon:'🔥', label:'内容平台热搜词',    sub:'抖音 / 小红书 / 微博 近7日热词',     badge:'rb-opp', ri:'ri-opp' },
     opp_trend:       { mod:'opp',    icon:'📈', label:'趋势品分析',         sub:'当前品类热度最高的趋势品',           badge:'rb-opp', ri:'ri-opp' },
@@ -483,6 +499,16 @@
       future_user:     [{name:'Z世代"手机即身份"消费观', badge:'需求变化', bc:'rc-blue', desc:'18-28岁用户将手机外观设计、品牌调性纳入社交货币考量，颜色与材质决策权重超过参数。'},{name:'中老年旗舰手机需求爆发', badge:'新人群', bc:'rc-blue', desc:'50岁以上用户旗舰机购买占比从8%升至14%，大字体、AI辅助、健康监测成核心诉求。'}],
       future_policy:   [{name:'以旧换新补贴延续 Q3', badge:'政策', bc:'rc-blue', desc:'国家以旧换新补贴持续推进，手机品类单品最高补贴 500 元，建议提前规划补贴节点活动。'},{name:'数据安全新规影响进口机', badge:'监管', bc:'rc-blue', desc:'数据本地化存储新规对境外品牌国内业务产生一定限制，部分功能受限，华为受益明显。'}],
       future_tech:     [{name:'卫星通信手机全面普及', badge:'新技术', bc:'rc-hot', desc:'天通/北斗双卫星通信支持成旗舰标配，户外安全场景成购机新驱动，相关搜索量增长 4 倍。'},{name:'屏下摄像头商用化量产', badge:'新技术', bc:'rc-blue', desc:'三星、华为量产屏下摄像头方案，真全面屏形态可能在 2026 年底成为旗舰新标准。'}],
+      opp_brand: {
+        top5: [
+          { name:'苹果', icon:'🍎', share:'26.1%', shareChg:'↓0.8%', revenue:'$958亿 ↑5%', highlight:'iPhone 17 系列预计 9 月发布，Ultra 薄机身+AI 端侧功能强化，供应链已确认量产，预计带动换机潮。', news:'近期发布 AI 写作/翻译功能更新，Apple Intelligence 功能持续扩展至更多国家和语言。', badge:'rc-blue' },
+          { name:'华为', icon:'📱', share:'22.4%', shareChg:'↑3.2%', revenue:'¥2368亿 ↑11%', highlight:'折叠屏 Mate X 系列出货量创新高，三季度将推出 Mate 70 系列，搭载最新麒麟芯片与卫星通信。', news:'鸿蒙 Next 5.0 正式商用，生态应用突破 7 万款，PC/手机/车机三屏联动体验大幅提升。', badge:'rc-hot' },
+          { name:'小米', icon:'📲', share:'14.7%', shareChg:'↑1.1%', revenue:'¥886亿 ↑22%', highlight:'小米 15 Ultra 系列发布后口碑超预期，影像卖点带动旗舰均价提升，高端化战略初见成效。', news:'小米与莱卡深度合作延续，小米 16 系列影像规格已在供应链层面泄露，预计年底发布。', badge:'rc-blue' },
+          { name:'OPPO', icon:'🟢', share:'11.2%', shareChg:'↓0.5%', revenue:'未上市', highlight:'Find X8 系列被市场认可，天玑 9400 版本性能领先，但折叠屏方向与华为差距仍在。', news:'ColorOS 15 系统更新强化 AI 功能，接入 AndesGPT 大模型，智能助手能力有所提升。', badge:'rc-blue' },
+          { name:'vivo', icon:'🔵', share:'10.8%', shareChg:'↓0.3%', revenue:'未上市', highlight:'X200 Ultra 影像旗舰在高端市场建立口碑，折叠屏 X Fold 系列需求有所恢复，市场份额基本稳定。', news:'vivo 与蔡司合作持续深化，X200 Pro mini 将推出以满足小尺寸旗舰需求。', badge:'rc-blue' },
+        ],
+        picked: {} // 动态由 selectedBrands 生成
+      },
       opp_rank: [
         {name:'华为 Mate X5 折叠屏 16+512G', platform:'天猫', change:'↑3', price:'¥9,999', hot:true},
         {name:'苹果 iPhone 16 Pro 256G', platform:'抖音', change:'↑1', price:'¥8,499', hot:true},
@@ -543,6 +569,15 @@
     future_user:     [{name:'消费者决策路径变化', badge:'需求变化', bc:'rc-blue', desc:'内容种草→搜索验证→即时购买的新决策链路在该品类渗透率已超 55%，内容投入 ROI 提升。'}],
     future_policy:   [{name:'以旧换新政策持续利好', badge:'政策', bc:'rc-blue', desc:'国家以旧换新补贴延续，该品类受益明显，建议配合政策节奏规划大促活动节点。'}],
     future_tech:     [{name:'AI 功能成品类新标配', badge:'新技术', bc:'rc-hot', desc:'AI 辅助功能正成为该品类旗舰标配，支持 AI 的产品溢价能力和市场份额双双提升。'}],
+    opp_brand: {
+      top5: [
+        { name:'品类 TOP1 品牌', icon:'🥇', share:'—', shareChg:'—', revenue:'—', highlight:'该品牌在品类内保持领先份额，新品节奏稳定，近期重点布局高端产品线，渠道投入持续加大。', news:'最新动态持续追踪中，建议关注其大促期间定价策略与活动力度变化。', badge:'rc-blue' },
+        { name:'品类 TOP2 品牌', icon:'🥈', share:'—', shareChg:'—', revenue:'—', highlight:'份额排名第二，近期通过性价比策略持续蚕食中端市场，渠道扩张明显，竞争压力不容忽视。', news:'近期加大内容营销投入，达人合作数量同比翻倍，抖音渠道增速显著。', badge:'rc-blue' },
+        { name:'品类 TOP3 品牌', icon:'🥉', share:'—', shareChg:'—', revenue:'—', highlight:'以差异化产品定位在细分赛道建立壁垒，新兴用户群体渗透率高，高端市场口碑持续提升。', news:'新品即将发布，供应链消息显示将主打 AI 功能差异化，预计冲击现有格局。', badge:'rc-blue' },
+        { name:'品类 TOP4 品牌', icon:'4️⃣', share:'—', shareChg:'—', revenue:'—', highlight:'近期份额有所下滑，正在调整产品策略，大促节点力度加大以维持销量规模。', news:'与多家内容平台达成流量合作，试图通过内容电商渠道扭转份额下滑趋势。', badge:'rc-blue' },
+        { name:'品类 TOP5 品牌', icon:'5️⃣', share:'—', shareChg:'—', revenue:'—', highlight:'专注细分场景，在特定用户群体中保持稳定口碑，大众市场渗透率有待提升。', news:'近期推出新品系列，主打场景化差异定位，市场反应有待观察。', badge:'rc-blue' },
+      ],
+    },
     opp_rank: [
       {name:'品类热卖第一名（旗舰新品）', platform:'天猫', change:'↑2', price:'—', hot:true},
       {name:'品类热卖第二名（高性价比款）', platform:'抖音', change:'↑4', price:'—', hot:true},
@@ -751,7 +786,39 @@
 
     let body = '';
 
-    if (key === 'opp_rank') {
+    if (key === 'opp_brand') {
+      const brandData = d.opp_brand || DEFAULT_DATA.opp_brand;
+      let brands;
+      if (brandMode === 'pick' && selectedBrands.length > 0) {
+        // 用户指定品牌：每个生成一张卡
+        brands = selectedBrands.map(b => ({
+          name: b, icon: '🏷️', share:'—', shareChg:'—', revenue:'—',
+          highlight:`持续追踪 ${b} 在 ${selectedCat} 品类的商分解读、新品节奏与定价策略，深度拆解其市场意图与竞争动作。`,
+          news:`${b} 近期品牌资讯与财报动态持续更新，建议结合品类趋势共同研判。`,
+          badge:'rc-blue'
+        }));
+      } else {
+        // 整体品类：展示 top5
+        brands = brandData.top5 || [];
+      }
+      body = brands.map(b =>
+        `<div class="brand-insight-card">
+          <div class="bi-head">
+            <span class="bi-icon">${b.icon}</span>
+            <span class="bi-name">${b.name}</span>
+            <div class="bi-metrics">
+              <span class="bi-metric">市占 <strong>${b.share}</strong> <span class="bi-chg">${b.shareChg}</span></span>
+              ${b.revenue !== '—' && b.revenue !== '未上市' ? `<span class="bi-metric">营收 <strong>${b.revenue}</strong></span>` : ''}
+            </div>
+            <span class="rc-badge ${b.badge}" style="margin-left:auto">商分解读</span>
+          </div>
+          <div class="bi-body">
+            <div class="bi-row"><span class="bi-row-label">战略判断</span><span class="bi-row-text">${b.highlight}</span></div>
+            <div class="bi-row"><span class="bi-row-label">近期资讯</span><span class="bi-row-text">${b.news}</span></div>
+          </div>
+        </div>`
+      ).join('');
+    } else if (key === 'opp_rank') {
       body = `<div class="rank-table">${raw.map((r,i) =>
         `<div class="rank-row">
           <div class="rank-num ${i<3?'top3':''}">${i+1}</div>
@@ -784,23 +851,13 @@
           <div class="global-signal">${g.signal}</div>
         </div>`).join('')}</div>`;
     } else {
-      // 通用卡片 (future_* / opp_compete / ext_report / ext_expert)
+      // 通用卡片
       const items = Array.isArray(raw) ? raw : [raw];
       body = `<div class="report-cards">${items.map(c =>
         `<div class="report-card">
           <div class="rc-head"><span class="rc-name">${c.name}</span><span class="rc-badge ${c.bc||c.badgeClass||'rc-blue'}">${c.badge}</span></div>
           <div class="rc-desc">${c.desc}</div>
         </div>`).join('')}</div>`;
-    }
-
-    // 如果是品牌解读也合并在 opp_compete 之后（若有选品牌）
-    if (key === 'opp_compete' && brandMode === 'pick' && selectedBrands.length > 0) {
-      body += `<div style="margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px">品牌解读</div>
-        <div class="report-cards">${selectedBrands.map(b =>
-          `<div class="report-card">
-            <div class="rc-head"><span class="rc-name">${b}</span><span class="rc-badge rc-blue">关注品牌</span></div>
-            <div class="rc-desc">持续追踪 ${b} 在 ${selectedCat} 品类的新品节奏、定价策略与渠道布局，深度拆解其市场意图与竞争动作。</div>
-          </div>`).join('')}</div>`;
     }
 
     return header + body;
